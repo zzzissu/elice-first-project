@@ -12,7 +12,7 @@ export default function Nav() {
                 </Link>
 
                 <Link to="#" className="flex items-center gap-6  font-sans text-customGray">
-                    <img src="assets/my page.png" alt="mypage_logo" />
+                    <img src="assets/mypage.png" alt="mypage_logo" />
                     My page
                 </Link>
 
