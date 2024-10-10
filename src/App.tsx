@@ -4,11 +4,9 @@ import LoginPage from './pages/LoginPage';
 
 const App = () => {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
       </Routes>
-    </Router>
   );
 };
 
