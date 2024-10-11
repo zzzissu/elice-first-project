@@ -73,7 +73,11 @@ const MyPage = () => {
                 style={{ backgroundImage: `url('/assets/tri.png')`, backgroundSize: 'cover', backgroundPosition: "center" }}>
               </div>
             </button>
-          
+
+          <input
+          type='textarea'
+          className='border-2 mt-3 h-14 text-center' 
+          placeholder='출장중일때만 활성화'/>
 
         </div>
 

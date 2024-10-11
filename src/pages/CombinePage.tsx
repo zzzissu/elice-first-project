@@ -1,8 +1,11 @@
 import React from 'react';
-import Nav from '../components/Nav/Nav';
+import Nav from '../components/nav/Nav';
 import { Route, Routes } from 'react-router-dom';
-import MyPage from '../components/MyPage/MyPage';
+import MyPage from '../components/myPage/MyPage';
 import MainPage from '../components/mainPage/MainPage'
+import TeamPage from '../components/teamPage/TeamPage';
+import AuthPage from './AuthPage';
+
 
 const CombinePage = () => {
     return (
@@ -15,6 +18,8 @@ const CombinePage = () => {
             <Routes>
               <Route path="MyPage/*" element={<MyPage />} />
               <Route path="MainPage/*" element={<MainPage />} />
+              <Route path='TeamPage' element={<TeamPage />} />
+              <Route path='AuthPage/*' element={<AuthPage />} />
   
             </Routes>
           </div>

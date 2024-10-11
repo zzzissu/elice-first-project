@@ -10,7 +10,7 @@ const Schedule = () => {
             <div className='text-2xl ml-10'>
               개인 일정을 작성해 주세요
             </div>
-            <button className='w-16 h-12 mr-6 -mt-2'
+            <button className='w-16 h-12 mr-6 -mt-2 rounded-md'
               style={{ backgroundImage: `url('/assets/plus.png')`, backgroundSize: 'cover', backgroundPosition: "center" }} />
           </div>
         </div>
@@ -25,7 +25,7 @@ const Schedule = () => {
             <div className='text-2xl ml-10'>
               업무 일정을 작성해 주세요
             </div>
-            <button className='w-16 h-12 mr-6 -mt-2'
+            <button className='w-16 h-12 mr-6 -mt-2 rounded-md'
               style={{ backgroundImage: `url('/assets/plus.png')`, backgroundSize: 'cover', backgroundPosition: "center" }} />
           </div>
         </div>
