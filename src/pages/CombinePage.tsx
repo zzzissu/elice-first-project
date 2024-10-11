@@ -2,6 +2,7 @@ import React from 'react';
 import Nav from '../components/Nav/Nav';
 import { Route, Routes } from 'react-router-dom';
 import MyPage from '../components/MyPage/MyPage';
+import MainPage from '../components/mainPage/MainPage'
 
 const CombinePage = () => {
     return (
@@ -13,6 +14,7 @@ const CombinePage = () => {
           <div className='w-[100%]'>
             <Routes>
               <Route path="MyPage/*" element={<MyPage />} />
+              <Route path="MainPage/*" element={<MainPage />} />
   
             </Routes>
           </div>
