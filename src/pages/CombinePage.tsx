@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import MyPage from '../components/myPage/MyPage';
 import MainPage from '../components/mainPage/mainPage'
 import TeamPage from '../components/teamPage/TeamPage';
+import AuthPage from './AuthPage';
 
 
 const CombinePage = () => {
@@ -18,6 +19,7 @@ const CombinePage = () => {
               <Route path="MyPage/*" element={<MyPage />} />
               <Route path="MainPage/*" element={<MainPage />} />
               <Route path='TeamPage' element={<TeamPage />} />
+              <Route path='AuthPage/*' element={<AuthPage />} />
   
             </Routes>
           </div>
