@@ -39,7 +39,7 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="text-xs flex justify-end space-x-2 mt-4">
-            <Link to="/" className="hover:underline">
+            <Link to="/sign" className="hover:underline">
               회원가입
             </Link>
             <p> | </p>
