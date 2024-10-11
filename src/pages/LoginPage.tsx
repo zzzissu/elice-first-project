@@ -4,11 +4,11 @@ import InputField from '../components/login/InputField';
 import Button from '../components/login/Button';
 
 const LoginPage = () => {
-  const [employeeNum, setEmployeeNum] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log('Employee:', employeeNum);
+    console.log('Email:', email);
     console.log('Password:', password);
   };
 
@@ -28,9 +28,9 @@ const LoginPage = () => {
           <p className="text-base py-2 mb-10 m-2.5">일정관리플랫폼 4알렸다</p>
           <InputField
             type="text"
-            placeholder="Employee number"
-            value={employeeNum}
-            onChange={(e) => setEmployeeNum(e.target.value)}
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <InputField
             type="password"
@@ -39,7 +39,7 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="text-xs flex justify-end space-x-2 mt-4">
-            <Link to="/" className="hover:underline">
+            <Link to="/sign" className="hover:underline">
               회원가입
             </Link>
             <p> | </p>
