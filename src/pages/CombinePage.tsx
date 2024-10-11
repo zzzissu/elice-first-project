@@ -2,7 +2,7 @@ import React from 'react';
 import Nav from '../components/nav/Nav';
 import { Route, Routes } from 'react-router-dom';
 import MyPage from '../components/myPage/MyPage';
-import MainPage from '../components/mainPage/mainPage'
+import MainPage from '../components/mainPage/MainPage'
 import TeamPage from '../components/teamPage/TeamPage';
 import AuthPage from './AuthPage';
 

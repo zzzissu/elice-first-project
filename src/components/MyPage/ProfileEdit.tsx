@@ -52,4 +52,4 @@ const ProfileEdit1 = () => {
     )
 }
 
-export default ProfileEdit1
+export default ProfileEdit
