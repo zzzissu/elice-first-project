@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import InputField from '../components/login/InputField';
 import Button from '../components/login/Button';
 import ErrorMessage, { validateSignUp } from '../components/sign/ErrorMessage';
-
+ 
 const SignUpPage = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');

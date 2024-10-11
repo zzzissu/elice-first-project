@@ -16,7 +16,7 @@ export default function Nav() {
                     My page
                 </Link>
 
-                <Link to="#" className="flex items-center gap-6  font-sans text-customGray">
+                <Link to="TeamPage" className="flex items-center gap-6  font-sans text-customGray">
                     <img src="/assets/team.png" alt="team_logo" />
                     Team Page
                 </Link>
@@ -31,7 +31,7 @@ export default function Nav() {
                     Calendar
                 </Link>
 
-                <Link to="#" className="flex items-center gap-6  font-sans text-customGray">
+                <Link to="Authpage" className="flex items-center gap-6  font-sans text-customGray">
                     <img src="/assets/assignment.png" alt="assignment_logo" />
                     Authorization
                 </Link>
