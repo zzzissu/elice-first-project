@@ -2,14 +2,28 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputField from '../components/login/InputField';
 import Button from '../components/login/Button';
+import PasswordResetModal from './PasswordReset';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const handleLogin = () => {
     console.log('Email:', email);
     console.log('Password:', password);
+  };
+
+  const openPasswordResetModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closePasswordResetModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEmailConfirm = () => {
+    closePasswordResetModal();
   };
 
   return (
@@ -43,13 +57,25 @@ const LoginPage = () => {
               회원가입
             </Link>
             <p> | </p>
-            <Link to="/" className="text-xs text-gray-500 hover:underline">
+            <button
+              onClick={openPasswordResetModal}
+              className="text-xs text-gray-500 hover:underline"
+            >
               비밀번호 찾기
-            </Link>
+            </button>
           </div>
           <Button text="LOGIN" onClick={handleLogin} />
         </div>
       </div>
+
+      {/* 비밀번호 찾기 모달 */}
+      {isModalOpen && (
+        <PasswordResetModal
+          onClose={closePasswordResetModal}
+          onEmailConfirm={handleEmailConfirm}
+        />
+      )}
+
     </div>
   );
 };
