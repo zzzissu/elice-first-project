@@ -64,56 +64,70 @@ const MyPage = () => {
             연차
             <div className="text-xl text-purple-700 ml-40">5</div>
           </div>
+          <div className='rounded-lg shadow-lg border h-72 w-80 ml-12 z-10 mt-3 text-xl flex flex-col justify-center items-center font-bold'>
+            <div className=' text-center'>
+              당신의 일정을 알려주세요
+            </div>
+            <button className='flex flex-row justify-between text-center align-middle items-center pl-4 mt-6 border-2 rounded-lg shadow-lg w-60 h-16'>현재 자리중
+              <div className='w-6 h-6 mr-6'
+                style={{ backgroundImage: `url('/assets/tri.png')`, backgroundSize: 'cover', backgroundPosition: "center" }}>
+              </div>
+            </button>
+          
+
         </div>
 
-        {/* 오른쪽 섹션 */}
-        <div className="relative w-[70%] ml-8 -top-12">
-          <div className='flex flex-col h-[100%] w-full bg-white rounded-lg shadow-lg'>
 
-            {/* 오른쪽 섹션 Nav */}
-            <div className='h-24 w-[80%] flex flex-row font-medium items-center ml-28'>
-              <ul className='flex flex-row text-2xl gap-20 font-medium'>
-                <li>
-                  <Link
-                    to='ProfileEdit'
-                    onClick={() => handleLinkClick('ProfileEdit')}
-                    className={`${activeLink === 'ProfileEdit' ? 'border-blue-700 text-black border-b-8 pb-8' : 'text-gray-400'
-                      }`}
-                  >
-                    프로필 편집
-                  </Link>
-                </li>
-                <li>
-                  <Link to='Schedule'
-                    onClick={() => handleLinkClick('Schedule')}
-                    className={`${activeLink === 'Schedule' ? 'border-blue-700 text-black border-b-8 pb-8' : 'text-gray-400'}`}>
-                    일정
-                  </Link>
-                </li>
-                <li>
-                  <Link to='Vacation'
-                    onClick={() => handleLinkClick('Vacation')}
-                    className={`${activeLink === 'Vacation' ? 'border-blue-700 text-black border-b-8 pb-8' : 'text-gray-400'}`}>
-                    휴가 일정
-                  </Link>
-                </li>
-              </ul>
-            </div>
+      </div>
 
-            {/* 오른쪽 섹션 Main */}
-            <div className='border-t-2 h-[800px] flex-grow'>
-              <div className='h-max'>
-                <Routes>
-                  <Route path='ProfileEdit' element={<ProfileEdit />} />
-                  <Route path='Schedule' element={<Schedule />} />
-                  <Route path='Vacation' element={<Vacation />} />
-                </Routes>
-              </div>
+      {/* 오른쪽 섹션 */}
+      <div className="relative w-[70%] ml-8 -top-12">
+        <div className='flex flex-col h-[100%] w-full bg-white rounded-lg shadow-lg'>
+
+          {/* 오른쪽 섹션 Nav */}
+          <div className='h-24 w-[80%] flex flex-row font-medium items-center ml-28'>
+            <ul className='flex flex-row text-2xl gap-20 font-medium'>
+              <li>
+                <Link
+                  to='ProfileEdit'
+                  onClick={() => handleLinkClick('ProfileEdit')}
+                  className={`${activeLink === 'ProfileEdit' ? 'border-blue-700 text-black border-b-8 pb-4' : 'text-gray-400'
+                    }`}
+                >
+                  프로필 편집
+                </Link>
+              </li>
+              <li>
+                <Link to='Schedule'
+                  onClick={() => handleLinkClick('Schedule')}
+                  className={`${activeLink === 'Schedule' ? 'border-blue-700 text-black border-b-8 pb-4' : 'text-gray-400'}`}>
+                  일정
+                </Link>
+              </li>
+              <li>
+                <Link to='Vacation'
+                  onClick={() => handleLinkClick('Vacation')}
+                  className={`${activeLink === 'Vacation' ? 'border-blue-700 text-black border-b-8 pb-4' : 'text-gray-400'}`}>
+                  휴가 일정
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* 오른쪽 섹션 Main */}
+          <div className='border-t-2 h-[800px] flex-grow'>
+            <div className='h-max'>
+              <Routes>
+                <Route path='ProfileEdit' element={<ProfileEdit />} />
+                <Route path='Schedule' element={<Schedule />} />
+                <Route path='Vacation/*' element={<Vacation />} />
+              </Routes>
             </div>
           </div>
         </div>
       </div>
     </div>
+    </div >
   )
 }
 
