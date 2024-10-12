@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
-import UseVa from './UseVa';
+import UseVa from './UseVa'
 import NowVa from './NowVa';
 import FutureVa from './FutureVa';
 
