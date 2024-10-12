@@ -8,7 +8,7 @@ const ProfileEdit = () => {
                     <div className='leftEditSite w-[50%] flex flex-col items-center'>
                         <div className='upSiteName w-[80%] flex flex-col'>
                             이름
-                            <div className='mt-3 bg-gray-100 h-14 rounded-lg shadow-lg pl-4 flex flex-row items-center font-'>
+                            <div className='mt-3 bg-gray-100 h-14 rounded-lg shadow-lg pl-4 flex flex-row items-center'>
                                 하정우
                             </div>
                         </div>
