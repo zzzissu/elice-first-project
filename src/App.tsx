@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate} from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import Layout from './pages/Layout';
 import MyPage from './components/myPage/MyPage';
@@ -17,8 +17,11 @@ import WorkingOutsideApplicationForm from './components/applicationForm/WorkingO
 
 const App = () => (
   <Routes>
+
+
     <Route path="/" element={<LoginPage />} />
-    <Route path="/*" element={<Layout />}>
+
+    <Route path="Layout/*" element={<Layout />}>
       <Route path="Project/*" element={<Project />} />
       <Route index element={<Project />} />
 
