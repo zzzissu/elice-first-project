@@ -9,9 +9,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  const navigate = useNavigate();
+
   const handleLogin = () => {
     console.log('Email:', email);
     console.log('Password:', password);
+    navigate('Layout/');
   };
 
   const openPasswordResetModal = () => {
