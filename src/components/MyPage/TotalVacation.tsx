@@ -9,6 +9,10 @@ const TotalVacation = () => {
       <div className='mt-6'>
       2024년 10월에 입사하였으며 년차 증가당 1개가 추가증가됩니다.
       </div>
+
+      <div className='mt-6'>
+      현재 총 10개의 연차가 남아있습니다.
+      </div>
     </div>
   )
 }

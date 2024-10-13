@@ -14,34 +14,34 @@ import BusinessReport from './components/applicationForm/BusinessReport';
 import WorkingOutsideApplicationForm from './components/applicationForm/WorkingOutsideApplicationForm';
 
 
-const App = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/*" element={<Layout />}>
-        <Route path="Project" element={<Project />} />
+
+const App = () => (
+  <Routes>
+    <Route path="/" element={<LoginPage />} />
+    <Route path="/*" element={<Layout />}>
+      <Route path="Project/*" element={<Project />} />
+      <Route index element={<Project />} />
 
 
-        <Route path="MyPage/*" element={<MyPage />}>
-          <Route index element={<ProfileEdit />} />
-          <Route path="ProfileEdit" element={<ProfileEdit />} />
-          <Route path="Schedule" element={<Schedule />} />
-          <Route path="Vacation/*" element={<Vacation />} />
-        </Route>
-
-        <Route path="TeamPage" element={<TeamPage />} />
-
-        <Route path="AuthPage/*" element={<AuthPage />}>
-          <Route index element={<AnnualApplicationForm />} />
-          <Route path="AnnualApplicationForm" element={<AnnualApplicationForm />} />
-          <Route path="BusinessReport" element={<BusinessReport />} />
-          <Route path="WorkingOutsideApplicationForm" element={<WorkingOutsideApplicationForm />} />
-        </Route>
-
+      <Route path="MyPage/*" element={<MyPage />}>
+        <Route index element={<ProfileEdit />} />
+        <Route path="ProfileEdit" element={<ProfileEdit />} />
+        <Route path="Schedule" element={<Schedule />} />
+        <Route path="Vacation/*" element={<Vacation />} />
       </Route>
 
-    </Routes>
-  );
-};
+      <Route path="TeamPage" element={<TeamPage />} />
+
+      <Route path="AuthPage/*" element={<AuthPage />}>
+        <Route index element={<AnnualApplicationForm />} />
+        <Route path="AnnualApplicationForm" element={<AnnualApplicationForm />} />
+        <Route path="BusinessReport" element={<BusinessReport />} />
+        <Route path="WorkingOutsideApplicationForm" element={<WorkingOutsideApplicationForm />} />
+      </Route>
+
+    </Route>
+
+  </Routes>
+);
 
 export default App;

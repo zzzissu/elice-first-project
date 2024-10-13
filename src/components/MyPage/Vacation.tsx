@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import TotalVacation from './TotalVacation';
 import UsedVacation from './UsedVacation';
-import RemainVacation from './RemainVacation';
 
 
 const Vacation = () => {
@@ -27,14 +26,7 @@ const Vacation = () => {
               </div>
             </Link>
           </button>
-          <button className='text-xl font-bold border-2 h-36 w-80 rounded-lg shadow-lg mr-10'>
-            <Link to='RemainVacation'>
-              남은 연차
-              <div className='mt-3 text-green-400'>
-                10
-              </div>
-            </Link>
-          </button>
+
         </div>
       </div>
 
@@ -43,7 +35,6 @@ const Vacation = () => {
         <Routes>
           <Route path='TotalVacation' element={<TotalVacation />} />
           <Route path='UsedVacation' element={<UsedVacation />} />
-          <Route path='RemainVacation/*' element={<RemainVacation />} />
         </Routes>
       </div>
 
