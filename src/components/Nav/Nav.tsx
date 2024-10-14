@@ -35,6 +35,10 @@ export default function Nav() {
                     <img src="/assets/assignment.png" alt="assignment_logo" />
                     Authorization
                 </Link>
+                <Link to="#" className="flex items-center gap-6  font-sans text-customGray">
+                    <img src="/assets/email.png" alt="assignment_logo" />
+                    Email
+                </Link>
             </div>
         </div>
     );
