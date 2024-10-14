@@ -15,7 +15,7 @@ import MyPage from './components/myPage/MyPage';
 import ProfileEdit from './components/myPage/ProfileEdit';
 import Schedule from './components/myPage/Schedule';
 import Vacation from './components/myPage/Vacation';
-import SignUpPage from './pages/SignUpPage'; // 누락된 SignUpPage import 추가
+import SignUpPage from './pages/SignUpPage';
 
 const App = () => (
   <Routes>

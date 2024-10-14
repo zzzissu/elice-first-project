@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from '../components/nav/Nav';
 import { Outlet } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ const Layout = () => {
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
   };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
@@ -17,6 +18,12 @@ const Layout = () => {
       setProfileImg(imageUrl);
     }
   };
+
+  useEffect(() => {
+    if (selectedOption !== "출장중") {
+      setInputValue("");
+    }
+  },)
 
   return (
     <div className="flex">
@@ -127,9 +134,23 @@ const Layout = () => {
                       type="textarea"
                       className="border-2 mt-3 h-14 text-center"
                       placeholder="출장중일때만 활성화"
-                      disabled={selectedOption !== `출장중`}
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      disabled={selectedOption !== "출장중"}
                     />
+
+                    <div className="flex justify-end w-full">
+                      <button
+                        className="mt-3 bg-blue-700 text-white rounded-lg shadow-lg h-10 w-14 mr-7"
+                        onClick={() => alert('저장되었습니다.')}
+                        disabled={inputValue.trim() === ""} // inputValue가 비어있으면 버튼 비활성화
+                      >
+                        저장
+                      </button>
+                    </div>
                   </div>
+
+
                 </div>
                 <div className="rightSide relative w-[100%] -top-12 ml-20">
                   <div className="flex flex-col w-[90%] h-full bg-white rounded-lg shadow-lg">

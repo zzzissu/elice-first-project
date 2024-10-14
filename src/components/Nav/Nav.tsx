@@ -35,7 +35,11 @@ export default function Nav() {
                     <img src="/assets/assignment.png" alt="assignment_logo" />
                     Authorization
                 </Link>
+<<<<<<< HEAD
        
+=======
+           
+>>>>>>> 03481c3b42cd55e8f63c06de9441570628a229e2
             </div>
         </div>
     );
