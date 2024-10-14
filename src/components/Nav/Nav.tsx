@@ -21,11 +21,6 @@ export default function Nav() {
                     Team Page
                 </Link>
 
-                <Link to="#" className="flex items-center gap-6  font-sans text-customGray">
-                    <img src="/assets/commu.png" alt="community_logo" />
-                    Community
-                </Link>
-
                 <Link to="mail" className="flex items-center gap-6  font-sans text-customGray">
                     <img src="/assets/mail.png" alt="calendar_logo" />
                     Mail
@@ -35,6 +30,7 @@ export default function Nav() {
                     <img src="/assets/assignment.png" alt="assignment_logo" />
                     Authorization
                 </Link>
+       
            
             </div>
         </div>
