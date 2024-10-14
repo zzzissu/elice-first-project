@@ -9,19 +9,19 @@ const Vacation = () => {
     <div className='sectionDevide '>
       {/*휴가 버튼 구역 */}
       <div className='flex flex-col justify-center items-center'>
-        <div className='upSideSite h-52 w-full border-b-2 flex flex-row items-center justify-center'>
-          <button className='text-xl font-bold border-2 h-36 w-80 rounded-lg shadow-lg mr-10'>
+        <div className='upSideSite h-40 w-full border-b-2 flex flex-row items-center justify-center gap-20'>
+          <button className='text-lg font-bold border-2 h-32 w-56 rounded-lg shadow-lg'>
             <Link to='TotalVacation'>
               전체 연차
-              <div className='mt-3'>
+              <div className='mt-2'>
                 16
               </div>
             </Link>
           </button>
-          <button className='text-xl font-bold border-2 h-36 w-80 rounded-lg shadow-lg mr-10'>
+          <button className='text-lg font-bold border-2 h-32 w-56 rounded-lg shadow-lg'>
             <Link to='UsedVacation'>
               사용 연차
-              <div className='mt-3 text-red-700'>
+              <div className='mt-2 text-red-700'>
                 6
               </div>
             </Link>

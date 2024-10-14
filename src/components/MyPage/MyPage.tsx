@@ -9,14 +9,14 @@ const MyPage = () => {
 
   return (
     <div className='sectionDevide flex flex-col'>
-      <div className='nevBar h-24 w-[80%] flex flex-row font-medium items-center ml-28'>
-        <ul className='flex flex-row text-2xl gap-20 font-medium'>
+      <div className='nevBar h-20 w-[80%] flex flex-row font-medium items-center ml-16'>
+        <ul className='flex flex-row text-xl gap-20 font-medium'>
           <li>
             <Link
               to='ProfileEdit'
               onClick={() => handleLinkClick('ProfileEdit')}
               className={`${
-                activeLink === 'ProfileEdit' ? 'border-blue-700 text-black border-b-8 pb-4 font-bold' : 'text-gray-400'
+                activeLink === 'ProfileEdit' ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
             >
               프로필 편집
@@ -27,7 +27,7 @@ const MyPage = () => {
               to='Schedule'
               onClick={() => handleLinkClick('Schedule')}
               className={`${
-                activeLink === 'Schedule' ? 'border-blue-700 text-black border-b-8 pb-4 font-bold' : 'text-gray-400'
+                activeLink === 'Schedule' ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
             >
               일정
@@ -38,7 +38,7 @@ const MyPage = () => {
               to='Vacation'
               onClick={() => handleLinkClick('Vacation')}
               className={`${
-                activeLink === 'Vacation' ? 'border-blue-700 text-black border-b-8 pb-4 font-bold' : 'text-gray-400'
+                activeLink === 'Vacation' ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
             >
               휴가 일정
