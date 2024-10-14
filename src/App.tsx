@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, Navigate} from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import Layout from './pages/Layout';
 import MyPage from './components/myPage/MyPage';
@@ -12,7 +12,9 @@ import AuthPage from './pages/AuthPage';
 import AnnualApplicationForm from './components/applicationForm/AnnualApplicationForm';
 import BusinessReport from './components/applicationForm/BusinessReport';
 import WorkingOutsideApplicationForm from './components/applicationForm/WorkingOutsideApplicationForm';
-
+import Mail from './pages/Mail';
+import MailWrite from './components/mail/MailWrite';
+import MailRead from './components/mail/MailRead';
 
 
 const App = () => (
@@ -40,6 +42,12 @@ const App = () => (
         <Route path="AnnualApplicationForm" element={<AnnualApplicationForm />} />
         <Route path="BusinessReport" element={<BusinessReport />} />
         <Route path="WorkingOutsideApplicationForm" element={<WorkingOutsideApplicationForm />} />
+      </Route>
+
+      <Route path="Mail/*" element={<Mail />} >
+        <Route index element={<MailRead />} />
+        <Route path="MailWrite" element={<MailWrite />} />
+        <Route path="MailRead" element={<MailRead />} />
       </Route>
 
     </Route>

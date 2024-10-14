@@ -31,7 +31,10 @@ const Modal: React.FC<{
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-6 w-[60%] h-[55%]">
+
         <h2 className="text-3xl text-center font-semibold">공지사항</h2>
+       
+
         <input
           type="text"
           placeholder="제목을 입력해주세요"
