@@ -64,7 +64,7 @@ const LoginPage = () => {
               onClick={openPasswordResetModal}
               className="text-xs text-gray-500 hover:underline"
             >
-              비밀번호 찾기
+              비밀번호를 잊으셨나요?
             </button>
           </div>
           <Button text="LOGIN" onClick={handleLogin} />
