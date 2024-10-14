@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from '../components/nav/Nav';
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
   const [profileImg, setProfileImg] = useState<string>('/assets/Group 18.png');
   const [selectedOption, setSelectedOption] = useState<string>('');
-
+  const [inputValue, setInputValue] = useState<string>("");
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
   };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
@@ -17,6 +18,12 @@ const Layout = () => {
       setProfileImg(imageUrl);
     }
   };
+
+  useEffect(() => {
+    if (selectedOption !== "출장중") {
+      setInputValue("");
+    }
+  }, [selectedOption])
 
   return (
     <div className="flex">
@@ -73,10 +80,8 @@ const Layout = () => {
                             backgroundImage: `url('/assets/Group 17.png')`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
-                            
                           }}
                           className="h-12 w-12 ml-28 mt-28 cursor-pointer"
-                          
                         />
                       </label>
                       <input
@@ -120,27 +125,33 @@ const Layout = () => {
                   <div className="rounded-lg shadow-lg border h-72 w-80 ml-20 mt-4 text-xl flex bg-white flex-col justify-center items-center font-bold">
                     <div className="text-center">당신의 상태를 알려주세요</div>
                     <button className="flex flex-row justify-between text-center align-middle items-center pl-4 mt-6 border-2 rounded-lg shadow-lg w-60 h-16">
-                      <form action=""
-                      className='w-full'>
-                        <select 
-                        name="situation"
-                        onChange={handleSelectChange}
-                        >
+                      <form action="" className="w-full">
+                        <select name="situation" onChange={handleSelectChange}>
                           <option value="현재자리중">현재자리중</option>
                           <option value="출장중">출장중</option>
                           <option value="휴가중">휴가중</option>
                           <option value="잠시 비움">잠시 비움</option>
                         </select>
                       </form>
-
                     </button>
                     <input
-                    
                       type="textarea"
                       className="border-2 mt-3 h-14 text-center"
                       placeholder="출장중일때만 활성화"
-                      disabled={selectedOption !== `출장중`}
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      disabled={selectedOption !== "출장중"}
                     />
+
+                    <div className="flex justify-end w-full">
+                      <button
+                        className="mt-3 bg-blue-700 text-white rounded-lg shadow-lg h-10 w-14 mr-7"
+                        onClick={() => alert('저장되었습니다.')}
+                        disabled={inputValue.trim() === ""} // inputValue가 비어있으면 버튼 비활성화
+                      >
+                        저장
+                      </button>
+                    </div>
                   </div>
 
 

@@ -31,38 +31,41 @@ const Modal: React.FC<{
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg p-6 w-[60%] h-[55%]">
-                <h2 className="text-3xl text-center font-semibold">공지사항</h2>
-                <input
-                    type="text"
-                    placeholder="제목을 입력해주세요"
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    className="border rounded w-full p-5 mt-7 text-xl"
-                />
-                <textarea
-                    placeholder="내용을 입력해주세요"
-                    value={newContent}
-                    onChange={(e) => setNewContent(e.target.value)}
-                    className="border rounded w-full p-5 mt-7 text-xl"
-                    rows={15}
-                />
-                <div className="mt-4 flex justify-center">
-                    <button
-                        className="h-14 w-28 text-2xl text-center font-bold bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
-                        onClick={handleSave}
-                    >
-                        저장
-                    </button>
-                    <button
-                        className="h-14 w-28 text-2xl text-center font-bold bg-gray-700 text-white rounded hover:bg-gray-950"
-                        onClick={onClose}
-                    >
-                        닫기
-                    </button>
-                </div>
-            </div>
+      <div className="bg-white rounded-lg p-6 w-[60%] h-[55%]">
+
+        <h2 className="text-3xl text-center font-semibold">공지사항</h2>
+       
+
+        <input
+          type="text"
+          placeholder="제목을 입력해주세요"
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+          className="border rounded w-full p-5 mt-7 text-xl"
+        />
+        <textarea
+          placeholder="내용을 입력해주세요"
+          value={newContent}
+          onChange={(e) => setNewContent(e.target.value)}
+          className="border rounded w-full p-5 mt-7 text-xl"
+          rows={15}
+        />
+        <div className="mt-4 flex justify-center">
+          <button
+            className="h-14 w-28 text-2xl text-center font-bold bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
+            onClick={handleSave}
+          >
+            저장
+          </button>
+          <button
+            className="h-14 w-28 text-2xl text-center font-bold bg-gray-700 text-white rounded hover:bg-gray-950"
+            onClick={onClose}
+          >
+            닫기
+          </button>
         </div>
+      </div>
+    </div>
     );
 };
 
