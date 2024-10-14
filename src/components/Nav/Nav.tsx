@@ -26,14 +26,16 @@ export default function Nav() {
                     Community
                 </Link>
 
+                <Link to="mail" className="flex items-center gap-6  font-sans text-customGray">
+                    <img src="/assets/mail.png" alt="calendar_logo" />
+                    Mail
+                </Link>
+
                 <Link to="Authpage" className="flex items-center gap-6  font-sans text-customGray">
                     <img src="/assets/assignment.png" alt="assignment_logo" />
                     Authorization
                 </Link>
-                <Link to="#" className="flex items-center gap-6  font-sans text-customGray">
-                    <img src="/assets/email.png" alt="assignment_logo" />
-                    Email
-                </Link>
+       
             </div>
         </div>
     );
