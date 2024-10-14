@@ -12,7 +12,8 @@ const Modal: React.FC<{
     const [newTitle, setNewTitle] = useState(title);
     const [newContent, setNewContent] = useState(content);
 
-    // 모달이 열릴 때 상태를 업데이트
+// 모달이 열릴 때 상태를 업데이트
+
     React.useEffect(() => {
         setNewTitle(title);
         setNewContent(content);
@@ -74,6 +75,8 @@ const Project = () => {
     const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
     const [selectedContent, setSelectedContent] = useState<string | null>(null);
     const [isReadOnly, setIsReadOnly] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6;
 
     // 피드백 저장 함수
     const handleSave = (title: string, content: string) => {
@@ -97,6 +100,18 @@ const Project = () => {
         setModalOpen(true);
     };
 
+    // 삭제 함수
+    const handleDelete = (index: number) => {
+        setSavedTitles(prevTitles => prevTitles.filter((_, i) => i !== index));
+    };
+
+    // 페이지네이션
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = savedTitles.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPages = Math.ceil(savedTitles.length / itemsPerPage);
+
     return (
         <div className='flex'>
             {/* 왼쪽세션 */}
@@ -117,14 +132,18 @@ const Project = () => {
                     </div>
                     <div className='flex flex-col border bg-indigo-50/100 h-80 w-[100%] mt-2 rounded-lg shadow-lg'>
                         <ul>
-                            {savedTitles.length > 0 ? (
-                                savedTitles.map(({ title, content }, index) => (
-                                    <li
-                                        key={index}
-                                        className="cursor-pointer text-xl w-[90%] m-5 border-b"
-                                        onClick={() => handleTitleClick(title, content)}
-                                    >
-                                        {title}
+                            {currentItems.length > 0 ? (
+                                currentItems.map(({ title, content }, index) => (
+                                    <li key={index} className="flex justify-between items-center cursor-pointer text-xl w-[90%] m-5 border-b">
+                                        <span onClick={() => handleTitleClick(title, content)}>
+                                            {title}
+                                        </span>
+                                        <button
+                                            className="text-red-500 ml-4"
+                                            onClick={() => handleDelete(index + indexOfFirstItem)}
+                                        >
+                                            삭제
+                                        </button>
                                     </li>
                                 ))
                             ) : (
@@ -132,6 +151,20 @@ const Project = () => {
                             )}
                         </ul>
                     </div>
+                    {/* 페이지네이션 */}
+                    {totalPages > 1 && (
+                        <div className="flex justify-center mt-4">
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <button
+                                    key={i}
+                                    className={`mx-1 px-4 py-2 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                    onClick={() => setCurrentPage(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
