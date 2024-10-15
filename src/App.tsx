@@ -11,10 +11,10 @@ import WorkingOutsideApplicationForm from './components/applicationForm/WorkingO
 import Mail from './pages/Mail';
 import MailWrite from './components/mail/MailWrite';
 import MailRead from './components/mail/MailRead';
-import MyPage from './components/MyPage/MyPage';
-import ProfileEdit from './components/MyPage/ProfileEdit';
-import Schedule from './components/MyPage/Schedule';
-import Vacation from './components/MyPage/Vacation';
+import MyPage from './components/myPage/MyPage';
+import ProfileEdit from './components/myPage/ProfileEdit';
+import Schedule from './components/myPage/Schedule';
+import Vacation from './components/myPage/Vacation';
 import SignUpPage from './pages/SignUpPage'; // 누락된 SignUpPage import 추가
 
 const App = () => (
