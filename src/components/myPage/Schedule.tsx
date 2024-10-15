@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import PageModal from '../modal/PageModal';
-import {v4 as uuidv4} from 'uuid';
 
 const Schedule = () => {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [savedPersonerTitles, setSavedPersonerTitles] = useState<{ id :string; title: string; content: string }[]>([]);
-    const [savedWorkTitles, setSavedWorkTitles] = useState<{ id :string; title: string; content: string }[]>([]);
+    const [savedPersonerTitles, setSavedPersonerTitles] = useState<{ title: string; content: string }[]>([]);
+    const [savedWorkTitles, setSavedWorkTitles] = useState<{ title: string; content: string }[]>([]);
     const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
     const [selectedContent, setSelectedContent] = useState<string | null>(null);
     const [modalType, setModalType] = useState<'personal' | 'work' | null>(null);
@@ -20,7 +19,7 @@ const Schedule = () => {
 
     // 피드백 저장 함수
     const handleSave = (title: string, content: string) => {
-        const newItem ={id:uuidv4(), title, content};
+        const newItem ={title, content};
         if (modalType === 'personal') {
             setSavedPersonerTitles((prev) => [...prev, newItem]);
         } else if (modalType === 'work') {
@@ -95,9 +94,9 @@ const Schedule = () => {
                     </div>
                     <ul>
                         {savedPersonerTitles.length > 0 ? (
-                            currentPersonalItems.map(({ id,title, content }, index) => (
+                            currentPersonalItems.map(({ title, content }, index) => (
                                 <li
-                                    key={id}
+                                    key={index}
                                     className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
                                 >
                                     <input
@@ -162,9 +161,9 @@ const Schedule = () => {
 
                     <ul>
                         {savedWorkTitles.length > 0 ? (
-                            currentWorkItems.map(({id, title, content }, index) => (
+                            currentWorkItems.map(({title, content },index) => (
                                 <li
-                                    key={id}
+                                    key={index}
                                     className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
                                 >
                                     <div
