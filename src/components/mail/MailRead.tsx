@@ -2,14 +2,28 @@ import React from 'react'
 
 const MailRead = () => {
     return (
-        <div className='flex flex-col w-full'>
-            <div>
-                <ul className='flex justify-between font-sans w-[90%] text-xl font-bold pt-14 pl-32'>
-                    <li>보낸사람</li>
-                    <li>제목</li>
-                    <li>일자</li>
-                </ul>
-            </div>
+        <div className="w-full">
+            <table className="min-w-full border-collapse border-b-2 border-gray-300 mt-5">
+                <thead>
+                    <tr className="bg-blue-50">
+                        <th className="border-b-2 border-gray-300 p-2 w-1/6">보낸사람</th>
+                        <th className="border-b-2 border-gray-300 p-2 w-3/6">내용</th>
+                        <th className="border-b-2 border-gray-300 p-2 w-1/6">날짜</th>
+                        <th className="border-b-2 border-gray-300 p-2 w-1/6">삭제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr className="h-14"> {/* 행의 높이를 조절 */}
+                        <td className="border-b-2 border-gray-300 p-2 text-center">김정현</td>
+                        <td className="border-b-2 border-gray-300 p-2 text-center">정우씨...</td>
+                        <td className="border-b-2 border-gray-300 p-2 text-center">24.10.15</td>
+                        <td className="border-b-2 border-gray-300 p-2 text-center align-middle"> {/* 삭제 버튼을 수평 및 수직 가운데로 정렬 */}
+                            <button className='bg-red-500 text-white p-2 rounded-lg'>삭제</button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
         </div>
     )
 }
