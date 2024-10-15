@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Paths } from '../components/constants/Paths';
 const AuthPage = () => {
-    const [activeLink, setActiveLink] = useState('AnnualApplicationForm');
-    const handleLinkClick = (link: string) => {
-        setActiveLink(link);
-    };
+    const location = useLocation();
 
     return (
         <div className="sectionDevide flex flex-col">
@@ -13,10 +9,9 @@ const AuthPage = () => {
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
-                            to="annual-application"
-                            onClick={() => handleLinkClick('annual-application')}
+                            to={Paths.annualApplication}
                             className={`${
-                                activeLink === 'annual-application'
+                                location.pathname === Paths.annualApplication
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
@@ -26,10 +21,9 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="working-outside"
-                            onClick={() => handleLinkClick('working-outside')}
+                            to={Paths.workingOutside}
                             className={`${
-                                activeLink === 'working-outside'
+                                location.pathname === Paths.workingOutside
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
@@ -39,10 +33,9 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="business-report"
-                            onClick={() => handleLinkClick('business-report')}
+                            to={Paths.businessReport}
                             className={`${
-                                activeLink === 'business-report'
+                                location.pathname === Paths.businessReport
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
