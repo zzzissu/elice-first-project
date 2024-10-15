@@ -1,6 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
+import FormModal from '../modal/FormModal';
+
 
 const ProfileEdit = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+    const handleModalOpen = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
+
+    const isFormValid = phoneNumber.trim() !== ''
+
     return (
         <div>
             <div className='EditSiteTotal flex flex-col justify-center mt-10'>
@@ -15,7 +30,17 @@ const ProfileEdit = () => {
 
                         <div className='upSiteNum w-[80%] flex flex-col pt-5'>
                             연락처
-                            <input className='mt-3 bg-gray-200 h-10 rounded-lg pl-4' placeholder='010-2936-7314' />
+                            <input
+                                className='mt-3 bg-gray-200 h-10 rounded-lg pl-4'
+                                type='text'
+                                value={phoneNumber}
+                                onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    if (/^[0-9+-]*$/.test(inputValue)) {
+                                        setPhoneNumber(inputValue);
+                                    }
+                                }}
+                            />
                         </div>
 
                         <div className='middleSiteContectNum w-[80%] flex flex-col pt-5'>
@@ -45,9 +70,15 @@ const ProfileEdit = () => {
                     </div>
                 </div>
                 <div className="btnSite flex justify-center items-center">
-                    <button className='flex justify-center items-center align-middle bg-mainColor text-white font-bold text-xl w-56 h-14 rounded-lg shadow-lg mt-12'>Update</button>
+                    <button
+                        disabled={!isFormValid}
+                        onClick={handleModalOpen}
+                        className='flex justify-center items-center align-middle bg-mainColor text-white font-bold text-lg p-4 rounded-lg shadow-lg mt-20'>Update</button>
                 </div>
             </div>
+            <FormModal isOpen={isModalOpen} onClose={handleModalClose}>
+                <div className="text-sm">업데이트 되었습니다.</div>
+            </FormModal>
         </div>
     )
 }

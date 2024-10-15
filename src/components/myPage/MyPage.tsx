@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import React from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const MyPage = () => {
-  const [activeLink, setActiveLink] = useState('ProfileEdit');
-  const handleLinkClick = (link:string) => {
-    setActiveLink(link);
-  };
+  const location = useLocation();
+  const activeLink = location.pathname.split('/').pop();
+  
 
   return (
     <div className='sectionDevide flex flex-col'>
@@ -14,7 +13,6 @@ const MyPage = () => {
           <li>
             <Link
               to='ProfileEdit'
-              onClick={() => handleLinkClick('ProfileEdit')}
               className={`${
                 activeLink === 'ProfileEdit' ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
@@ -25,7 +23,6 @@ const MyPage = () => {
           <li>
             <Link
               to='Schedule'
-              onClick={() => handleLinkClick('Schedule')}
               className={`${
                 activeLink === 'Schedule' ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
@@ -36,7 +33,6 @@ const MyPage = () => {
           <li>
             <Link
               to='Vacation'
-              onClick={() => handleLinkClick('Vacation')}
               className={`${
                 activeLink === 'Vacation' ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
