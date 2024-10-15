@@ -34,10 +34,10 @@ const AnnualApplicationForm: React.FC = () => {
 
             <div className="flex mt-7">
                 <div className="flex w-1/2 justify-center text-center align-middle">
-                    <label className=" text-xl font-bold text-gray-700 font-sans mt-1">연차 시작일</label>
+                    <label className="flex text-xl font-bold text-gray-700 font-sans  mt-1">연차 시작일</label>
                     <input
                         type="date"
-                        className="border-2 w-[60%] rounded-md border-gray-300 shadow-sm ml-4 focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg font-sans"
+                        className="border-2 w-[55%] rounded-md border-gray-300 shadow-sm ml-4 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
                     />
                 </div>
 
@@ -45,19 +45,19 @@ const AnnualApplicationForm: React.FC = () => {
                     <label className=" text-xl font-bold text-gray-700 font-sans">연차 종료일</label>
                     <input
                         type="date"
-                        className=" border-2 w-[60%] rounded-md border-gray-300 shadow-sm ml-4 focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg font-sans"
+                        className=" border-2 w-[58%] rounded-md border-gray-300 shadow-sm ml-4 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
                     />
                 </div>
             </div>
             <div className="flex w-full">
                 <div className="w-full">
-                    <label className="flex text-xl font-sans align-middle font-bold text-gray-700 ml-12 mt-5">
+                    <label className="flex text-xl font-sans align-middle font-bold text-gray-700 ml-16 mt-5">
                         연차 사유
                     </label>
                     <textarea
                         value={reasonForAnnual}
                         onChange={(e) => setreasonForAnnual(e.target.value)}
-                        className="text-sm border p-3 rounded-ml mt-2 w-[90%] font-sans"
+                        className="flex text-sm border p-3 rounded-ml mt-2 w-[86%] ml-10 font-sans "
                         placeholder="사유를 입력하세요"
                         rows={11}
                     />
@@ -68,14 +68,14 @@ const AnnualApplicationForm: React.FC = () => {
                 <button
                     onClick={openModal}
                     disabled={!isFormValid}
-                    className={`text-lg font-sans w-24 bg-mainColor rounded-lg text-white rounded-ml p-2 ${
+                    className={`text-lg font-sans w-24 bg-mainColor rounded-lg text-white rounded-ml mt-4 p-2 ${
                         !isFormValid ? 'bg-gray-400 cursor-not-allowed' : ''
                     }`}
                 >
                     결재 신청
                 </button>
                 <FormModal isOpen={isModalOpen} onClose={closeModal}>
-                    <p className="font-sans text-xl font-bold">결재신청 완료</p>
+                    <p className="font-sans text-xl font-bold ">결재신청 완료</p>
                 </FormModal>
             </div>
         </div>
