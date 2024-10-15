@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-
+import { Paths } from '../components/constants/Paths';
 const AuthPage = () => {
     const [activeLink, setActiveLink] = useState('AnnualApplicationForm');
     const handleLinkClick = (link: string) => {
@@ -13,7 +13,7 @@ const AuthPage = () => {
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
-                            to="annual-application"
+                            to={Paths.annualApplication}
                             onClick={() => handleLinkClick('annual-application')}
                             className={`${
                                 activeLink === 'annual-application'
@@ -26,7 +26,7 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="working-outside"
+                            to={Paths.workingOutside}
                             onClick={() => handleLinkClick('working-outside')}
                             className={`${
                                 activeLink === 'working-outside'
@@ -39,7 +39,7 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="business-report"
+                            to={Paths.businessReport}
                             onClick={() => handleLinkClick('business-report')}
                             className={`${
                                 activeLink === 'business-report'

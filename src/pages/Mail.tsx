@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { Paths } from '../components/constants/Paths';
 
 const AuthPage = () => {
     const [activeLink, setActiveLink] = useState('MailRead');
@@ -13,7 +14,7 @@ const AuthPage = () => {
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
-                            to="mail-read"
+                            to={Paths.mailRead}
                             onClick={() => handleLinkClick('mail-read')}
                             className={`${
                                 activeLink === 'mail-read'
@@ -26,7 +27,7 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="sended-mail"
+                            to={Paths.sendedMail}
                             onClick={() => handleLinkClick('sended-mail')}
                             className={`${
                                 activeLink === 'sended-mail'
@@ -39,7 +40,7 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="mail-write"
+                            to={Paths.mailWrite}
                             onClick={() => handleLinkClick('mail-write')}
                             className={`${
                                 activeLink === 'mail-write'

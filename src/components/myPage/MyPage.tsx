@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { Paths } from '../constants/Paths';
 
 const MyPage = () => {
     const [activeLink, setActiveLink] = useState('ProfileEdit');
@@ -13,7 +14,7 @@ const MyPage = () => {
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
-                            to="profile-edit"
+                            to={Paths.profileEdit}
                             onClick={() => handleLinkClick('profile-edit')}
                             className={`${
                                 activeLink === 'profile-edit'
@@ -26,7 +27,7 @@ const MyPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="schedule"
+                            to={Paths.schedule}
                             onClick={() => handleLinkClick('schedule')}
                             className={`${
                                 activeLink === 'schedule'
@@ -39,7 +40,7 @@ const MyPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="vacation"
+                            to={Paths.vacation}
                             onClick={() => handleLinkClick('vacation')}
                             className={`${
                                 activeLink === 'vacation'
