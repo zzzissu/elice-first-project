@@ -16,10 +16,21 @@ const AuthPage = () => {
                             to="MailRead"
                             onClick={() => handleLinkClick('MailRead')}
                             className={`${activeLink === 'MailRead'
-                                ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                                ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
                                 }`}
                         >
-                            메일 읽기
+                            받은메일
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="Sendedmail"
+                            onClick={() => handleLinkClick('Sendedmail')}
+                            className={`${activeLink === 'Sendedmail'
+                                ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                                }`}
+                        >
+                            보낸메일
                         </Link>
                     </li>
                     <li>
@@ -27,10 +38,10 @@ const AuthPage = () => {
                             to="MailWrite"
                             onClick={() => handleLinkClick('MailWrite')}
                             className={`${activeLink === 'MailWrite'
-                                ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                                ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
                                 }`}
                         >
-                            메일 쓰기
+                            메일작성
                         </Link>
                     </li>
     
