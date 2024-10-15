@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom';
+import React from 'react'
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const AuthPage = () => {
-    const [activeLink, setActiveLink] = useState('MailRead');
-    const handleLinkClick = (link: string) => {
-        setActiveLink(link);
-    };
+    const location = useLocation();
+    const activeLink = location.pathname.split('/').pop();
+    
 
     return (
         <div className='sectionDevide flex flex-col'>
@@ -14,7 +13,6 @@ const AuthPage = () => {
                     <li>
                         <Link
                             to="MailRead"
-                            onClick={() => handleLinkClick('MailRead')}
                             className={`${activeLink === 'MailRead'
                                 ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
                                 }`}
@@ -25,7 +23,6 @@ const AuthPage = () => {
                     <li>
                         <Link
                             to="Sendedmail"
-                            onClick={() => handleLinkClick('Sendedmail')}
                             className={`${activeLink === 'Sendedmail'
                                 ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
                                 }`}
@@ -36,7 +33,6 @@ const AuthPage = () => {
                     <li>
                         <Link
                             to="MailWrite"
-                            onClick={() => handleLinkClick('MailWrite')}
                             className={`${activeLink === 'MailWrite'
                                 ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
                                 }`}
