@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Nav from '../components/Nav/Nav';
+import Nav from '../components/nav/Nav';
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
