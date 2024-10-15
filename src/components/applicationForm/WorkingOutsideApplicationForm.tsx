@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import FormModal from '../modal/FormModal';
 
 const WorkingOutsideApplicationForm: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 상태
-    const [reasonForWorking, setReasonForWorking] = useState<string>(''); // 외근사유 상태
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+    const [reasonForWorking, setReasonForWorking] = useState(''); // 외근사유 상태
 
     const openModal = () => {
         setIsModalOpen(true); // 모달 열기

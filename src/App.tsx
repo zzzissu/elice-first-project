@@ -17,6 +17,7 @@ import Schedule from './components/myPage/Schedule';
 import Vacation from './components/myPage/Vacation';
 import SignUpPage from './pages/SignUpPage';
 import SendedMail from './components/mail/SendedMail';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => (
     <Routes>
@@ -25,38 +26,41 @@ const App = () => (
         <Route path="/sign" element={<SignUpPage />} />
 
         {/* Layout 내부의 페이지들 */}
-        <Route path="Layout/*" element={<Layout />}>
+        <Route path="layout/*" element={<Layout />}>
             {/* 기본 경로: Project */}
-            <Route path="Project/*" element={<Project />} />
+            <Route path="project/*" element={<Project />} />
             <Route index element={<Project />} />
 
             {/* MyPage 경로 */}
-            <Route path="MyPage/*" element={<MyPage />}>
+            <Route path="my-page/*" element={<MyPage />}>
                 <Route index element={<ProfileEdit />} />
-                <Route path="ProfileEdit" element={<ProfileEdit />} />
-                <Route path="Schedule" element={<Schedule />} />
-                <Route path="Vacation/*" element={<Vacation />} />
+                <Route path="profile-edit" element={<ProfileEdit />} />
+                <Route path="schedule" element={<Schedule />} />
+                <Route path="vacation/*" element={<Vacation />} />
             </Route>
 
             {/* TeamPage 경로 */}
-            <Route path="TeamPage" element={<TeamPage />} />
+            <Route path="team-page" element={<TeamPage />} />
 
             {/* AuthPage 경로 */}
-            <Route path="AuthPage/*" element={<AuthPage />}>
+            <Route path="auth-page/*" element={<AuthPage />}>
                 <Route index element={<AnnualApplicationForm />} />
-                <Route path="AnnualApplicationForm" element={<AnnualApplicationForm />} />
-                <Route path="BusinessReport" element={<BusinessReport />} />
-                <Route path="WorkingOutsideApplicationForm" element={<WorkingOutsideApplicationForm />} />
+                <Route path="annual-application" element={<AnnualApplicationForm />} />
+                <Route path="business-report" element={<BusinessReport />} />
+                <Route path="working-outside" element={<WorkingOutsideApplicationForm />} />
             </Route>
 
             {/* Mail 경로 */}
-            <Route path="Mail/*" element={<Mail />}>
+            <Route path="mail/*" element={<Mail />}>
                 <Route index element={<MailRead />} />
-                <Route path="MailWrite" element={<MailWrite />} />
-                <Route path="MailRead" element={<MailRead />} />
-                <Route path="SendedMail" element={<SendedMail />} />
+                <Route path="mail-write" element={<MailWrite />} />
+                <Route path="mail-read" element={<MailRead />} />
+                <Route path="sended-mail" element={<SendedMail />} />
             </Route>
         </Route>
+
+        {/* 404 에러페이지 */}
+        <Route path="*" element={<NotFoundPage />} />
     </Routes>
 );
 

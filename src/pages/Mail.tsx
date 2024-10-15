@@ -7,9 +7,9 @@ const AuthPage = () => {
     
 
     return (
-        <div className='sectionDevide flex flex-col'>
-            <div className='nevBar h-20 w-[80%] flex flex-row font-medium items-center ml-16'>
-                <ul className='flex flex-row text-xl gap-20 font-medium'>
+        <div className="sectionDevide flex flex-col">
+            <div className="nevBar h-20 w-[80%] flex flex-row font-medium items-center ml-16">
+                <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
                             to="MailRead"
@@ -40,17 +40,13 @@ const AuthPage = () => {
                             메일작성
                         </Link>
                     </li>
-    
                 </ul>
             </div>
-
 
             <div className="border-t-2">
                 <Outlet />
             </div>
         </div>
-
-
     );
 };
 
