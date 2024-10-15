@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import FormModal from '../modal/FormModal';
 
 const BusinessReport: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 상태
-    const [taskName, setTaskName] = useState<string>(''); // 업무명 상태
-    const [reportContent, setReportContent] = useState<string>(''); // 업무 보고서 상태
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+    const [taskName, setTaskName] = useState(''); // 업무명 상태
+    const [reportContent, setReportContent] = useState(''); // 업무 보고서 상태
 
     const openModal = () => {
         setIsModalOpen(true); // 모달 열기

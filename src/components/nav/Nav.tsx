@@ -7,7 +7,7 @@ export default function Nav() {
 
             <div className="flex flex-col text-xl gap-20 ">
                 <Link
-                    to="Project"
+                    to="project"
                     className="flex items-center gap-6 font-sans font-bold text-customGray hover:scale-110 transition-transform focus:text-mainColor"
                 >
                     <img src="/assets/project.png" alt="project_logo" />
@@ -15,7 +15,7 @@ export default function Nav() {
                 </Link>
 
                 <Link
-                    to="MyPage"
+                    to="my-page"
                     className="flex items-center gap-6 font-bold  font-sans text-customGray hover:scale-110 transition-transform focus:text-mainColor"
                 >
                     <img src="/assets/mypage.png" alt="mypage_logo" />
@@ -23,7 +23,7 @@ export default function Nav() {
                 </Link>
 
                 <Link
-                    to="TeamPage"
+                    to="team-page"
                     className="flex items-center gap-6 font-bold  font-sans text-customGray hover:scale-110 transition-transform focus:text-mainColor"
                 >
                     <img src="/assets/team.png" alt="team_logo" />
@@ -39,13 +39,12 @@ export default function Nav() {
                 </Link>
 
                 <Link
-                    to="Authpage"
+                    to="auth-page"
                     className="flex items-center gap-6  font-bold font-sans text-customGray hover:scale-110 transition-transform focus:text-mainColor"
                 >
                     <img src="/assets/assignment.png" alt="assignment_logo" />
                     Authorization
                 </Link>
-
             </div>
         </div>
     );
