@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import FormModal from '../applicationFormModal/FormModal';
+import FormModal from '../modal/FormModal';
 
 const AnnualApplicationForm: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 상태
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
     const [reasonForAnnual, setreasonForAnnual] = useState<string>(''); // 연차사유 상태
 
     const openModal = () => {

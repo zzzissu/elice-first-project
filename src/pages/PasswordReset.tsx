@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Modal from '../components/password/Modal';
+import Modal from '../components/modal/Modal';
 import NewPasswordModal from './NewPassword';
 
 interface PasswordResetModalProps {

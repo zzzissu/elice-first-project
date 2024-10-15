@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Modal from './Modal';
-
+import FormModal from '../modal/FormModal';
 
 const MailWrite = () => {
 
@@ -29,10 +28,10 @@ const MailWrite = () => {
 
                 </div>
                 <div className="flex w-1/2">
-                    <label className="block pt-3 text-xl font-sans font-bold text-gray-700 pl-6 pr-8">받는 사람 </label>
+                    <label className="block pt-3 text-xl font-sans font-bold text-gray-700 pl-6 pr-5">받는 사람 </label>
                     <input
                         placeholder='0000@0000.000'
-                        className='flex justify-center shadow-lg items-center text-xl w-[60%] border-2' />
+                        className='flex justify-center pl-3 items-center text-xl w-[60%] border-2' />
                 </div>
             </div>
 
@@ -45,7 +44,7 @@ const MailWrite = () => {
                         <input
                             onChange ={(e)=>setMailTitle(e.target.value)}
                             value={mailTitle}
-                            className="ml-5 text-lg border p-1 rounded-ml w-[80%] font-sans" />
+                            className="pl-5 ml-5 text-lg border p-1 rounded-ml w-[80%] font-sans" />
                     </label>
                 </div>
 
@@ -75,9 +74,10 @@ const MailWrite = () => {
                     보내기
                 </button>
             </div>
-            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+            <FormModal 
+            isOpen={isModalOpen} onClose={handleModalClose}>
                 <div className="text-sm">메일을 보내시겠습니까?</div>
-            </Modal>
+            </FormModal>
 
         </div >
     )
