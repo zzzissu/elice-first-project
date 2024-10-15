@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom';
+import React from 'react'
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const AuthPage = () => {
-    const [activeLink, setActiveLink] = useState('MailRead');
-    const handleLinkClick = (link: string) => {
-        setActiveLink(link);
-    };
+    const location = useLocation();
+    const activeLink = location.pathname.split('/').pop();
+    
 
     return (
         <div className='sectionDevide flex flex-col'>
@@ -14,23 +13,31 @@ const AuthPage = () => {
                     <li>
                         <Link
                             to="MailRead"
-                            onClick={() => handleLinkClick('MailRead')}
                             className={`${activeLink === 'MailRead'
-                                ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                                ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
                                 }`}
                         >
-                            메일 읽기
+                            받은메일
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="Sendedmail"
+                            className={`${activeLink === 'Sendedmail'
+                                ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                                }`}
+                        >
+                            보낸메일
                         </Link>
                     </li>
                     <li>
                         <Link
                             to="MailWrite"
-                            onClick={() => handleLinkClick('MailWrite')}
                             className={`${activeLink === 'MailWrite'
-                                ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                                ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
                                 }`}
                         >
-                            메일 쓰기
+                            메일작성
                         </Link>
                     </li>
     

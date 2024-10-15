@@ -2,41 +2,68 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputField from '../components/login/InputField';
 import Button from '../components/login/Button';
-import ErrorMessage, { validateSignUp } from '../components/sign/ErrorMessage';
 
 const SignUpPage = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [domain, setDomain] = useState('');
-    const [customDomain, setCustomDomain] = useState(''); // 도메인 직접입력
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [birth, setBirth] = useState('');
-    const [phone, setPhone] = useState('');
-    const [consent, setConsent] = useState(false); // 개인정보 동의 여부 상태
-    const [errorMessages, setErrorMessages] = useState<string[]>([]);
+    const [userInfo, setUserInfo] = useState({
+        username: '',
+        email: '',
+        domain: '',
+        customDomain: '',
+        password: '',
+        confirmPassword: '',
+        birth: '',
+        phone: '',
+    });
+    const [consent, setConsent] = useState(false);
+    const [error, setError] = useState('');
     
     const navigate = useNavigate();
 
-    const handleSignUp = () => {
-
-        const emailWithDomain = customDomain ? `${email}@${customDomain}` : `${email}@${domain}`;
-        const newErrorMessages = validateSignUp(username, email, password, confirmPassword, consent); // 유효성 검사
-
-        setErrorMessages(newErrorMessages); // 에러 메시지 업데이트
-
-        if (newErrorMessages.length === 0) {
-            console.log('SignUp Info:', { emailWithDomain, username, birth, phone });   // 비밀번호는 받지않기
-            navigate('/'); // 회원가입 완료 후 로그인 페이지로 이동
-        }
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUserInfo({
+            ...userInfo,
+            [name]: value,
+        });
     };
 
+    const handleSignUp = () => {
+        const { username, email, password, confirmPassword, birth } = userInfo;
+
+        if (!username) {
+            setError('! 이름을 입력해주세요.');
+            return;
+        }
+        if (!email) {
+            setError('! 이메일을 입력해주세요.');
+            return;
+        }
+        if (!password) {
+            setError('! 비밀번호를 입력해주세요.');
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError('! 비밀번호가 일치하지 않습니다.');
+            return;
+        }
+        if (!birth) {
+            setError('! 생년월일을 입력해주세요.');
+            return;
+        }
+        if (!consent) {
+            setError('! 개인정보 활용 동의가 필요합니다.');
+            return;
+        }
+
+        setError('');
+        navigate('/');
+    };
 
     return (
         <div className="flex justify-center items-center bg-sky-50">
             <div className="w-full max-w-3xl bg-white p-8 shadow-md my-12">
                 <h2 className="text-4xl font-bold text-mainColor mb-6">회원가입</h2>
-                <p className="text-base mb-16">회원이 되어 일정관리 플랫폼을 경험해보세요!</p>
+                <p className="text-base mb-10">회원이 되어 일정관리 플랫폼을 경험해보세요!</p>
                 <hr className="mb-4 border-black" />
                 <p className="text-base font-semibold mb-3">가입 정보 입력</p>
                 <hr className="mb-4 border-black" />
@@ -47,9 +74,10 @@ const SignUpPage = () => {
                 </label>
                 <InputField
                     type="text"
+                    name="username"
                     placeholder="본인 이름을 입력해주세요"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={userInfo.username}
+                    onChange={handleInputChange}
                 />
 
                 {/* 이메일 */}
@@ -59,25 +87,28 @@ const SignUpPage = () => {
                 <div className="flex items-center">
                     <InputField
                         type="email"
+                        name="email"
                         placeholder="이메일을 입력해주세요"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={userInfo.email}
+                        onChange={handleInputChange}
                     />
                     <span className="mx-2">@</span>
-                    {domain === 'custom' ? (
-                        // 직접입력
+                    {userInfo.domain === 'custom' ? (
+                        // 도메인 직접입력
                         <input
                             type="text"
+                            name="customDomain"
                             placeholder="도메인 입력"
-                            value={customDomain}
-                            onChange={(e) => setCustomDomain(e.target.value)}
+                            value={userInfo.customDomain}
+                            onChange={handleInputChange}
                             className="text-sm border p-3 rounded-[10px] m-2.5 w-full border-gray-300"
                         />
                     ) : (
                         // 도메인 선택
                         <input
                             type="text"
-                            value={domain}
+                            name="domain"
+                            value={userInfo.domain}
                             readOnly
                             className="text-sm border p-3 rounded-[10px] m-2.5 w-full border-gray-300"
                         />
@@ -86,10 +117,11 @@ const SignUpPage = () => {
                         className="border border-gray-300 rounded-[10px] p-3"
                         onChange={(e) => {
                             const selectedDomain = e.target.value;
-                            setDomain(selectedDomain === 'custom' ? 'custom' : selectedDomain);
-                            if (selectedDomain !== 'custom') {
-                                setCustomDomain('');
-                            }
+                            setUserInfo({
+                                ...userInfo,
+                                domain: selectedDomain === 'custom' ? 'custom' : selectedDomain,
+                                customDomain: selectedDomain !== 'custom' ? '' : userInfo.customDomain,
+                            });
                         }}
                     >
                         <option value="">도메인 선택</option>
@@ -106,9 +138,10 @@ const SignUpPage = () => {
                 </label>
                 <InputField
                     type="password"
+                    name="password"
                     placeholder="비밀번호를 입력해주세요"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={userInfo.password}
+                    onChange={handleInputChange}
                 />
 
                 {/* 비밀번호 확인 */}
@@ -117,27 +150,32 @@ const SignUpPage = () => {
                 </label>
                 <InputField
                     type="password"
+                    name="confirmPassword"
                     placeholder="비밀번호 확인"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={userInfo.confirmPassword}
+                    onChange={handleInputChange}
                 />
 
                 {/* 생년월일 */}
-                <label className="block mt-4 mb-2">생년월일</label>
+                <label className="block mt-4 mb-2">
+                    생년월일 <span className="text-rose-600">*</span>
+                </label>
                 <InputField
                     type="text"
+                    name="birth"
                     placeholder="생년월일을 입력해주세요 예)19900101"
-                    value={birth}
-                    onChange={(e) => setBirth(e.target.value)}
+                    value={userInfo.birth}
+                    onChange={handleInputChange}
                 />
 
                 {/* 연락처 */}
                 <label className="block mt-4 mb-2">연락처</label>
                 <InputField
                     type="text"
+                    name="phone"
                     placeholder="연락처를 입력해주세요 예)01012345678"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    value={userInfo.phone}
+                    onChange={handleInputChange}
                 />
 
                 {/* 개인정보 활용 동의 */}
@@ -151,7 +189,7 @@ const SignUpPage = () => {
                     <label>개인정보 활용에 동의합니다</label>
                 </div>
 
-                <ErrorMessage messages={errorMessages} />
+                {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
 
                 <Button text="가입완료" onClick={handleSignUp} />
             </div>
