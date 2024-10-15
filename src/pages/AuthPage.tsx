@@ -13,10 +13,10 @@ const AuthPage = () => {
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
-                            to="AnnualApplicationForm"
-                            onClick={() => handleLinkClick('AnnualApplicationForm')}
+                            to="annual-application"
+                            onClick={() => handleLinkClick('annual-application')}
                             className={`${
-                                activeLink === 'AnnualApplicationForm'
+                                activeLink === 'annual-application'
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
@@ -26,10 +26,10 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="WorkingOutsideApplicationForm"
-                            onClick={() => handleLinkClick('WorkingOutsideApplicationForm')}
+                            to="working-outside"
+                            onClick={() => handleLinkClick('working-outside')}
                             className={`${
-                                activeLink === 'WorkingOutsideApplicationForm'
+                                activeLink === 'working-outside'
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
@@ -39,10 +39,10 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="BusinessReport"
-                            onClick={() => handleLinkClick('BusinessReport')}
+                            to="business-report"
+                            onClick={() => handleLinkClick('business-report')}
                             className={`${
-                                activeLink === 'BusinessReport'
+                                activeLink === 'business-report'
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
