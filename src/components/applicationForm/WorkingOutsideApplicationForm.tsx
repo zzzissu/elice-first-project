@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FormModal from '../applicationFormModal/FormModal';
+import FormModal from '../modal/FormModal';
 
 const WorkingOutsideApplicationForm: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
