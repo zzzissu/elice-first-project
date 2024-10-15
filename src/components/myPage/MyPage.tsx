@@ -16,7 +16,7 @@ const MyPage = () => {
               to='ProfileEdit'
               onClick={() => handleLinkClick('ProfileEdit')}
               className={`${
-                activeLink === 'ProfileEdit' ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                activeLink === 'ProfileEdit' ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
             >
               프로필 편집
@@ -27,7 +27,7 @@ const MyPage = () => {
               to='Schedule'
               onClick={() => handleLinkClick('Schedule')}
               className={`${
-                activeLink === 'Schedule' ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                activeLink === 'Schedule' ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
             >
               일정
@@ -38,7 +38,7 @@ const MyPage = () => {
               to='Vacation'
               onClick={() => handleLinkClick('Vacation')}
               className={`${
-                activeLink === 'Vacation' ? 'border-blue-700 text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
+                activeLink === 'Vacation' ? 'border-mainColor text-black border-b-8 pb-5 font-bold' : 'text-gray-400'
               }`}
             >
               휴가 일정

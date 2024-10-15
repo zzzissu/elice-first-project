@@ -138,7 +138,7 @@ const Schedule = () => {
                             savedPersonerTitles.map(({ title, content }, index) => (
                                 <li
                                     key={index}
-                                    className="cursor-default text-2xl w-[90%] m-5 border-b flex items-center group" // group 클래스를 li에 추가
+                                    className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
                                 >
                                     <div
                                         onClick={() => handleTitleClick(title, content, 'personal')}
@@ -184,7 +184,7 @@ const Schedule = () => {
                             savedWorkTitles.map(({ title, content }, index) => (
                                 <li
                                     key={index}
-                                    className="cursor-default text-2xl w-[90%] m-5 border-b flex items-center group"
+                                    className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
                                 >
                                     <div
                                         onClick={() => handleTitleClick(title, content, 'work')}
