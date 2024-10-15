@@ -8,19 +8,19 @@ const ProfileEdit = () => {
                     <div className='leftEditSite w-[50%] flex flex-col items-center'>
                         <div className='upSiteName w-[80%] flex flex-col'>
                             이름
-                            <div className='mt-1 bg-gray-100 h-10 rounded-lg shadow-lg pl-4 flex flex-row items-center'>
+                            <div className='mt-1 bg-gray-100 h-10 rounded-lg pl-4 flex flex-row items-center'>
                                 하정우
                             </div>
                         </div>
 
                         <div className='upSiteNum w-[80%] flex flex-col pt-5'>
                             연락처
-                            <input className='mt-3 bg-gray-200 h-10 rounded-lg shadow-lg pl-4' placeholder='010-2936-7314' />
+                            <input className='mt-3 bg-gray-200 h-10 rounded-lg pl-4' placeholder='010-2936-7314' />
                         </div>
 
                         <div className='middleSiteContectNum w-[80%] flex flex-col pt-5'>
                             생년월일
-                            <div className='mt-3 bg-gray-100 h-10 rounded-lg shadow-lg pl-4 flex flex-row items-center '>
+                            <div className='mt-3 bg-gray-100 h-10 rounded-lg pl-4 flex flex-row items-center '>
                                 1992.07.29
                             </div>
                         </div>
@@ -45,7 +45,7 @@ const ProfileEdit = () => {
                     </div>
                 </div>
                 <div className="btnSite flex justify-center items-center">
-                    <button className='flex justify-center items-center align-middle bg-blue-700 text-white font-bold text-xl w-56 h-14 rounded-lg shadow-lg mt-12'>Update</button>
+                    <button className='flex justify-center items-center align-middle bg-mainColor text-white font-bold text-xl w-56 h-14 rounded-lg shadow-lg mt-12'>Update</button>
                 </div>
             </div>
         </div>
