@@ -32,9 +32,7 @@ const Modal: React.FC<{
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg p-8 w-[40%] h-[70%]">
-
                 <h2 className="text-2xl text-center font-semibold">공지사항</h2>
-
 
                 <input
                     type="text"
@@ -71,7 +69,7 @@ const Modal: React.FC<{
 
 const Project = () => {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [savedTitles, setSavedTitles] = useState<{ title: string, content: string }[]>([]);
+    const [savedTitles, setSavedTitles] = useState<{ title: string; content: string }[]>([]);
     const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
     const [selectedContent, setSelectedContent] = useState<string | null>(null);
     const [isReadOnly, setIsReadOnly] = useState(false);
@@ -80,7 +78,7 @@ const Project = () => {
 
     // 피드백 저장 함수
     const handleSave = (title: string, content: string) => {
-        setSavedTitles(prevTitles => [...prevTitles, { title, content }]);
+        setSavedTitles((prevTitles) => [...prevTitles, { title, content }]);
         setModalOpen(false);
     };
 
@@ -102,7 +100,7 @@ const Project = () => {
 
     // 삭제 함수
     const handleDelete = (index: number) => {
-        setSavedTitles(prevTitles => prevTitles.filter((_, i) => i !== index));
+        setSavedTitles((prevTitles) => prevTitles.filter((_, i) => i !== index));
     };
 
     // 페이지네이션
@@ -113,31 +111,29 @@ const Project = () => {
     const totalPages = Math.ceil(savedTitles.length / itemsPerPage);
 
     return (
-        <div className='flex'>
+        <div className="flex">
             {/* 왼쪽세션 */}
-            <div className='flex flex-col w-[25%] pl-14 pt-5'>
-                <div className='font-sans text-xl font-semibold'>알림</div>
-                <div className='flex flex-col border h-56 w-[100%] bg-indigo-50/100 mt-2 rounded-lg shadow-lg'>
-                    <h2 className='flex justify-center pt-24'>알람 여기에 표시</h2>
+            <div className="flex flex-col w-[25%] pl-14 pt-5">
+                <div className="font-sans text-xl font-semibold">알림</div>
+                <div className="flex flex-col border h-56 w-[100%] bg-indigo-50/100 mt-2 rounded-lg shadow-lg">
+                    <h2 className="flex justify-center pt-24">알람 여기에 표시</h2>
                 </div>
-                <div className='notion'>
-                    <div className='flex justify-between'>
-                        <div className='font-sans text-xl font-semibold mt-5'>공지사항</div>
-                        <button
-                            className='text-blue-700 font-bold pt-5 text-sm'
-                            onClick={handleWriteClick}
-                        >
+                <div className="notion">
+                    <div className="flex justify-between">
+                        <div className="font-sans text-xl font-semibold mt-5">공지사항</div>
+                        <button className="text-blue-700 font-bold pt-5 text-sm" onClick={handleWriteClick}>
                             +글쓰기
                         </button>
                     </div>
-                    <div className='flex flex-col border bg-indigo-50/100 h-56 w-[100%] mt-1 rounded-lg shadow-lg'>
+                    <div className="flex flex-col border bg-indigo-50/100 h-56 w-[100%] mt-1 rounded-lg shadow-lg">
                         <ul>
                             {currentItems.length > 0 ? (
                                 currentItems.map(({ title, content }, index) => (
-                                    <li key={index} className="flex justify-between items-center cursor-pointer text-xl w-[90%] m-5 border-b">
-                                        <span onClick={() => handleTitleClick(title, content)}>
-                                            {title}
-                                        </span>
+                                    <li
+                                        key={index}
+                                        className="flex justify-between items-center cursor-pointer text-xl w-[90%] m-5 border-b"
+                                    >
+                                        <span onClick={() => handleTitleClick(title, content)}>{title}</span>
                                         <button
                                             className="text-red-500 ml-4"
                                             onClick={() => handleDelete(index + indexOfFirstItem)}
@@ -157,7 +153,9 @@ const Project = () => {
                             {Array.from({ length: totalPages }, (_, i) => (
                                 <button
                                     key={i}
-                                    className={`mx-1 px-4 py-2 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                    className={`mx-1 px-4 py-2 rounded ${
+                                        currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                                    }`}
                                     onClick={() => setCurrentPage(i + 1)}
                                 >
                                     {i + 1}
@@ -169,14 +167,14 @@ const Project = () => {
             </div>
 
             {/* 오른쪽세션 */}
-            <div className='flex flex-col w-[75%]'>
-                <div className='font-sans text-xl font-semibold pt-5 pl-12'>팀별페이지</div>
-                <div className='flex flex-col border h-56 w-[75%] bg-indigo-50/100 mt-2 rounded-lg shadow-lg ml-12'>
-                    <h2 className='flex justify-center pt-24'>팀별 페이지 피드백 알람 여기에 표시</h2>
+            <div className="flex flex-col w-[75%]">
+                <div className="font-sans text-xl font-semibold pt-5 pl-12">팀별페이지</div>
+                <div className="flex flex-col border h-56 w-[75%] bg-indigo-50/100 mt-2 rounded-lg shadow-lg ml-12">
+                    <h2 className="flex justify-center pt-24">팀별 페이지 피드백 알람 여기에 표시</h2>
                 </div>
-                <div className='font-sans text-xl font-semibold pt-4 pl-12'>개인페이지</div>
-                <div className='flex flex-col border h-56 w-[75%] bg-indigo-50/100 mt-2 rounded-lg shadow-lg ml-12'>
-                    <h2 className='flex justify-center pt-24'>개인 페이지 피드백 알람 여기에 표시</h2>
+                <div className="font-sans text-xl font-semibold pt-4 pl-12">개인페이지</div>
+                <div className="flex flex-col border h-56 w-[75%] bg-indigo-50/100 mt-2 rounded-lg shadow-lg ml-12">
+                    <h2 className="flex justify-center pt-24">개인 페이지 피드백 알람 여기에 표시</h2>
                 </div>
             </div>
 
