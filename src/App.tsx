@@ -17,6 +17,7 @@ import Schedule from './components/myPage/Schedule';
 import Vacation from './components/myPage/Vacation';
 import SignUpPage from './pages/SignUpPage';
 import SendedMail from './components/mail/SendedMail';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => (
     <Routes>
@@ -57,6 +58,9 @@ const App = () => (
                 <Route path="sended-mail" element={<SendedMail />} />
             </Route>
         </Route>
+
+        {/* 404 에러페이지 */}
+        <Route path="*" element={<NotFoundPage />} />
     </Routes>
 );
 
