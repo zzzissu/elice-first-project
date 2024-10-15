@@ -4,7 +4,7 @@ interface InputFieldProps {
   type: string;
   placeholder: string;
   value: string;
-  name: string; // 추가된 name 속성
+  name: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
