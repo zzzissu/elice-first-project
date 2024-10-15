@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Paths } from '../components/constants/Paths';
 
 const AuthPage = () => {
-    const [activeLink, setActiveLink] = useState('MailRead');
-    const handleLinkClick = (link: string) => {
-        setActiveLink(link);
-    };
+    const location = useLocation();
+    const activeLink = location.pathname.split('/').pop();
 
     return (
         <div className="sectionDevide flex flex-col">
@@ -13,8 +11,7 @@ const AuthPage = () => {
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
-                            to="mail-read"
-                            onClick={() => handleLinkClick('mail-read')}
+                            to={Paths.mailRead}
                             className={`${
                                 activeLink === 'mail-read'
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
@@ -26,8 +23,7 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="sended-mail"
-                            onClick={() => handleLinkClick('sended-mail')}
+                            to={Paths.sendedMail}
                             className={`${
                                 activeLink === 'sended-mail'
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
@@ -39,8 +35,7 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="mail-write"
-                            onClick={() => handleLinkClick('mail-write')}
+                            to={Paths.mailWrite}
                             className={`${
                                 activeLink === 'mail-write'
                                     ? 'border-mainColor text-black border-b-8 pb-5 font-bold'

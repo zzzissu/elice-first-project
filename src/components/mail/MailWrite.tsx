@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Modal from '../myPage/CheckModal';
-
+import FormModal from '../modal/FormModal';
 
 const MailWrite = () => {
 
@@ -75,9 +74,10 @@ const MailWrite = () => {
                     보내기
                 </button>
             </div>
-            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+            <FormModal 
+            isOpen={isModalOpen} onClose={handleModalClose}>
                 <div className="text-sm">메일을 보내시겠습니까?</div>
-            </Modal>
+            </FormModal>
 
         </div >
     )
