@@ -39,7 +39,7 @@ const BusinessReport: React.FC = () => {
                         type="text"
                         value={taskName}
                         onChange={(e) => setTaskName(e.target.value)}
-                        className=" border-2 w-[55%] rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg font-sanstext-xl ml-3"
+                        className=" border-2 w-[55%] rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans ml-3"
                         placeholder="업무명을 입력하세요"
                     />
                 </div>
@@ -48,48 +48,48 @@ const BusinessReport: React.FC = () => {
                     <label className=" text-xl  font-bold text-gray-700 font-sans mt-1 pr-4">업무 시작</label>
                     <input
                         type="date"
-                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg font-sans"
+                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
                     />
                     <input
                         type="time"
-                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm  ml-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg font-sans"
+                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm  ml-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
                     />
                 </div>
                 <div className="flex w-1/3">
                     <label className=" text-xl  font-bold text-gray-700 font-sans mt-1 pr-4">업무 종료</label>
                     <input
                         type="date"
-                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg font-sans"
+                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
                     />
                     <input
                         type="time"
-                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm  ml-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg font-sans"
+                        className=" w-[30%] border-2 rounded-md border-gray-300 shadow-sm  ml-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
                     />
                 </div>
             </div>
 
             <div className="flex w-full">
                 <div className="w-full">
-                    <label className="flex text-xl font-sans align-middle font-bold text-gray-700 ml-24 mt-5">
+                    <label className="flex text-xl font-sans align-middle font-bold text-gray-700 ml-10 mt-5">
                         업무 보고서
                     </label>
                     <textarea
                         value={reportContent}
                         onChange={(e) => setReportContent(e.target.value)}
-                        className="text-lg border p-3 rounded-ml mr-7 mt-2 w-[90%] font-sans"
+                        className="flex text-sm border p-3 rounded-ml ml-10 mt-2 w-[93%] font-sans"
                         placeholder="사유를 입력하세요"
-                        rows={4}
+                        rows={5}
                     />
                 </div>
             </div>
             <div className="flex w-full">
                 <div className="flex w-1/2">
-                    <label className="flex text-xl font-sans align-middle ml-24 font-bold text-gray-700 mt-2">
+                    <label className="flex text-xl font-sans align-middle ml-10 font-bold text-gray-700 mt-2">
                         요청사항
                     </label>
                 </div>
                 <div>
-                    <label className="flex text-xl font-sans align-middle font-bold ml-14 text-gray-700 mt-2">
+                    <label className="flex text-xl font-sans align-middle font-bold ml-10 text-gray-700 mt-2">
                         특이사항
                     </label>
                 </div>
@@ -97,16 +97,16 @@ const BusinessReport: React.FC = () => {
             <div className="flex w-full">
                 <div className="flex w-1/2">
                     <textarea
-                        className="text-lg border p-3 rounded-ml ml-20 mt-2 w-[90%] font-sans"
+                        className="flex text-sm border p-3 rounded-ml ml-10 mt-2 w-[90%] font-sans"
                         placeholder="요청사항을 입력하세요"
-                        rows={2}
+                        rows={3}
                     />
                 </div>
                 <div className="flex w-1/2">
                     <textarea
-                        className="text-lg border p-3 rounded-ml ml-10 mt-2 w-[85%] font-sans"
+                        className="flex text-sm border p-3 rounded-ml ml-10 mt-2 w-[86%] font-sans"
                         placeholder="특이사항을 입력하세요"
-                        rows={2}
+                        rows={3}
                     />
                 </div>
             </div>
@@ -115,7 +115,7 @@ const BusinessReport: React.FC = () => {
                 <button
                     onClick={openModal}
                     disabled={!isFormValid}
-                    className={`text-lg font-sans w-24 bg-mainColor rounded-lg  text-white rounded-ml p-2 ${
+                    className={`text-lg font-sans w-24 bg-mainColor rounded-lg  text-white rounded-ml mt-2 p-2 ${
                         !isFormValid ? 'bg-gray-400 cursor-not-allowed' : ''
                     }`}
                 >
