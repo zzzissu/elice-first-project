@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import CheckModal from './CheckModal';
+import FormModal from '../modal/FormModal';
+
 
 const ProfileEdit = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,9 +76,9 @@ const ProfileEdit = () => {
                         className='flex justify-center items-center align-middle bg-mainColor text-white font-bold text-lg p-4 rounded-lg shadow-lg mt-20'>Update</button>
                 </div>
             </div>
-            <CheckModal isOpen={isModalOpen} onClose={handleModalClose}>
+            <FormModal isOpen={isModalOpen} onClose={handleModalClose}>
                 <div className="text-sm">업데이트 되었습니다.</div>
-            </CheckModal>
+            </FormModal>
         </div>
     )
 }
