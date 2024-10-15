@@ -8,10 +8,21 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState('');
   
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    if (!email) {
+      setError('! 이메일을 입력해주세요.');
+      return;
+    }
+    if (!password) {
+      setError('! 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    setError('');
     console.log('Email:', email);
     console.log('Password:', password);
     navigate('Layout/');
@@ -55,6 +66,9 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          
+          {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
+          
           <div className="text-xs flex justify-end space-x-2 mt-4">
             <Link to="/sign" className="hover:underline">
               회원가입

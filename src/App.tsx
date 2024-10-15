@@ -15,47 +15,47 @@ import MyPage from './components/myPage/MyPage';
 import ProfileEdit from './components/myPage/ProfileEdit';
 import Schedule from './components/myPage/Schedule';
 import Vacation from './components/myPage/Vacation';
-import SignUpPage from './pages/SignUpPage';
+import SignUpPage from './pages/SignUpPage'; // 누락된 SignUpPage import 추가
 
 const App = () => (
-  <Routes>
-    {/* 로그인 및 회원가입 페이지 */}
-    <Route path="/" element={<LoginPage />} />
-    <Route path="/sign" element={<SignUpPage />} />
+    <Routes>
+        {/* 로그인 및 회원가입 페이지 */}
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/sign" element={<SignUpPage />} />
 
-    {/* Layout 내부의 페이지들 */}
-    <Route path="Layout/*" element={<Layout />}>
-      {/* 기본 경로: Project */}
-      <Route path="Project/*" element={<Project />} />
-      <Route index element={<Project />} />
+        {/* Layout 내부의 페이지들 */}
+        <Route path="Layout/*" element={<Layout />}>
+            {/* 기본 경로: Project */}
+            <Route path="Project/*" element={<Project />} />
+            <Route index element={<Project />} />
 
-      {/* MyPage 경로 */}
-      <Route path="MyPage/*" element={<MyPage />}>
-        <Route index element={<ProfileEdit />} />
-        <Route path="ProfileEdit" element={<ProfileEdit />} />
-        <Route path="Schedule" element={<Schedule />} />
-        <Route path="Vacation/*" element={<Vacation />} />
-      </Route>
+            {/* MyPage 경로 */}
+            <Route path="MyPage/*" element={<MyPage />}>
+                <Route index element={<ProfileEdit />} />
+                <Route path="ProfileEdit" element={<ProfileEdit />} />
+                <Route path="Schedule" element={<Schedule />} />
+                <Route path="Vacation/*" element={<Vacation />} />
+            </Route>
 
-      {/* TeamPage 경로 */}
-      <Route path="TeamPage" element={<TeamPage />} />
+            {/* TeamPage 경로 */}
+            <Route path="TeamPage" element={<TeamPage />} />
 
-      {/* AuthPage 경로 */}
-      <Route path="AuthPage/*" element={<AuthPage />}>
-        <Route index element={<AnnualApplicationForm />} />
-        <Route path="AnnualApplicationForm" element={<AnnualApplicationForm />} />
-        <Route path="BusinessReport" element={<BusinessReport />} />
-        <Route path="WorkingOutsideApplicationForm" element={<WorkingOutsideApplicationForm />} />
-      </Route>
+            {/* AuthPage 경로 */}
+            <Route path="AuthPage/*" element={<AuthPage />}>
+                <Route index element={<AnnualApplicationForm />} />
+                <Route path="AnnualApplicationForm" element={<AnnualApplicationForm />} />
+                <Route path="BusinessReport" element={<BusinessReport />} />
+                <Route path="WorkingOutsideApplicationForm" element={<WorkingOutsideApplicationForm />} />
+            </Route>
 
-      {/* Mail 경로 */}
-      <Route path="Mail/*" element={<Mail />}>
-        <Route index element={<MailRead />} />
-        <Route path="MailWrite" element={<MailWrite />} />
-        <Route path="MailRead" element={<MailRead />} />
-      </Route>
-    </Route>
-  </Routes>
+            {/* Mail 경로 */}
+            <Route path="Mail/*" element={<Mail />}>
+                <Route index element={<MailRead />} />
+                <Route path="MailWrite" element={<MailWrite />} />
+                <Route path="MailRead" element={<MailRead />} />
+            </Route>
+        </Route>
+    </Routes>
 );
 
 export default App;
