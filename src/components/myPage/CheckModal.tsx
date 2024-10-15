@@ -7,7 +7,7 @@ interface ModalProps {
     children: React.ReactNode; // 모달 내용
 }
 
-const FormModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const CheckModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
     return (
         <div
@@ -15,7 +15,7 @@ const FormModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
             onClick={onClose} // 모달 외부 클릭 시 닫기
         >
             <div
-                className="bg-white p-6 rounded-[10px] w-56 shadow-lg relative"
+                className="bg-white p-6 rounded-lg w-56 shadow-lg relative"
                 onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 부모요소를 따라 닫힘 방지
             >
                 <button
@@ -26,7 +26,7 @@ const FormModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                 </button>
 
                 {children}
-                <button onClick={onClose} className="mt-4 w-[40%] py-1 bg-blue-500 text-white rounded-md">
+                <button onClick={onClose} className="mt-4 w-[40%] py-1 ml-12 bg-mainColor text-white rounded-md">
                     확인
                 </button>
             </div>
@@ -34,4 +34,4 @@ const FormModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     );
 };
 
-export default FormModal;
+export default CheckModal;
