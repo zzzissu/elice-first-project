@@ -25,7 +25,7 @@ const LoginPage = () => {
     setError('');
     console.log('Email:', email);
     console.log('Password:', password);
-    navigate('Layout/');
+    navigate('/Layout');
   };
 
   const openPasswordResetModal = () => {
@@ -57,12 +57,14 @@ const LoginPage = () => {
           <InputField
             type="text"
             placeholder="Email"
+            name="email" // name 속성 추가
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <InputField
             type="password"
             placeholder="Password"
+            name="password" // name 속성 추가
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
