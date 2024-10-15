@@ -26,7 +26,7 @@ const FormModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                 </button>
 
                 {children}
-                <button onClick={onClose} className="mt-2 w-[50%] h-10 bg-blue-500 text-white rounded-md">
+                <button onClick={onClose} className="mt-2 w-[50%] h-10 bg-blue-500 flex justify-center items-center text-center align-middle text-white rounded-md">
                     확인
                 </button>
             </div>
