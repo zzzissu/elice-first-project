@@ -17,7 +17,7 @@ const AuthPage = () => {
                             onClick={() => handleLinkClick('AnnualApplicationForm')}
                             className={`${
                                 activeLink === 'AnnualApplicationForm'
-                                    ? 'border-blue-700 text-black border-b-8 pb-5 font-bold'
+                                    ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
                         >
@@ -30,7 +30,7 @@ const AuthPage = () => {
                             onClick={() => handleLinkClick('WorkingOutsideApplicationForm')}
                             className={`${
                                 activeLink === 'WorkingOutsideApplicationForm'
-                                    ? 'border-blue-700 text-black border-b-8 pb-5 font-bold'
+                                    ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
                         >
@@ -43,7 +43,7 @@ const AuthPage = () => {
                             onClick={() => handleLinkClick('BusinessReport')}
                             className={`${
                                 activeLink === 'BusinessReport'
-                                    ? 'border-blue-700 text-black border-b-8 pb-5 font-bold'
+                                    ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
                         >
