@@ -28,7 +28,7 @@ const Layout = () => {
     return (
         <div className="flex">
             <Nav />
-            <div className="w-[100%]">
+            <div className="w-[100%] min-w-[1280px]">
                 <div className="flex flex-col w-auto h-auto">
                     <div className="flex flex-col w-auto h-auto">
                         <header>

@@ -81,7 +81,8 @@ const Schedule = () => {
             <div className="leftSite w-[50%]">
                 <div className="border-2 h-[28rem] w-[85%] mt-10 ml-16 rounded-lg shadow-lg">
                     <div className="flex flex-row justify-between pt-10">
-                        <div className="text-base ml-10">개인 일정을 작성해 주세요</div>
+                        <p className="ml-10 text-xl">개인 일정을 작성해 주세요</p>
+                        <p className=' mt-1'>(체크된곳은 공유됩니다.)</p>
                         <button
                             onClick={handleWriteClickPersonal}
                             className="w-10 h-8 mr-6 -mt-2 rounded-md"
@@ -120,7 +121,7 @@ const Schedule = () => {
                                 </li>
                             ))
                         ) : (
-                            <li className="flex items-center justify-center text-base pt-40">
+                            <li className="flex items-center justify-center text-base pt-36">
                                 현재 작성된 개인일정이 없습니다.
                             </li>
                         )}
@@ -140,6 +141,7 @@ const Schedule = () => {
                             ))}
                         </div>
                     )}
+           
                 </div>
             </div>
 
@@ -147,7 +149,7 @@ const Schedule = () => {
             <div className="rightSite w-[50%]">
                 <div className="border-2 h-[28rem] w-[85%] mt-10 ml-8 rounded-lg shadow-lg">
                     <div className="flex flex-row justify-between pt-10">
-                        <div className="text-base ml-10">업무 일정을 작성해 주세요</div>
+                        <div className="ml-10 text-xl">업무 일정을 작성해 주세요</div>
                         <button
                             onClick={handleWriteClickWork}
                             className="w-10 h-8 mr-6 -mt-2 rounded-md"
@@ -181,7 +183,7 @@ const Schedule = () => {
                                 </li>
                             ))
                         ) : (
-                            <li className="flex items-center justify-center text-base pt-40">
+                            <li className="flex items-center justify-center text-base pt-36">
                                 현재 작성된 업무일정이 없습니다.
                             </li>
                         )}

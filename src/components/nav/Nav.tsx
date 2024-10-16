@@ -3,7 +3,7 @@ import { Paths } from '../constants/Paths';
 
 export default function Nav() {
     return (
-        <div className=" flex flex-col  gap-16 items-center  w-80 h-screen ">
+        <div className=" flex flex-col  gap-16 items-center  w-80 h-screen min-w-[273px] ">
             <img src="/assets/logo.png" alt="office_logo" className="mt-16" />
 
             <div className="flex flex-col text-xl gap-20 ">
