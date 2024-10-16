@@ -21,11 +21,25 @@ const LoginPage = () => {
       setError('! 비밀번호를 입력해주세요.');
       return;
     }
-
     setError('');
-    console.log('Email:', email);
-    console.log('Password:', password);
-    navigate('/project');
+    
+    fetch("http://localhost:4000/api/users/signin", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email, password}),
+    }).then((res) => {
+      if(!res.ok) {
+        throw new Error("로그인 실패");
+      }
+      return res.json();
+    }).then((data) => {
+      const token = data.token;
+      localStorage.setItem("token", token);
+      navigate('/project');
+    }).catch((error) => {
+      setError("! 아이디와 비밀번호를 다시 확인해주세요.");
+      console.error("Error: ", error);
+    });
   };
 
   const openPasswordResetModal = () => {
