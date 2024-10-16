@@ -6,6 +6,8 @@ export const Paths = {
     profileEdit: '/my-page/profile-edit',
     schedule: '/my-page/schedule',
     vacation: '/my-page/vacation',
+    totalVacation: "/my-page/vacation/total-vacation",
+    usedVacation: "/my-page/vacation/used-vacation",
     teamPage: '/team-page',
     authPage: '/auth-page',
     annualApplication: '/auth-page/annual-application',
