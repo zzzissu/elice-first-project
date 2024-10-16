@@ -1,3 +1,4 @@
+// App.tsx
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Paths } from './components/constants/Paths'; // 경로 상수 import
@@ -19,6 +20,8 @@ import Vacation from './components/myPage/Vacation';
 import SignUpPage from './pages/SignUpPage';
 import SendedMail from './components/mail/SendedMail';
 import NotFoundPage from './pages/NotFoundPage';
+import TotalVacation from './components/myPage/TotalVacation';
+import UsedVacation from './components/myPage/UsedVacation';
 
 const App = () => (
     <Routes>
@@ -26,33 +29,32 @@ const App = () => (
         <Route path={Paths.home} element={<LoginPage />} />
         <Route path={Paths.signUp} element={<SignUpPage />} />
 
-        {/* Layout 내부의 페이지들 */}
-        <Route path={`${Paths.layout}`} element={<Layout />}>
+        {/* Layout이 적용된 페이지들 */}
+        <Route element={<Layout />}>
             {/* 기본 경로: Project */}
-            <Route path={`${Paths.project}`} element={<Project />} />
-            <Route index element={<Project />} />
-
-            {/* MyPage 경로 */}
-            <Route path={`${Paths.myPage}`} element={<MyPage />}>
+            <Route path={Paths.project} element={<Project />} />
+            {/* 다른 경로들 */}
+            <Route path={Paths.myPage} element={<MyPage />}>
+                {/* 중첩된 라우트 */}
                 <Route index element={<ProfileEdit />} />
                 <Route path={Paths.profileEdit} element={<ProfileEdit />} />
                 <Route path={Paths.schedule} element={<Schedule />} />
-                <Route path={`${Paths.vacation}`} element={<Vacation />} />
+                <Route path={Paths.vacation} element={<Vacation />}>
+                <Route path={Paths.totalVacation} element={<TotalVacation />}/>
+                <Route path={Paths.usedVacation} element={<UsedVacation />}/>
+                </Route>
             </Route>
 
-            {/* TeamPage 경로 */}
             <Route path={Paths.teamPage} element={<TeamPage />} />
 
-            {/* AuthPage 경로 */}
-            <Route path={`${Paths.authPage}`} element={<AuthPage />}>
+            <Route path={Paths.authPage} element={<AuthPage />}>
                 <Route index element={<AnnualApplicationForm />} />
                 <Route path={Paths.annualApplication} element={<AnnualApplicationForm />} />
                 <Route path={Paths.businessReport} element={<BusinessReport />} />
                 <Route path={Paths.workingOutside} element={<WorkingOutsideApplicationForm />} />
             </Route>
 
-            {/* Mail 경로 */}
-            <Route path={`${Paths.mail}`} element={<Mail />}>
+            <Route path={Paths.mail} element={<Mail />}>
                 <Route index element={<MailRead />} />
                 <Route path={Paths.mailWrite} element={<MailWrite />} />
                 <Route path={Paths.mailRead} element={<MailRead />} />

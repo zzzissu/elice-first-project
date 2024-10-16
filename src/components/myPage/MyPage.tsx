@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation} from 'react-router-dom';
 
 const MyPage = () => {
     const location = useLocation();
