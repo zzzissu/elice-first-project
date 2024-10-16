@@ -27,10 +27,9 @@ const App = () => (
         <Route path={Paths.signUp} element={<SignUpPage />} />
 
         {/* Layout 내부의 페이지들 */}
-        <Route path={`${Paths.layout}`} element={<Layout />}>
+        <Route element={<Layout />}>
             {/* 기본 경로: Project */}
-            <Route path={`${Paths.project}`} element={<Project />} />
-            <Route index element={<Project />} />
+            <Route path={`${Paths.project}`} element={<Project />} index />
 
             {/* MyPage 경로 */}
             <Route path={`${Paths.myPage}`} element={<MyPage />}>
