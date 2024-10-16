@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from '../components/password/Modal';
+import Modal from '../components/modal/Modal';
 
 interface NewPasswordModalProps {
   onClose: () => void;

@@ -9,7 +9,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState('');
-  
+
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -25,7 +25,7 @@ const LoginPage = () => {
     setError('');
     console.log('Email:', email);
     console.log('Password:', password);
-    navigate('Layout/');
+    navigate('/project');
   };
 
   const openPasswordResetModal = () => {
@@ -41,7 +41,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen min-w-[1280px]">
       <div className="w-1/2 bg-gray-100 flex items-center justify-center">
         <img
           src="/assets/login.jpg"
@@ -57,18 +57,20 @@ const LoginPage = () => {
           <InputField
             type="text"
             placeholder="Email"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <InputField
             type="password"
             placeholder="Password"
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          
+
           {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
-          
+
           <div className="text-xs flex justify-end space-x-2 mt-4">
             <Link to="/sign" className="hover:underline">
               회원가입

@@ -1,5 +1,7 @@
+// App.tsx
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { Paths } from './components/constants/Paths'; // 경로 상수 import
 import LoginPage from './pages/LoginPage';
 import Layout from './pages/Layout';
 import Project from './components/mainPage/Project';
@@ -15,46 +17,53 @@ import MyPage from './components/myPage/MyPage';
 import ProfileEdit from './components/myPage/ProfileEdit';
 import Schedule from './components/myPage/Schedule';
 import Vacation from './components/myPage/Vacation';
-import SignUpPage from './pages/SignUpPage'; // 누락된 SignUpPage import 추가
+import SignUpPage from './pages/SignUpPage';
+import SendedMail from './components/mail/SendedMail';
+import NotFoundPage from './pages/NotFoundPage';
+import TotalVacation from './components/myPage/TotalVacation';
+import UsedVacation from './components/myPage/UsedVacation';
 
 const App = () => (
     <Routes>
         {/* 로그인 및 회원가입 페이지 */}
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/sign" element={<SignUpPage />} />
+        <Route path={Paths.home} element={<LoginPage />} />
+        <Route path={Paths.signUp} element={<SignUpPage />} />
 
         {/* Layout 내부의 페이지들 */}
-        <Route path="Layout/*" element={<Layout />}>
+        <Route element={<Layout />}>
             {/* 기본 경로: Project */}
-            <Route path="Project/*" element={<Project />} />
-            <Route index element={<Project />} />
+            <Route path={`${Paths.project}`} element={<Project />} index />
 
             {/* MyPage 경로 */}
-            <Route path="MyPage/*" element={<MyPage />}>
+            <Route path={`${Paths.myPage}`} element={<MyPage />}>
                 <Route index element={<ProfileEdit />} />
-                <Route path="ProfileEdit" element={<ProfileEdit />} />
-                <Route path="Schedule" element={<Schedule />} />
-                <Route path="Vacation/*" element={<Vacation />} />
+                <Route path={Paths.profileEdit} element={<ProfileEdit />} />
+                <Route path={Paths.schedule} element={<Schedule />} />
+                <Route path={Paths.vacation} element={<Vacation />}>
+                <Route path={Paths.totalVacation} element={<TotalVacation />}/>
+                <Route path={Paths.usedVacation} element={<UsedVacation />}/>
+                </Route>
             </Route>
 
-            {/* TeamPage 경로 */}
-            <Route path="TeamPage" element={<TeamPage />} />
+            <Route path={Paths.teamPage} element={<TeamPage />} />
 
-            {/* AuthPage 경로 */}
-            <Route path="AuthPage/*" element={<AuthPage />}>
+            <Route path={Paths.authPage} element={<AuthPage />}>
                 <Route index element={<AnnualApplicationForm />} />
-                <Route path="AnnualApplicationForm" element={<AnnualApplicationForm />} />
-                <Route path="BusinessReport" element={<BusinessReport />} />
-                <Route path="WorkingOutsideApplicationForm" element={<WorkingOutsideApplicationForm />} />
+                <Route path={Paths.annualApplication} element={<AnnualApplicationForm />} />
+                <Route path={Paths.businessReport} element={<BusinessReport />} />
+                <Route path={Paths.workingOutside} element={<WorkingOutsideApplicationForm />} />
             </Route>
 
-            {/* Mail 경로 */}
-            <Route path="Mail/*" element={<Mail />}>
+            <Route path={Paths.mail} element={<Mail />}>
                 <Route index element={<MailRead />} />
-                <Route path="MailWrite" element={<MailWrite />} />
-                <Route path="MailRead" element={<MailRead />} />
+                <Route path={Paths.mailWrite} element={<MailWrite />} />
+                <Route path={Paths.mailRead} element={<MailRead />} />
+                <Route path={Paths.sendedMail} element={<SendedMail />} />
             </Route>
         </Route>
+
+        {/* 404 에러페이지 */}
+        <Route path="*" element={<NotFoundPage />} />
     </Routes>
 );
 

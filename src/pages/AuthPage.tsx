@@ -1,23 +1,18 @@
-import React, { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
-
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Paths } from '../components/constants/Paths';
 const AuthPage = () => {
-    const [activeLink, setActiveLink] = useState('AnnualApplicationForm');
-    const handleLinkClick = (link: string) => {
-        setActiveLink(link);
-    };
+    const location = useLocation();
 
     return (
-        <div className="sectionDevide flex flex-col">
+        <div className=" flex flex-col max-w-[1280px] ">
             <div className="nevBar h-20 w-[80%] flex flex-row font-medium items-center ml-16">
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
                         <Link
-                            to="AnnualApplicationForm"
-                            onClick={() => handleLinkClick('AnnualApplicationForm')}
+                            to={Paths.annualApplication}
                             className={`${
-                                activeLink === 'AnnualApplicationForm'
-                                    ? 'border-blue-700 text-black border-b-8 pb-5 font-bold'
+                                location.pathname === Paths.annualApplication
+                                    ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
                         >
@@ -26,11 +21,10 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="WorkingOutsideApplicationForm"
-                            onClick={() => handleLinkClick('WorkingOutsideApplicationForm')}
+                            to={Paths.workingOutside}
                             className={`${
-                                activeLink === 'WorkingOutsideApplicationForm'
-                                    ? 'border-blue-700 text-black border-b-8 pb-5 font-bold'
+                                location.pathname === Paths.workingOutside
+                                    ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
                         >
@@ -39,11 +33,10 @@ const AuthPage = () => {
                     </li>
                     <li>
                         <Link
-                            to="BusinessReport"
-                            onClick={() => handleLinkClick('BusinessReport')}
+                            to={Paths.businessReport}
                             className={`${
-                                activeLink === 'BusinessReport'
-                                    ? 'border-blue-700 text-black border-b-8 pb-5 font-bold'
+                                location.pathname === Paths.businessReport
+                                    ? 'border-mainColor text-black border-b-8 pb-5 font-bold'
                                     : 'text-gray-400'
                             }`}
                         >

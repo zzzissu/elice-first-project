@@ -28,7 +28,7 @@ const Layout = () => {
     return (
         <div className="flex">
             <Nav />
-            <div className="w-[100%]">
+            <div className="w-[100%] min-w-[1280px]">
                 <div className="flex flex-col w-auto h-auto">
                     <div className="flex flex-col w-auto h-auto">
                         <header>
@@ -36,12 +36,21 @@ const Layout = () => {
                                 <div className="text-3xl text-white font-medium font-sans pl-8">Project</div>
                                 <div className="flex flex-row">
                                     <div
+                                    style={{
+                                      backgroundImage : `url('/assets/ring.png')`,
+                                      backgroundPosition : 'center',
+                                      backgroundSize :'cover',
+                                    }}
+                                    className='z-10 h-12 w-12 mr-3 rounded-full'>
+
+                                    </div>
+                                    <div
                                         style={{
                                             backgroundImage: `url("${profileImg}")`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
-                                        className="z-10 h-12 w-12 mr-3"
+                                        className="z-10 h-12 w-12 mr-3 rounded-full"
                                     />
                                     <div className="text-xl text-white pt-3 font-sans mr-12">최준영</div>
                                 </div>
@@ -68,7 +77,7 @@ const Layout = () => {
                                                 backgroundSize: 'cover',
                                                 backgroundPosition: 'center',
                                             }}
-                                            className="mt-5 h-20 w-20"
+                                            className="mt-5 h-20 w-20 rounded-full"
                                         >
                                             <label htmlFor="imageUpload">
                                                 <div
@@ -126,7 +135,7 @@ const Layout = () => {
                                                     <option value="현재자리중">현재자리중</option>
                                                     <option value="출장중">출장중</option>
                                                     <option value="휴가중">휴가중</option>
-                                                    <option value="잠시 비움">잠시 비움</option>
+                                                    <option value="잠시 비움">자리비움</option>
                                                 </select>
                                             </form>
                                         </button>
@@ -142,7 +151,7 @@ const Layout = () => {
 
                                         <div className="flex justify-end w-full">
                                             <button
-                                                className="bg-blue-700 text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
+                                                className="bg-mainColor text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
                                                 onClick={() => alert('저장되었습니다.')}
                                                 disabled={inputValue.trim() === ''} // inputValue가 비어있으면 버튼 비활성화
                                             >
