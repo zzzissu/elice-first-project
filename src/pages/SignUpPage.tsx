@@ -28,7 +28,7 @@ const SignUpPage = () => {
     };
 
     const handleSignUp = () => {
-        const { username, email, password, confirmPassword, birth } = userInfo;
+        const { username, email, domain, customDomain, password, confirmPassword, phone, birth } = userInfo;
 
         if (!username) {
             setError('! 이름을 입력해주세요.');
@@ -55,8 +55,31 @@ const SignUpPage = () => {
             return;
         }
 
+        const fullEmail = domain === 'custom' ? `${email}@${customDomain}` : `${email}@${domain}`;
+
         setError('');
-        navigate('/');
+
+        fetch("http://localhost:4000/api/users/signup", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                name: username,
+                email: fullEmail,
+                password: password,
+                phone: phone,
+                birth: birth}),
+          }).then((res) => {
+            if(!res.ok) {
+              throw new Error("회원가입 실패");
+            }
+            return res.json();
+          }).then((data) => {
+            const token = data.token;
+            localStorage.setItem("token", token);
+            navigate('/');
+          }).catch((error) => {
+            console.error("Error: ", error);
+          });
     };
 
     return (
