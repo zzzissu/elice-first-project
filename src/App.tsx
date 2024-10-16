@@ -29,13 +29,13 @@ const App = () => (
         <Route path={Paths.home} element={<LoginPage />} />
         <Route path={Paths.signUp} element={<SignUpPage />} />
 
-        {/* Layout이 적용된 페이지들 */}
+        {/* Layout 내부의 페이지들 */}
         <Route element={<Layout />}>
             {/* 기본 경로: Project */}
-            <Route path={Paths.project} element={<Project />} />
-            {/* 다른 경로들 */}
-            <Route path={Paths.myPage} element={<MyPage />}>
-                {/* 중첩된 라우트 */}
+            <Route path={`${Paths.project}`} element={<Project />} index />
+
+            {/* MyPage 경로 */}
+            <Route path={`${Paths.myPage}`} element={<MyPage />}>
                 <Route index element={<ProfileEdit />} />
                 <Route path={Paths.profileEdit} element={<ProfileEdit />} />
                 <Route path={Paths.schedule} element={<Schedule />} />
