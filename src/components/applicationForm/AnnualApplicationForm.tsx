@@ -10,9 +10,9 @@ const AnnualApplicationForm: React.FC = () => {
     const isFormValid = reasonForAnnual !== '';
 
     return (
-        <div className="flex flex-col lg:flex-row max-w-[1280px]">
+        <div className="flex flex-row max-w-[1280px]">
             <div className="flex-1 w-full p-8 bg-white">
-                <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex flex-row gap-4">
                     <div className="flex-1 flex flex-col space-y-2">
                         <label className="text-lg font-sans font-bold text-gray-700">이름</label>
                         <div className="bg-gray-200 text-gray-700 font-sans text-lg p-2 rounded">하정우</div>
@@ -22,7 +22,7 @@ const AnnualApplicationForm: React.FC = () => {
                         <div className="bg-gray-200 font-sans text-gray-700 text-lg p-2 rounded">프론트엔드 개발팀</div>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-4 mt-4">
+                <div className="flex flex-row gap-4 mt-4">
                     <div className="flex-1 flex flex-col space-y-2">
                         <label className="text-lg font-bold font-sans text-gray-700">시작</label>
                         <input type="date" className="border rounded p-2 w-full" />
