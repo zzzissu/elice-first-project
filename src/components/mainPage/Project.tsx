@@ -127,7 +127,7 @@ const Project: React.FC = () => {
     return (
         <div className='flex flex-wrap'>
             {/* 왼쪽세션 */}
-            <div className='flex flex-col w-full xl:w-1/2 p-5'>
+            <div className='flex flex-col w-1/2 p-5'>
                 <div className='font-sans text-xl font-semibold'>알림</div>
                 <div className='flex flex-col border h-56 w-full bg-indigo-50/100 mt-2 rounded-lg'>
                     <h2 className='flex justify-center pt-24'>알림 여기에 표시</h2>
@@ -181,7 +181,7 @@ const Project: React.FC = () => {
             </div>
 
             {/* 오른쪽세션 */}
-            <div className='flex flex-col w-full xl:w-1/2 p-5'>
+            <div className='flex flex-col w-1/2 p-5'>
                 <div className='font-sans text-xl font-semibold'>팀별페이지</div>
                 <div className='flex flex-col border h-56 w-full bg-indigo-50/100 mt-2 rounded-lg'>
                     <h2 className='flex justify-center pt-24'>팀별 페이지 피드백 알람 여기에 표시</h2>
