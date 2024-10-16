@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import PageModal from '../modal/PageModal';
 
 const Schedule = () => {
+    const [personerPages, setPersonerPages] = useState("");
+    const [workerPages, setWorkerPages] = useState("");
     const [isModalOpen, setModalOpen] = useState(false);
     const [savedPersonerTitles, setSavedPersonerTitles] = useState<{title: string; content: string }[]>([]);
     const [savedWorkTitles, setSavedWorkTitles] = useState<{title: string; content: string }[]>([]);
     const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
     const [selectedContent, setSelectedContent] = useState<string | null>(null);
     const [modalType, setModalType] = useState<'personal' | 'work' | null>(null);
+
+    const handlethrowData = async()=>{
+
+    }
 
     // 개인 일정과 업무 일정의 페이지네이션 상태 분리
     const [currentPersonalPage, setCurrentPersonalPage] = useState(1);
@@ -74,6 +80,7 @@ const Schedule = () => {
     const indexOfFirstWorkItem = indexOfLastWorkItem - itemsPerPage;
     const currentWorkItems = savedWorkTitles.slice(indexOfFirstWorkItem, indexOfLastWorkItem);
     const totalWorkPages = Math.ceil(savedWorkTitles.length / itemsPerPage);
+
 
     return (
         <div className="sectionDevide h-[30rem] flex flex-row items-center justify-center">
@@ -207,11 +214,13 @@ const Schedule = () => {
             </div>
 
             <PageModal
+            
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 onSave={handleSave}
                 title={selectedTitle ?? ''}
                 content={selectedContent ?? ''}
+                
             />
         </div>
     );

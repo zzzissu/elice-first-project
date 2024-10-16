@@ -34,7 +34,6 @@ const LoginPage = () => {
       return res.json();
     }).then((data) => {
       const token = data.token;
-      localStorage.setItem("token", token);
       navigate('/project');
     }).catch((error) => {
       setError("! 아이디와 비밀번호를 다시 확인해주세요.");
