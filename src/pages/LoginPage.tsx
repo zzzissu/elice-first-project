@@ -41,7 +41,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen min-w-[1280px]">
       <div className="w-1/2 bg-gray-100 flex items-center justify-center">
         <img
           src="/assets/login.jpg"
@@ -57,14 +57,14 @@ const LoginPage = () => {
           <InputField
             type="text"
             placeholder="Email"
-            name="email" // name 속성 추가
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <InputField
             type="password"
             placeholder="Password"
-            name="password" // name 속성 추가
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

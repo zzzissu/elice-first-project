@@ -4,7 +4,7 @@ const AuthPage = () => {
     const location = useLocation();
 
     return (
-        <div className="sectionDevide flex flex-col">
+        <div className=" flex flex-col max-w-[1280px] ">
             <div className="nevBar h-20 w-[80%] flex flex-row font-medium items-center ml-16">
                 <ul className="flex flex-row text-xl gap-20 font-medium">
                     <li>
