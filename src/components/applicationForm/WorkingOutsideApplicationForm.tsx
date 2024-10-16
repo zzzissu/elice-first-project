@@ -15,7 +15,7 @@ const WorkingOutsideApplicationForm: React.FC = () => {
 
     const isFormValid = reasonForWorking !== '';
     return (
-        <div className="flex flex-col lg:flex-row max-w-[1280px] mx-auto">
+        <div className="flex flex-col lg:flex-row max-w-[1280px]">
             <div className="flex-1 w-full p-8 bg-white">
                 <div className="flex flex-col lg:flex-row gap-4">
                     <div className="flex-1 flex flex-col space-y-2">
