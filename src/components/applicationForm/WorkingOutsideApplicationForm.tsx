@@ -1,12 +1,48 @@
 import React, { useState } from 'react';
 import FormModal from '../modal/FormModal';
+import { useUserApi } from '../utils/useProfileApi';
 
 const WorkingOutsideApplicationForm: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
     const [reasonForWorking, setReasonForWorking] = useState(''); // 외근사유 상태
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const profile = useUserApi();
 
     const openModal = () => {
-        setIsModalOpen(true); // 모달 열기
+        if (!isFormValid) return;
+        setIsSubmitting(true);
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:4000/api/approval/outside', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                content: reasonForWorking,
+                start_date: startDate,
+                finish_date: endDate,
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('제출 실패');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data); // 응답 데이터 출력
+                setIsModalOpen(true); // 모달 열기
+            })
+            .catch((error) => {
+                console.error('Error:', error); // 에러 처리
+            })
+            .finally(() => {
+                setIsSubmitting(false); // 요청 완료 후 제출 상태 변경
+            });
     };
 
     const closeModal = () => {
@@ -15,74 +51,62 @@ const WorkingOutsideApplicationForm: React.FC = () => {
 
     const isFormValid = reasonForWorking !== '';
     return (
-        <div className="h-auto w-full flex flex-col justify-center text-center align-middle">
-            <div className="flex w-full space-x-4 justify-center text-center align-middle mt-7">
-                <div className="flex w-1/2 justify-center text-center align-middle">
-                    <label className="block pt-1 text-xl font-sans font-bold text-gray-700 pl-6 pr-10">이름 </label>
-                    <div className="flex justify-center text-gray-700 text-xl w-[60%] font-sans font-bold h-8 bg-gray-300 rounded-lg shadow-lg items-center">
-                        하정우
+        <div className="flex flex-row max-w-[1280px]">
+            <div className="flex-1 w-full p-8 bg-white">
+                <div className="flex flex-row gap-4">
+                    <div className="flex-1 flex flex-col space-y-2">
+                        <label className="text-lg font-bold text-gray-700">이름</label>
+                        <div className="bg-gray-200 text-gray-700 text-lg p-2 rounded">{profile.name}</div>
+                    </div>
+                    <div className="flex-1 flex flex-col space-y-2">
+                        <label className="text-lg font-bold text-gray-700">부서</label>
+                        <div className="bg-gray-200 text-gray-700 text-lg p-2 rounded">{profile.department}</div>
                     </div>
                 </div>
-                <div className="flex w-1/2">
-                    <label className="block pt-1 text-xl font-sans font-bold text-gray-700 pl-6 pr-10">부서 </label>
-                    <div className="flex justify-center text-gray-700 text-xl w-[60%] font-sans font-bold h-8 bg-gray-300 rounded-lg shadow-lg items-center">
-                        프론트엔드 개발팀
+                <div className="flex flex-row gap-4 mt-4">
+                    <div className="flex-1 flex flex-col space-y-2">
+                        <label className="text-lg font-bold text-gray-700">시작</label>
+                        <input
+                            type="date"
+                            className="border rounded p-2 w-full"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                    </div>
+                    <div className="flex-1 flex flex-col space-y-2">
+                        <label className="text-lg font-bold text-gray-700">종료</label>
+                        <input
+                            type="date"
+                            className="border rounded p-2 w-full"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
                     </div>
                 </div>
-            </div>
-
-            <div className="flex mt-7">
-                <div className="flex w-1/2 justify-center text-center align-middle">
-                    <label className=" text-xl font-bold text-gray-700 font-sans mt-1 ml-4 pr-3">외근 시작일</label>
-                    <input
-                        type="date"
-                        className="border-2 w-[30%] rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
-                    />
-                    <input
-                        type="time"
-                        className="border-2 w-[30%] rounded-md border-gray-300 shadow-sm ml-2 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
-                    />
-                </div>
-
-                <div className="flex w-1/2">
-                    <label className=" text-xl font-bold text-gray-700 font-sans mt-1 pr-3">외근 종료일</label>
-                    <input
-                        type="date"
-                        className="w-[30%] border-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
-                    />
-                    <input
-                        type="time"
-                        className="w-[30%] border-2 rounded-md border-gray-300 shadow-sm  ml-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm font-sans"
-                    />
-                </div>
-            </div>
-            <div className="flex w-full">
-                <div className="w-full">
-                    <label className="flex text-xl font-sans align-middle font-bold text-gray-700 pl-14 mt-5">
-                        외근 사유
-                    </label>
+                <div className="mt-4">
+                    <label className="text-lg font-bold text-gray-700">사유</label>
                     <textarea
                         value={reasonForWorking}
                         onChange={(e) => setReasonForWorking(e.target.value)}
-                        className="flex text-sm border p-3 rounded-ml mt-2 ml-10 w-[88%] font-sans"
+                        className="w-full border p-4 rounded resize-none"
+                        rows={5}
                         placeholder="사유를 입력하세요"
-                        rows={11}
                     />
                 </div>
-            </div>
+                <div className="mt-6 flex justify-center">
+                    <button
+                        onClick={openModal}
+                        disabled={!isFormValid || isSubmitting}
+                        className={`w-32 py-2 font-sans font-bold text-white bg-blue-500 rounded ${
+                            !isFormValid || isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-600'
+                        }`}
+                    >
+                        결재 신청
+                    </button>
+                </div>
 
-            <div className="flex items-center justify-center mt-3">
-                <button
-                    onClick={openModal}
-                    disabled={!isFormValid}
-                    className={`text-lg font-sans w-24 bg-mainColor rounded-lg text-white rounded-ml mt-4 p-2 ${
-                        !isFormValid ? 'bg-gray-400 cursor-not-allowed' : ''
-                    }`}
-                >
-                    결재 신청
-                </button>
                 <FormModal isOpen={isModalOpen} onClose={closeModal}>
-                    <p className="font-sans text-xl font-bold">결재신청 완료</p>
+                    <p className="font-sans text-xl font-bold ml-2">결재신청 완료</p>
                 </FormModal>
             </div>
         </div>

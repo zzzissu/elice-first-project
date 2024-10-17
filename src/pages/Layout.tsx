@@ -1,12 +1,72 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/nav/Nav';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+
 
 const Layout = () => {
     const [profileImg, setProfileImg] = useState<string>('/assets/Group 18.png');
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [inputValue, setInputValue] = useState<string>('');
+    const [name, setName] = useState("");
+    const [department, setDepartment] = useState('');
+    const [position, setPosition] = useState('');
 
+    useEffect(() => {
+        userData();
+    }, [])
+
+    const savePicture = async()=>{
+        try {
+            const token = localStorage.getItem('token')
+            if(!token){
+                console.log("사진정보를 가져오지 못했습니다.")
+            }
+            const res = await fetch ("http://localhost:4000/api/profile/image",{
+                method : "PUT",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer {JWT Token}`},
+                    body :JSON.stringify({
+                        profileImage : File,
+                    }),
+                });
+                if(!res.ok){
+                    throw new Error("사진 업데이트 실패되었습니다.")
+                }
+                const data = await res.json();
+            
+        }catch(e){
+            console.error("ERROR",e)
+        }
+    }
+
+    const userData = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            if (!token) {
+                console.log("사용자의 정보를 받아오지 못했습니다.")
+            }
+            const res = await fetch("http://localhost:4000/api/users", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setName(data.name);
+                setDepartment(data.department);
+                setPosition(data.position);
+            } else {
+                console.log(res.status)
+                console.error("사용자의 정보를 가져오는데 실패하였습니다.")
+            }
+        }
+        catch (e) {
+            console.error("네트워크 오류가 발생되었습니다.", e)
+        }
+    }
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOption(e.target.value);
     };
@@ -18,17 +78,62 @@ const Layout = () => {
             setProfileImg(imageUrl);
         }
     };
+    const saveState = async () => {
+        const state = selectedOption;
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch("http://localhost:4000/api/state", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                body: JSON.stringify({
+                    state: state
+                }),
+            });
+            if (!res.ok) {
+                throw new Error("상태저장에 실패하였습니다.");
+            }
+            const data = await res.json();
+            console.log("서버응답", data);
 
+        } catch (e) {
+            console.error("에러발생", e)
+        }
+    }
+
+    const saveMessage = async () => {
+
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch("http://localhost:4000/api/state/message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                body: JSON.stringify({
+                    statusMessage: ""
+                }),
+            });
+            if (!res.ok) {
+                throw new Error("보내기에 실패하였습니다.");
+            }
+            const data = await res.json();
+            alert("저장되었습니다.")
+            console.log("서버응답", data)
+        }
+        catch (e) {
+            console.error("저장되지 않았습니다.", e)
+        }
+    }
     useEffect(() => {
+        if (selectedOption) {
+            saveState();
+        }
         if (selectedOption !== '출장중') {
             setInputValue('');
         }
     }, [selectedOption]);
-
     return (
         <div className="flex">
             <Nav />
-            <div className="w-[100%]">
+            <div className="w-[100%] min-w-[1280px]">
                 <div className="flex flex-col w-auto h-auto">
                     <div className="flex flex-col w-auto h-auto">
                         <header>
@@ -36,12 +141,12 @@ const Layout = () => {
                                 <div className="text-3xl text-white font-medium font-sans pl-8">Project</div>
                                 <div className="flex flex-row">
                                     <div
-                                    style={{
-                                      backgroundImage : `url('/assets/ring.png')`,
-                                      backgroundPosition : 'center',
-                                      backgroundSize :'cover',
-                                    }}
-                                    className='z-10 h-12 w-12 mr-3 rounded-full'>
+                                        style={{
+                                            backgroundImage: `url('/assets/ring.png')`,
+                                            backgroundPosition: 'center',
+                                            backgroundSize: 'cover',
+                                        }}
+                                        className='z-10 h-12 w-12 mr-3 rounded-full'>
 
                                     </div>
                                     <div
@@ -52,7 +157,7 @@ const Layout = () => {
                                         }}
                                         className="z-10 h-12 w-12 mr-3 rounded-full"
                                     />
-                                    <div className="text-xl text-white pt-3 font-sans mr-12">최준영</div>
+                                    <div className="text-xl text-white pt-3 font-sans mr-12">{name}</div>
                                 </div>
                             </div>
                         </header>
@@ -98,8 +203,8 @@ const Layout = () => {
                                             />
                                         </div>
 
-                                        <div className="text-xl pt-2">하정우</div>
-                                        <div className=" pt-1 text-xs">프론트엔드 개발팀</div>
+                                        <div className="text-xl pt-2">{name}</div>
+                                        <div className=" pt-1 text-xs">{department} {position}</div>
                                     </div>
 
                                     {/* 결재칸 */}
@@ -152,8 +257,8 @@ const Layout = () => {
                                         <div className="flex justify-end w-full">
                                             <button
                                                 className="bg-mainColor text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
-                                                onClick={() => alert('저장되었습니다.')}
-                                                disabled={inputValue.trim() === ''} // inputValue가 비어있으면 버튼 비활성화
+                                                onClick={saveMessage}
+                                                disabled={inputValue.trim() === '' || selectedOption !== "출장중"}
                                             >
                                                 저장
                                             </button>

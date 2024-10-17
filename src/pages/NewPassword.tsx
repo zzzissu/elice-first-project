@@ -1,24 +1,46 @@
-import React, { useState } from 'react';
-import Modal from '../components/modal/Modal';
+import React, { useState } from "react";
+import Modal from "../components/modal/Modal";
 
 interface NewPasswordModalProps {
   onClose: () => void;
+  email: string;
 }
 
-const NewPasswordModal = ({ onClose }: NewPasswordModalProps) => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+const NewPasswordModal = ({ onClose, email }: NewPasswordModalProps) => {
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const handlePasswordChange = () => {
-    if (newPassword === '' || confirmPassword === '') {
-      setError('! 비밀번호를 입력해주세요.');
+    if (newPassword === "" || confirmPassword === "") {
+      setError("! 비밀번호를 입력해주세요.");
     } else if (newPassword !== confirmPassword) {
-      setError('! 비밀번호가 일치하지 않습니다.');
+      setError("! 비밀번호가 일치하지 않습니다.");
     } else {
-      setError('');
-      setIsSuccessModalOpen(true);
+      setError("");
+
+      fetch("http://localhost:4000/api/users/password/reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          newPassword: newPassword,
+          email: email,
+        }),
+      }).then((res) => {
+        if (!res.ok) {
+          console.log("newPassword:", newPassword);
+          throw new Error("비밀번호 변경 실패");
+        } return res.json();
+      }).then((data) => {
+        setIsSuccessModalOpen(true);
+        console.log("비밀번호 변경 성공:", data);
+      }).catch((error) => {
+        setError("! 비밀번호 변경에 실패했습니다.");
+        console.error("Error:", error);
+      });      
     }
   };
 

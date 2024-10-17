@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../components/login/InputField';
 import Button from '../components/login/Button';
@@ -9,8 +9,13 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState('');
-  
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem('token');
+    console.log("토큰이 삭제되었습니다.");
+  }, []);
 
   const handleLogin = () => {
     if (!email) {
@@ -21,11 +26,25 @@ const LoginPage = () => {
       setError('! 비밀번호를 입력해주세요.');
       return;
     }
-
     setError('');
-    console.log('Email:', email);
-    console.log('Password:', password);
-    navigate('/Layout');
+    
+    fetch("http://localhost:4000/api/users/signin", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email, password}),
+    }).then((res) => {
+      if(!res.ok) {
+        throw new Error("로그인 실패");
+      }
+      return res.json();
+    }).then((data) => {
+      const token = data.token;
+      localStorage.setItem("token", token);
+      navigate('/project');
+    }).catch((error) => {
+      setError("! 아이디와 비밀번호를 다시 확인해주세요.");
+      console.error("Error: ", error);
+    });
   };
 
   const openPasswordResetModal = () => {
@@ -41,7 +60,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen min-w-[1280px]">
       <div className="w-1/2 bg-gray-100 flex items-center justify-center">
         <img
           src="/assets/login.jpg"
@@ -57,20 +76,20 @@ const LoginPage = () => {
           <InputField
             type="text"
             placeholder="Email"
-            name="email" // name 속성 추가
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <InputField
             type="password"
             placeholder="Password"
-            name="password" // name 속성 추가
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          
+
           {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
-          
+
           <div className="text-xs flex justify-end space-x-2 mt-4">
             <Link to="/sign" className="hover:underline">
               회원가입
