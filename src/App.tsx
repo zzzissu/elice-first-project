@@ -26,7 +26,7 @@ import PrivateRoutes from './routes/PrivateRoutes';
 
 const App = () => (
     <Routes>
-<<<<<<< HEAD
+
       {/* 로그인 및 회원가입 페이지 */}
       <Route path={Paths.home} element={<LoginPage />} />
       <Route path={Paths.signUp} element={<SignUpPage />} />
@@ -71,47 +71,7 @@ const App = () => (
   
       {/* 404 에러페이지 */}
       <Route path="*" element={<NotFoundPage />} />
-=======
-        {/* 로그인 및 회원가입 페이지 */}
-        <Route path={Paths.home} element={<LoginPage />} />
-        <Route path={Paths.signUp} element={<SignUpPage />} />
-        <Route element={<PrivateRoutes />}>
-        {/* Layout 내부의 페이지들 */}
-            <Route element={<Layout />}>
-                {/* 기본 경로: Project */}
-                <Route path={`${Paths.project}`} element={<Project />} index />
 
-                {/* MyPage 경로 */}
-                <Route path={`${Paths.myPage}`} element={<MyPage />}>
-                    <Route index element={<ProfileEdit />} />
-                    <Route path={Paths.profileEdit} element={<ProfileEdit />} />
-                    <Route path={Paths.schedule} element={<Schedule />} />
-                    <Route path={Paths.vacation} element={<Vacation />}>
-                    <Route path={Paths.totalVacation} element={<TotalVacation />}/>
-                    <Route path={Paths.usedVacation} element={<UsedVacation />}/>
-                    </Route>
-                </Route>
-
-                <Route path={Paths.teamPage} element={<TeamPage />} />
-
-                <Route path={Paths.authPage} element={<AuthPage />}>
-                    <Route index element={<AnnualApplicationForm />} />
-                    <Route path={Paths.annualApplication} element={<AnnualApplicationForm />} />
-                    <Route path={Paths.businessReport} element={<BusinessReport />} />
-                    <Route path={Paths.workingOutside} element={<WorkingOutsideApplicationForm />} />
-                </Route>
-
-                <Route path={Paths.mail} element={<Mail />}>
-                    <Route index element={<MailRead />} />
-                    <Route path={Paths.mailWrite} element={<MailWrite />} />
-                    <Route path={Paths.mailRead} element={<MailRead />} />
-                    <Route path={Paths.sendedMail} element={<SendedMail />} />
-                </Route>
-            </Route>
-        </Route>
-        {/* 404 에러페이지 */}
-        <Route path="*" element={<NotFoundPage />} />
->>>>>>> d6474f1c43cc2cec5ac8757f88a0f3fef613ee8c
     </Routes>
   );
   
