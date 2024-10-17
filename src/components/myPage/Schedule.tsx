@@ -5,7 +5,7 @@ interface Schedule {
     id: string;
     title: string;
     content: string;
-    makePublic: boolean;
+    make_public: boolean;
     createAt: string;
     finishedAt?: string;
 }
@@ -21,6 +21,11 @@ const Schedule = () => {
     const [currentPersonalPage, setCurrentPersonalPage] = useState(1);
     const [currentWorkPage, setCurrentWorkPage] = useState(1);
     const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
+const [title, setTitle ] =useState("");
+const [content,setContent ] =useState("");
+const [make_public,setMake_public ] =useState("");
+const [createdAt,setCreatedAt ] =useState("");
+const [finishedAt,setFinishedAt ] =useState("");
 
     // 체크박스에서 선택된 항목 관리
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -39,18 +44,30 @@ const Schedule = () => {
                     "Authorization": `Bearer ${token}`,
                 },
             });
+    
+            if (res.status === 404) {
+                // 서버에서 일정이 없을 때 404를 반환하는 경우 처리
+                console.log('사용자의 일정이 없습니다.');
+                setSavedPersonerTitles([]);
+                setSavedWorkTitles([]);
+                return;
+            }
+    
             if (!res.ok) {
+                // 다른 오류 처리
+                const errorText = await res.text();
+                console.error('에러 응답 내용:', errorText);
                 throw new Error("일정 조회에 실패하였습니다.");
             }
-
+    
             const data: Schedule[] = await res.json();
             const personalSchedule = data
-                .filter((item: Schedule) => !item.makePublic)
+                .filter((item: Schedule) => !item.make_public)
                 .map(({ id, title, content }) => ({ id, title, content }));
             const workSchedule = data
-                .filter((item: Schedule) => item.makePublic)
+                .filter((item: Schedule) => item.make_public)
                 .map(({ id, title, content }) => ({ id, title, content }));
-
+    
             setSavedPersonerTitles(personalSchedule);
             setSavedWorkTitles(workSchedule);
         } catch (e) {
@@ -59,10 +76,15 @@ const Schedule = () => {
     };
 
     // 피드백 저장 함수
-    const handleSave = async (title: string, content: string) => {
-        const makePublic = modalType === 'work';
+    const handleSave = async () => {
+        const make_public = modalType === 'work';
         const token = localStorage.getItem('token');
-
+    
+        if (!token) {
+            console.error("토큰이 없습니다.");
+            return;
+        }
+    
         try {
             const res = await fetch("http://localhost:4000/api/schedule", {
                 method: "POST",
@@ -73,26 +95,28 @@ const Schedule = () => {
                 body: JSON.stringify({
                     title,
                     content,
-                    makePublic,
-                    createdAt: new Date().toISOString(),
-                    finishedAt: "",
+                    make_public,
+                    createdAt,
+                    finishedAt 
                 }),
             });
-
+    
             if (!res.ok) {
+                const errorText = await res.text();
+                console.error("서버 오류 내용:", errorText);
                 throw new Error("보내기가 실패하였습니다.");
             }
-
+    
             const data = await res.json();
             console.log("서버 응답:", data);
-
+    
             // 서버 응답이 성공적일 때 상태 업데이트 및 모달 닫기
-            if (makePublic) {
+            if (make_public) {
                 setSavedWorkTitles((prev) => [...prev, { id: data.id, title, content }]);
             } else {
                 setSavedPersonerTitles((prev) => [...prev, { id: data.id, title, content }]);
             }
-
+    
             setModalOpen(false);
         } catch (e) {
             console.error("에러 발생:", e);
