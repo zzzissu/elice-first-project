@@ -13,11 +13,11 @@ const MailRead = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="h-14"> {/* 행의 높이를 조절 */}
+                    <tr className="h-14">
                         <td className="border-b-2 border-gray-300 p-2 text-center">김정현</td>
                         <td className="border-b-2 border-gray-300 p-2 text-center">정우씨...</td>
                         <td className="border-b-2 border-gray-300 p-2 text-center">24.10.15</td>
-                        <td className="border-b-2 border-gray-300 p-2 text-center align-middle"> {/* 삭제 버튼을 수평 및 수직 가운데로 정렬 */}
+                        <td className="border-b-2 border-gray-300 p-2 text-center align-middle">
                             <button className='bg-red-500 text-white p-2 rounded-lg'>삭제</button>
                         </td>
                     </tr>
