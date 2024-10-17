@@ -1,12 +1,48 @@
 import React, { useState } from 'react';
 import FormModal from '../modal/FormModal';
+import { useUserApi } from '../utils/useProfileApi';
 
 const WorkingOutsideApplicationForm: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
     const [reasonForWorking, setReasonForWorking] = useState(''); // 외근사유 상태
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const profile = useUserApi();
 
     const openModal = () => {
-        setIsModalOpen(true); // 모달 열기
+        if (!isFormValid) return;
+        setIsSubmitting(true);
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:4000/api/approval/outside', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                content: reasonForWorking,
+                start_date: startDate,
+                finish_date: endDate,
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('제출 실패');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data); // 응답 데이터 출력
+                setIsModalOpen(true); // 모달 열기
+            })
+            .catch((error) => {
+                console.error('Error:', error); // 에러 처리
+            })
+            .finally(() => {
+                setIsSubmitting(false); // 요청 완료 후 제출 상태 변경
+            });
     };
 
     const closeModal = () => {
@@ -20,21 +56,31 @@ const WorkingOutsideApplicationForm: React.FC = () => {
                 <div className="flex flex-row gap-4">
                     <div className="flex-1 flex flex-col space-y-2">
                         <label className="text-lg font-bold text-gray-700">이름</label>
-                        <div className="bg-gray-200 text-gray-700 text-lg p-2 rounded">하정우</div>
+                        <div className="bg-gray-200 text-gray-700 text-lg p-2 rounded">{profile.name}</div>
                     </div>
                     <div className="flex-1 flex flex-col space-y-2">
                         <label className="text-lg font-bold text-gray-700">부서</label>
-                        <div className="bg-gray-200 text-gray-700 text-lg p-2 rounded">프론트엔드 개발팀</div>
+                        <div className="bg-gray-200 text-gray-700 text-lg p-2 rounded">{profile.department}</div>
                     </div>
                 </div>
                 <div className="flex flex-row gap-4 mt-4">
                     <div className="flex-1 flex flex-col space-y-2">
                         <label className="text-lg font-bold text-gray-700">시작</label>
-                        <input type="date" className="border rounded p-2 w-full" />
+                        <input
+                            type="date"
+                            className="border rounded p-2 w-full"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
                     </div>
                     <div className="flex-1 flex flex-col space-y-2">
                         <label className="text-lg font-bold text-gray-700">종료</label>
-                        <input type="date" className="border rounded p-2 w-full" />
+                        <input
+                            type="date"
+                            className="border rounded p-2 w-full"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
                     </div>
                 </div>
                 <div className="mt-4">
@@ -50,9 +96,9 @@ const WorkingOutsideApplicationForm: React.FC = () => {
                 <div className="mt-6 flex justify-center">
                     <button
                         onClick={openModal}
-                        disabled={!isFormValid}
+                        disabled={!isFormValid || isSubmitting}
                         className={`w-32 py-2 font-sans font-bold text-white bg-blue-500 rounded ${
-                            !isFormValid ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-600'
+                            !isFormValid || isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-600'
                         }`}
                     >
                         결재 신청
