@@ -22,6 +22,7 @@ import SendedMail from './components/mail/SendedMail';
 import NotFoundPage from './pages/NotFoundPage';
 import TotalVacation from './components/myPage/TotalVacation';
 import UsedVacation from './components/myPage/UsedVacation';
+import PrivateRoutes from './routes/PrivateRoutes';
 
 const App = () => (
     <Routes>
