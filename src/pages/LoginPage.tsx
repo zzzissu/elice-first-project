@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../components/login/InputField';
 import Button from '../components/login/Button';
@@ -11,6 +11,11 @@ const LoginPage = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem('token');
+    console.log("토큰이 삭제되었습니다.");
+  }, []);
 
   const handleLogin = () => {
     if (!email) {

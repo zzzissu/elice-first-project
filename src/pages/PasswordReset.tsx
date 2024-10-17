@@ -53,12 +53,29 @@ const PasswordResetModal = ({ onClose, onEmailConfirm }: PasswordResetModalProps
       setError('! 유효한 이메일 주소를 입력해주세요.');
     } else {
       setError('');
-      alert('입력하신 메일로 인증번호가 발송되었습니다!');
-      setShowVerificationModal(true);
-      setTimer(180); // 타이머 3분으로 초기화
-      setTimeout(() => {
-        verificationInputRef.current?.focus(); // 인증번호 모달이 열리면 focus 이동
-      }, 100);
+
+      fetch("http://localhost:4000/api/users/password/request", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email}),
+      }).then((res) => {
+        if(!res.ok) {
+          throw new Error("인증 메일 발송 실패");
+        } return res.json();
+      }).then(() => {
+        alert('입력하신 메일로 인증번호가 발송되었습니다!');
+        setShowVerificationModal(true);
+        setTimer(180); // 타이머 3분으로 초기화
+        setTimeout(() => {
+          verificationInputRef.current?.focus(); // 인증번호 모달이 열리면 focus 이동
+        }, 100);
+      }).catch((error) => {
+        setError("! 이메일 인증에 실패했습니다.");
+        console.log("Error: ", error);
+      })
+
+
+
     }
   };
 
@@ -72,11 +89,26 @@ const PasswordResetModal = ({ onClose, onEmailConfirm }: PasswordResetModalProps
     if (codeInput === '') {
       setError('! 인증번호를 입력해주세요.');
     } else {
-      alert('인증이 완료되었습니다!');
-      setShowVerificationModal(false);
-      setShowPasswordModal(false); // 이메일 확인 모달도 닫기
-      setShowNewPasswordModal(true);
-      if (timerRef.current) clearInterval(timerRef.current); // 인증 성공 시 타이머 중지
+      setError('');
+      fetch("http://localhost:4000/api/users/code/request", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({resetCode: codeInput}),
+      }).then((res) => {
+        if(!res.ok) {
+          throw new Error("인증 실패");
+        } return res.json();
+      }).then(() => {
+        alert('인증이 완료되었습니다!');
+        setShowVerificationModal(false);
+        setShowPasswordModal(false); // 이메일 확인 모달도 닫기
+        setShowNewPasswordModal(true);
+        if (timerRef.current) clearInterval(timerRef.current); // 인증 성공 시 타이머 중지
+      }).catch((error) => {
+        setError('! 인증번호가 유효하지 않습니다. 다시 확인해주세요.');
+        console.error('Error: ', error);
+      })
+      
     }
   };
 
@@ -156,7 +188,7 @@ const PasswordResetModal = ({ onClose, onEmailConfirm }: PasswordResetModalProps
       )}
 
       {/* 새 비밀번호 설정 모달 */}
-      {showNewPasswordModal && <NewPasswordModal onClose={handleNewPasswordModalClose} />}
+      {showNewPasswordModal && <NewPasswordModal onClose={handleNewPasswordModalClose}  email={email} />}
     </>
   );
 };
