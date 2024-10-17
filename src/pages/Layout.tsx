@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/nav/Nav';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+
 
 const Layout = () => {
     const [profileImg, setProfileImg] = useState<string>('/assets/Group 18.png');

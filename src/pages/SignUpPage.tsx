@@ -74,6 +74,7 @@ const SignUpPage = () => {
             }
             return res.json();
           }).then((data) => {
+            alert("회원가입 성공!")
             const token = data.token;
             localStorage.setItem("token", token);
             navigate('/');
