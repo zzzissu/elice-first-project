@@ -46,20 +46,15 @@ const SendedMail: React.FC = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => response.ok ? response.json() : Promise.reject(response))
-            .then((data: Mail[]) => {
-                const uniqueData = data.reduce<Mail[]>((acc, item) => {
-                    if (!acc.some(mail => mail.id === item.id)) {
-                        acc.push(item);
-                    }
-                    return acc;
-                }, []);
-                setSavedSendedMail(uniqueData);
-            })
-            .catch((error) => {
-                console.error('메일 조회 중 오류 발생:', error);
-            });
-    };
+        .then((response) => response.ok ? response.json() : Promise.reject(response))
+        .then((data: Mail[]) => {
+            const sortedData = data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+            setSavedSendedMail(sortedData);
+        })
+        .catch((error) => {
+            console.error('메일 조회 중 오류 발생:', error);
+        });
+};
 
     useEffect(() => {
         handlegetSendedEmail();
