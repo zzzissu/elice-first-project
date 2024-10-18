@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import PageModal from '../modal/PageModal';
 
 const PersonerSchedule = () => {
@@ -10,38 +10,24 @@ const PersonerSchedule = () => {
     const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
     const [selectedContent, setSelectedContent] = useState<string | null>(null);
 
-    //개인일정 삭제
-    const handleDeletePersoner = (id: number) => {
-        const token = localStorage.getItem('token');
-        fetch(`http://localhost:4000/api/schedule/user/${id}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}`, },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("개인일정 삭제 오류");
-                }
-                //삭제 후 상태에서 해당 개인일정 제거
-                setSavedPersonerTitles((prev) => prev.filter(item => item.id !== id));
-            })
-            .catch((error) => {
-                console.error('공지사항 삭제 중 오류 발생:', error);
-            });
-    }
-    //개인일정조회
-    const handleReadPersoner = () => {
-        const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/schedule/user', {
-            method: "GET",
+    const token = localStorage.getItem('token');
+
+    // 개인일정 조회 함수
+    const fetchPersonerData = () => {
+        const apiUrl = 'http://localhost:4000/api/schedule/user';
+
+        fetch(apiUrl, {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("개인일정조회 오류");
-                } return response.json();
+                    throw new Error(`개인일정조회 오류: ${response.statusText}`);
+                }
+                return response.json();
             })
             .then((data) => {
                 const formattedDataPersoner = data.map((item: any) => ({
@@ -56,47 +42,62 @@ const PersonerSchedule = () => {
             .catch((error) => {
                 console.error('개인일정조회 중 오류 발생:', error);
             });
-    }
-    useEffect(() => {
-        handleReadPersoner();
-    }, [])
+    };
 
-    //개인일정 작성
+    // 개인일정 삭제
+    const handleDeletePersoner = (id: number) => {
+        fetch(`http://localhost:4000/api/schedule/user/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('개인일정 삭제 오류');
+                }
+                // 삭제 후 상태에서 해당 개인일정 제거
+                setSavedPersonerTitles((prev) => prev.filter((item) => item.id !== id));
+            })
+            .catch((error) => {
+                console.error('개인일정 삭제 중 오류 발생:', error);
+            });
+    };
+
+    // 개인일정 작성
     const handleSavePersoner = (title: string, content: string) => {
-        const token = localStorage.getItem("token"); // 토큰을 추출합니다.
-
-        fetch("http://localhost:4000/api/schedule", {
-            method: "POST",
+        fetch('http://localhost:4000/api/schedule', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
                 title,
                 content,
-                make_public: false,
-                createdAt: "TIMESTAMP",
-                finishedAt: "TIMESTAMP",
+                makePublic: false,
+                createdAt: new Date(),
+                finishedAt: new Date(),
             }),
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("개인일정 저장 오류");
+                    return response.text().then((text) => {
+                        throw new Error(`개인일정 저장 오류: ${text}`);
+                    });
                 }
                 return response.json();
             })
             .then(() => {
-                handleReadPersoner(); // 저장 후 개인일정 다시 조회
                 setModalOpen(false);
+                fetchPersonerData(); // 일정 저장 후 데이터를 다시 조회하여 갱신
             })
             .catch((error) => {
-                console.error('개인일정작성 중 오류 발생:', error);
+                console.error('개인일정 작성 중 오류 발생:', error);
             });
     };
+
     const handleTitleClick = (title: string, content: string) => {
         setSelectedTitle(title);
         setSelectedContent(content);
-     
         setModalOpen(true);
     };
 
@@ -105,9 +106,10 @@ const PersonerSchedule = () => {
         setSelectedContent(null);
         setModalOpen(true);
     };
-    // 체크박스 변경 함수
-    const handleCheckboxChange = (index: number) => {
-        setSelectedIndex(index === selectedIndex ? null : index);
+
+    // 체크박스 변경 함수 (id 기반으로 변경)
+    const handleCheckboxChange = (id: number) => {
+        setSelectedIndex((prevIndex) => (prevIndex === id ? null : id));
     };
 
     // 개인 일정 페이지네이션 계산
@@ -116,13 +118,16 @@ const PersonerSchedule = () => {
     const currentPersonalItems = savedPersonerTitles.slice(indexOfFirstPersonalItem, indexOfLastPersonalItem);
     const totalPersonalPages = Math.ceil(savedPersonerTitles.length / itemsPerPage);
 
-    return (
+    useEffect(() => {
+        fetchPersonerData(); // 컴포넌트 마운트 시 데이터 조회
+    }, []);
 
+    return (
         <div>
             <div className="border-2 h-[28rem] w-[85%] mt-10 ml-16 rounded-lg shadow-lg">
                 <div className="flex flex-row justify-between pt-10">
                     <p className="ml-10 text-xl">개인 일정을 작성해 주세요</p>
-                    <p className=' mt-1'>(체크된곳은 공유됩니다.)</p>
+                    <p className="mt-1">(체크된 곳은 공유됩니다.)</p>
                     <button
                         onClick={handleWriteClickPersonal}
                         className="w-10 h-8 mr-6 -mt-2 rounded-md"
@@ -135,15 +140,15 @@ const PersonerSchedule = () => {
                 </div>
                 <ul>
                     {savedPersonerTitles.length > 0 ? (
-                        currentPersonalItems.map(({ id, title, content }, index) => (
+                        currentPersonalItems.map(({ id, title, content }) => (
                             <li
-                                key={id || index}
+                                key={id}
                                 className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
                             >
                                 <input
                                     type="checkbox"
-                                    checked={indexOfFirstPersonalItem + index === selectedIndex}
-                                    onChange={() => handleCheckboxChange(indexOfFirstPersonalItem + index)}
+                                    checked={id === selectedIndex}
+                                    onChange={() => handleCheckboxChange(id)}
                                     className="mr-4"
                                 />
                                 <div
@@ -171,8 +176,7 @@ const PersonerSchedule = () => {
                         {Array.from({ length: totalPersonalPages }, (_, i) => (
                             <button
                                 key={i}
-                                className={`mx-1 px-4 py-2 rounded ${currentPersonalPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
-                                    }`}
+                                className={`mx-1 px-4 py-2 rounded ${currentPersonalPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
                                 onClick={() => setCurrentPersonalPage(i + 1)}
                             >
                                 {i + 1}
@@ -184,13 +188,12 @@ const PersonerSchedule = () => {
             <PageModal
                 isOpen={isModalOpen}
                 onClose={() => setModalOpen(false)}
-                onSave={handleSavePersoner}
+                onSave={(title, content) => handleSavePersoner(title, content)} // 필요한 인자 전달
                 title={selectedTitle ?? ''}
                 content={selectedContent ?? ''}
             />
         </div>
+    );
+};
 
-    )
-}
-
-export default PersonerSchedule
+export default PersonerSchedule;

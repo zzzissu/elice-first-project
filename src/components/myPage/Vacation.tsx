@@ -3,6 +3,7 @@ import { Routes, Link, Route } from 'react-router-dom';
 import TotalVacation from './TotalVacation';
 import UsedVacation from './UsedVacation';
 
+
 const Vacation = () => {
     return (
         <div className="sectionDevide ">
