@@ -39,15 +39,20 @@ const MailRead = () => {
                 return response.json();
             })
             .then((data) => {
-                const ReadMailData = data.map((item: any) => ({
-                    id: item.id,
-                    title: item.title,
-                    content: item.content,
-                    user_email : item. user_email ,
-                    created_at: item.created_at, 
-                    is_checked : item.is_checked ,
-                }));
-                setSavedReadMail(ReadMailData);
+                const uniqueData = data.reduce((acc: any[], item: any) => {
+                    if (!acc.some(mail => mail.id === item.id)) {
+                        acc.push({
+                            id: item.id,
+                            title: item.title,
+                            content: item.content,
+                            user_email: item.user_email,
+                            created_at: item.created_at,
+                            is_checked: item.is_checked,
+                        });
+                    }
+                    return acc;
+                }, []);
+                setSavedReadMail(uniqueData);
             })
             .catch((error) => {
                 console.error('메일 조회 중 오류 발생:', error);
