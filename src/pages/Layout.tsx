@@ -17,6 +17,7 @@ const Layout = () => {
         rejected: 0, // 반려
         annual: 0, // 연차
     });
+    const [profile_image, setProfile_image] = useState('');
 
     useEffect(() => {
         userData();
@@ -26,6 +27,33 @@ const Layout = () => {
     // 알림 상태설정
 
     //정보 가져오기
+    const getPicture = () => {
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:4000/api/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log(response.status);
+                    throw new Error('사진정보를 가져오지 못했습니다.');
+                }
+            })
+            .then((data) => {
+                if (data.profile_image && data.profile_image.trim() !== '') {
+                    const updatedImageUrl = `${data.profile_image}`;
+                    setProfile_image(updatedImageUrl);
+                } else {
+                    setProfile_image('/assets/Group 18.png');
+                }
+            });
+    };
+
     const userData = () => {
         const token = localStorage.getItem('token');
         fetch('http://localhost:4000/api/users', {
@@ -57,7 +85,6 @@ const Layout = () => {
     const getApprovalCounts = () => {
         const token = localStorage.getItem('token');
         fetch('http://localhost:4000/api/approval/count', {
-            // API 호출
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

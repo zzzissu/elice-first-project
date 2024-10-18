@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import PageModal from '../modal/PageModal';
 
 const WorkSchedule = () => {
@@ -9,41 +9,24 @@ const WorkSchedule = () => {
     const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
     const [selectedContent, setSelectedContent] = useState<string | null>(null);
 
+    const token = localStorage.getItem('token');
 
-    //업무일정 삭제
-    const handleDeleteWork = (id: number) => {
-        const token = localStorage.getItem('token');
-        fetch(`http://localhost:4000/api/schedule/user/${id}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}`, },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("개인일정 삭제 오류");
-                }
-                //삭제 후 상태에서 해당 개인일정 제거
-                setSavedWorkTitles((prev) => prev.filter(item => item.id !== id));
-            })
-            .catch((error) => {
-                console.error('공지사항 삭제 중 오류 발생:', error);
-            });
-    }
+    // 업무일정 조회 함수
+    const fetchWorkData = () => {
+        const apiUrl = 'http://localhost:4000/api/schedule/team';
 
-
-    //업무일정 조회
-    const handleReadWorker = () => {
-        const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/schedule/user', {
-            method: "GET",
+        fetch(apiUrl, {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("업무일정조회 오류");
-                } return response.json();
+                    throw new Error(`업무일정조회 오류: ${response.statusText}`);
+                }
+                return response.json();
             })
             .then((data) => {
                 const formattedDataWorker = data.map((item: any) => ({
@@ -58,15 +41,14 @@ const WorkSchedule = () => {
             .catch((error) => {
                 console.error('업무일정조회 중 오류 발생:', error);
             });
-    }
+    };
+
     useEffect(() => {
-        handleReadWorker();
-    }, [])
+        fetchWorkData(); // 컴포넌트 마운트 시 데이터 조회
+    }, []);
 
-    //업무일정 작성
+    // 업무일정 작성
     const handleSaveWorker = (title: string, content: string) => {
-        const token = localStorage.getItem("token"); // 토큰을 추출합니다.
-
         fetch("http://localhost:4000/api/schedule", {
             method: "POST",
             headers: {
@@ -76,9 +58,9 @@ const WorkSchedule = () => {
             body: JSON.stringify({
                 title,
                 content,
-                make_public: true,
-                createdAt: "TIMESTAMP",
-                finishedAt: "TIMESTAMP",
+                makePublic: true, // 필드명 수정
+                createdAt: new Date().toISOString(),
+                finishedAt: new Date().toISOString(),
             }),
         })
             .then((response) => {
@@ -88,11 +70,29 @@ const WorkSchedule = () => {
                 return response.json();
             })
             .then(() => {
-                handleReadWorker(); // 저장 후 업무일정 다시 조회
                 setModalOpen(false);
+                fetchWorkData(); // 저장 후 업무일정 다시 조회하여 갱신
             })
             .catch((error) => {
-                console.error('업무일정작성 중 오류 발생:', error);
+                console.error('업무일정 작성 중 오류 발생:', error);
+            });
+    };
+
+    // 업무일정 삭제
+    const handleDeleteWork = (id: number) => {
+        fetch(`http://localhost:4000/api/schedule/team/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("업무일정 삭제 오류");
+                }
+                // 삭제 후 상태에서 해당 업무일정 제거
+                setSavedWorkTitles((prev) => prev.filter(item => item.id !== id));
+            })
+            .catch((error) => {
+                console.error('업무일정 삭제 중 오류 발생:', error);
             });
     };
 
@@ -107,6 +107,7 @@ const WorkSchedule = () => {
         setSelectedContent(null);
         setModalOpen(true);
     };
+
     // 업무 일정 페이지네이션 계산
     const indexOfLastWorkItem = currentWorkPage * itemsPerPage;
     const indexOfFirstWorkItem = indexOfLastWorkItem - itemsPerPage;
@@ -129,9 +130,9 @@ const WorkSchedule = () => {
             </div>
             <ul>
                 {savedWorkTitles.length > 0 ? (
-                    currentWorkItems.map(({ id, title, content }, index) => (
+                    currentWorkItems.map(({ id, title, content }) => (
                         <li
-                            key={id || index}
+                            key={id}
                             className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
                         >
                             <div
@@ -159,8 +160,9 @@ const WorkSchedule = () => {
                     {Array.from({ length: totalWorkPages }, (_, i) => (
                         <button
                             key={i}
-                            className={`mx-1 px-4 py-2 rounded ${currentWorkPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
-                                }`}
+                            className={`mx-1 px-4 py-2 rounded ${
+                                currentWorkPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                            }`}
                             onClick={() => setCurrentWorkPage(i + 1)}
                         >
                             {i + 1}
@@ -176,8 +178,7 @@ const WorkSchedule = () => {
                 content={selectedContent ?? ''}
             />
         </div>
+    );
+};
 
-    )
-}
-
-export default WorkSchedule
+export default WorkSchedule;
