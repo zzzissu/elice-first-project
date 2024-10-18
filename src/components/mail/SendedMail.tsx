@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 
 const SendedMail = () => {
-    const [savedSendedMail, setSavedSendedMail] = useState<{ title: string; content: string; user_email: string; created_at: string; id: number }[]>([]);
+    const [savedSendedMail, setSavedSendedMail] = useState<{ title: string; content: string; target_email: string; created_at: string; id: number }[]>([]);
     const handleDeleteSendedMail = (id: number) => {
         const token = localStorage.getItem('token');
         fetch(`http://localhost:4000/api/email/${id}`, {
@@ -37,15 +37,20 @@ const SendedMail = () => {
                 return response.json();
             })
             .then((data) => {
-                const SendedMailData = data.map((item: any) => ({
+                const uniqueData = data.reduce((acc: any[], item: any) => {
+                    if (!acc.some(mail => mail.id === item.id)) {
+                        acc.push({
                     id: item.id,
                     title: item.title,
                     content: item.content,
-                    user_email : item. user_email ,
+                    target_email : item. target_email ,
                     created_at: item.created_at, 
                     is_checked : item.is_checked ,
-                }));
-                setSavedSendedMail(SendedMailData);
+                })
+                    }
+                    return acc;
+            },[]);
+                setSavedSendedMail(uniqueData);
             })
             .catch((error) => {
                 console.error('메일 조회 중 오류 발생:', error);
@@ -68,22 +73,22 @@ const SendedMail = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {savedSendedMail.map((mail) => (
-                        <tr className="h-14" key={mail.id}>
-                            <td className="border-b-2 border-gray-300 p-2 text-center">{mail.user_email}</td>
-                            <td className="border-b-2 border-gray-300 p-2 text-center">{mail.title}</td>
-                            <td className="border-b-2 border-gray-300 p-2 text-center">{mail.created_at}</td>
-                            <td className="border-b-2 border-gray-300 p-2 text-center align-middle">
-                                <button
-                                    className="bg-red-500 text-white p-2 rounded-lg"
-                                    onClick={() => handleDeleteSendedMail(mail.id)}
-                                >
-                                    삭제
-                                    </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+        {savedSendedMail.map((mail) => (
+            <tr className="h-14" key={mail.id}>
+                <td className="border-b-2 border-gray-300 p-2 text-center">{mail.target_email}</td>
+                <td className="border-b-2 border-gray-300 p-2 text-center">{mail.title}</td>
+                <td className="border-b-2 border-gray-300 p-2 text-center">{mail.created_at}</td>
+                <td className="border-b-2 border-gray-300 p-2 text-center align-middle">
+                    <button
+                        className="bg-red-500 text-white p-2 rounded-lg"
+                        onClick={() => handleDeleteSendedMail(mail.id)}
+                    >
+                        삭제
+                    </button>
+                </td>
+            </tr>
+        ))}
+    </tbody>
             </table>
         </div>
     );
