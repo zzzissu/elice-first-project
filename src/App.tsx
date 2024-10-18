@@ -1,4 +1,3 @@
-// App.tsx
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Paths } from './components/constants/Paths'; // 경로 상수 import
@@ -15,7 +14,6 @@ import MailWrite from './components/mail/MailWrite';
 import MailRead from './components/mail/MailRead';
 import MyPage from './components/myPage/MyPage';
 import ProfileEdit from './components/myPage/ProfileEdit';
-import Schedule from './components/myPage/Schedule';
 import Vacation from './components/myPage/Vacation';
 import SignUpPage from './pages/SignUpPage';
 import SendedMail from './components/mail/SendedMail';
@@ -23,6 +21,9 @@ import NotFoundPage from './pages/NotFoundPage';
 import TotalVacation from './components/myPage/TotalVacation';
 import UsedVacation from './components/myPage/UsedVacation';
 import PrivateRoutes from './routes/PrivateRoutes';
+import Schedule from './components/myPage/Schedule';
+import PersonerSchedule from './components/myPage/PersonerSchedule';
+import WorkSchedule from './components/myPage/WorkSchedule';
 
 const App = () => (
     <Routes>
@@ -30,7 +31,7 @@ const App = () => (
         <Route path={Paths.home} element={<LoginPage />} />
         <Route path={Paths.signUp} element={<SignUpPage />} />
         <Route element={<PrivateRoutes />}>
-        {/* Layout 내부의 페이지들 */}
+            {/* Layout 내부의 페이지들 */}
             <Route element={<Layout />}>
                 {/* 기본 경로: Project */}
                 <Route path={`${Paths.project}`} element={<Project />} index />
@@ -40,9 +41,11 @@ const App = () => (
                     <Route index element={<ProfileEdit />} />
                     <Route path={Paths.profileEdit} element={<ProfileEdit />} />
                     <Route path={Paths.schedule} element={<Schedule />} />
+                    <Route path={Paths.personerSchedule} element={<PersonerSchedule />} />
+                    <Route path={Paths.workSchedule} element={<WorkSchedule />} />
                     <Route path={Paths.vacation} element={<Vacation />}>
-                    <Route path={Paths.totalVacation} element={<TotalVacation />}/>
-                    <Route path={Paths.usedVacation} element={<UsedVacation />}/>
+                        <Route path={Paths.totalVacation} element={<TotalVacation />} />
+                        <Route path={Paths.usedVacation} element={<UsedVacation />} />
                     </Route>
                 </Route>
 
