@@ -142,7 +142,7 @@ const MailWrite = () => {
             </div>
 
             <FormModal isOpen={isModalOpen} onClose={handleModalClose}>
-                <div className="text-sm">
+                <div className="text-sm p-5">
                     메일을 보내시겠습니까?
                     <div className="flex justify-end mt-4">
                         <button
