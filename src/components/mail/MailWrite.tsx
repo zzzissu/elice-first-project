@@ -7,10 +7,11 @@ const MailWrite = () => {
     const [mailContent, setMailContent] = useState('');
     const [email, setEmail] = useState('');
     const [targetEmail, setTargetEmail] = useState(''); // 받은 사람 이메일 상태 추가
+    const [savedMails, setSavedMails] = useState<{ id: number; title: string; content: string; target_email: string }[]>([]); // 상태 추가
 
     const WriteMail = () => {
         const token = localStorage.getItem("token");
-    
+
         return fetch("http://localhost:4000/api/email/post", {
             method: "POST",
             headers: {
@@ -25,7 +26,16 @@ const MailWrite = () => {
             }
             return response.json();
         })
-        .then(() => {
+        .then((newMail) => {
+            // 중복되지 않게 새로운 메일을 추가하는 로직
+            setSavedMails((prevMails) => {
+                if (!prevMails.some(mail => mail.id === newMail.id)) {
+                    return [...prevMails, newMail];
+                }
+                return prevMails;
+            });
+            
+            // 상태 초기화
             setMailTitle('');
             setMailContent('');
             setTargetEmail('');
@@ -34,6 +44,7 @@ const MailWrite = () => {
             console.error('메일 발송 중 오류 발생:', error);
         });
     };
+
     useEffect(() => {
         userData();
     }, []); // 의존성 배열 추가로 한 번만 호출되도록 설정
@@ -131,28 +142,28 @@ const MailWrite = () => {
             </div>
 
             <FormModal isOpen={isModalOpen} onClose={handleModalClose}>
-    <div className="text-sm">
-        메일을 보내시겠습니까?
-        <div className="flex justify-end mt-4">
-            <button
-                className="bg-blue-500 text-white p-2 rounded-lg mr-2"
-                onClick={() => {
-                    WriteMail().then(() => {
-                        handleModalClose();
-                    });
-                }}
-            >
-                확인
-            </button>
-            <button
-                className="bg-gray-400 text-white p-2 rounded-lg"
-                onClick={handleModalClose}
-            >
-                취소
-            </button>
-        </div>
-    </div>
-</FormModal>
+                <div className="text-sm">
+                    메일을 보내시겠습니까?
+                    <div className="flex justify-end mt-4">
+                        <button
+                            className="bg-blue-500 text-white p-2 rounded-lg mr-2"
+                            onClick={() => {
+                                WriteMail().then(() => {
+                                    handleModalClose();
+                                });
+                            }}
+                        >
+                            확인
+                        </button>
+                        <button
+                            className="bg-gray-400 text-white p-2 rounded-lg"
+                            onClick={handleModalClose}
+                        >
+                            취소
+                        </button>
+                    </div>
+                </div>
+            </FormModal>
 
         </div>
     );
