@@ -26,7 +26,6 @@ const FormModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                 </button>
 
                 {children}
-
             </div>
         </div>
     );

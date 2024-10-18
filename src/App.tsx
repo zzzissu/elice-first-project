@@ -30,7 +30,7 @@ const App = () => (
         <Route path={Paths.home} element={<LoginPage />} />
         <Route path={Paths.signUp} element={<SignUpPage />} />
         <Route element={<PrivateRoutes />}>
-        {/* Layout 내부의 페이지들 */}
+            {/* Layout 내부의 페이지들 */}
             <Route element={<Layout />}>
                 {/* 기본 경로: Project */}
                 <Route path={`${Paths.project}`} element={<Project />} index />
@@ -41,8 +41,8 @@ const App = () => (
                     <Route path={Paths.profileEdit} element={<ProfileEdit />} />
                     <Route path={Paths.schedule} element={<Schedule />} />
                     <Route path={Paths.vacation} element={<Vacation />}>
-                    <Route path={Paths.totalVacation} element={<TotalVacation />}/>
-                    <Route path={Paths.usedVacation} element={<UsedVacation />}/>
+                        <Route path={Paths.totalVacation} element={<TotalVacation />} />
+                        <Route path={Paths.usedVacation} element={<UsedVacation />} />
                     </Route>
                 </Route>
 
