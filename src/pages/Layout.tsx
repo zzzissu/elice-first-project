@@ -230,14 +230,6 @@ const Layout = () => {
                                 <div className="flex flex-row">
                                     <div
                                         style={{
-                                            backgroundImage: `url('/assets/ring.png')`,
-                                            backgroundPosition: 'center',
-                                            backgroundSize: 'cover',
-                                        }}
-                                        className="z-10 h-12 w-12 mr-3 rounded-full"
-                                    ></div>
-                                    <div
-                                        style={{
                                             backgroundImage: `url("${profileImg}")`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
