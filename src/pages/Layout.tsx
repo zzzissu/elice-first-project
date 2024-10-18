@@ -1,71 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/nav/Nav';
-import { Outlet, useNavigate } from 'react-router-dom';
-
+import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
     const [profileImg, setProfileImg] = useState<string>('/assets/Group 18.png');
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [inputValue, setInputValue] = useState<string>('');
     const [name, setName] = useState("");
     const [department, setDepartment] = useState('');
     const [position, setPosition] = useState('');
+  
 
     useEffect(() => {
         userData();
     }, [])
 
-    const savePicture = async()=>{
-        try {
-            const token = localStorage.getItem('token')
-            if(!token){
-                console.log("사진정보를 가져오지 못했습니다.")
-            }
-            const res = await fetch ("http://localhost:4000/api/profile/image",{
-                method : "PUT",
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "Authorization": `Bearer {JWT Token}`},
-                    body :JSON.stringify({
-                        profileImage : File,
-                    }),
-                });
-                if(!res.ok){
-                    throw new Error("사진 업데이트 실패되었습니다.")
-                }
-                const data = await res.json();
-            
-        }catch(e){
-            console.error("ERROR",e)
-        }
-    }
+    // 알림 상태설정
 
-    const userData = async () => {
-        try {
-            const token = localStorage.getItem('token')
-            if (!token) {
-                console.log("사용자의 정보를 받아오지 못했습니다.")
-            }
-            const res = await fetch("http://localhost:4000/api/users", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-            });
-            if (res.ok) {
-                const data = await res.json();
+    //정보 가져오기
+    const userData = () => {
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:4000/api/users', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log(response.status);
+                    throw new Error("정보를 가져오지 못했습니다.");
+                }
+            })
+            .then((data) => {
                 setName(data.name);
                 setDepartment(data.department);
                 setPosition(data.position);
-            } else {
-                console.log(res.status)
-                console.error("사용자의 정보를 가져오는데 실패하였습니다.")
-            }
+            })
+            .catch((error) => {
+                console.error('정보조회 중 오류 발생:', error);
+            });
+    }
+    //사진 저장후 나타나기
+    const savePicture = (file: File) => {
+        if (!file) {
+            console.error("업로드할 파일이 없습니다.");
+            return;
         }
-        catch (e) {
-            console.error("네트워크 오류가 발생되었습니다.", e)
-        }
+        const token = localStorage.getItem('token');
+        const formData = new FormData();
+        formData.append("profileImage", file)
+        fetch("http://localhost:4000/api/profile/image", {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("사진조회 오류");
+                } return response.json();
+            })
+            .then((data) => {
+                console.log("사진자료 전송 성공", data);
+                if (data.profileImageUrl) {
+                    setProfileImg(data.profileImageUrl);
+                }
+            })
+            .catch((error) => {
+                console.error('사진자료 전송 중 오류 발생:', error);
+            });
     }
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOption(e.target.value);
@@ -74,57 +83,68 @@ const Layout = () => {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
+            setSelectedFile(selectedFile);
             const imageUrl = URL.createObjectURL(selectedFile);
             setProfileImg(imageUrl);
+            savePicture(selectedFile);
         }
     };
-    const saveState = async () => {
-        const state = selectedOption;
-        const token = localStorage.getItem('token');
-        try {
-            const res = await fetch("http://localhost:4000/api/state", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-                body: JSON.stringify({
-                    state: state
-                }),
-            });
-            if (!res.ok) {
-                throw new Error("상태저장에 실패하였습니다.");
-            }
-            const data = await res.json();
-            console.log("서버응답", data);
 
-        } catch (e) {
-            console.error("에러발생", e)
-        }
+    //상태저장
+    const saveState = (state : string) => {
+        const token = localStorage.getItem('token');
+        fetch("http://localhost:4000/api/state", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                state: state
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("상태조회 오류");
+                } return response.json();
+            })
+            .then((data) => {
+                console.log("상태 전송 성공", data);
+            })
+            .catch((error) => {
+                console.error('상태전송 중 오류 발생:', error);
+            });
     }
 
-    const saveMessage = async () => {
-
+    //상태메세지 저장
+    const saveMessage = (statusMessage:string)=>{
         const token = localStorage.getItem('token');
-        try {
-            const res = await fetch("http://localhost:4000/api/state/message", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-                body: JSON.stringify({
-                    statusMessage: inputValue
-                }),
-            });
-            if (!res.ok) {
-                throw new Error("보내기에 실패하였습니다.");
-            }
-            const data = await res.json();
-            alert("저장되었습니다.")
-            console.log("서버응답", data)
-        }
-        catch (e) {
-            console.error("저장되지 않았습니다.", e)
-        }
+        fetch("http://localhost:4000/api/state/message", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+            body: JSON.stringify({
+                statusMessage: statusMessage
+            }),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("상태메세지 전송 오류");
+            } return response.json();
+        })
+        .then((data) => {
+            console.log("상태 전송 성공", data);
+            alert("출장지가 저장되었습니다.")
+        })
+        .catch((error) => {
+            console.error('상태전송 중 오류 발생:', error);
+        });
     }
+
+
+    
     useEffect(() => {
         if (selectedOption) {
-            saveState();
+            saveState(selectedOption);
         }
         if (selectedOption !== '출장중') {
             setInputValue('');
@@ -240,7 +260,7 @@ const Layout = () => {
                                                     <option value="현재자리중">현재자리중</option>
                                                     <option value="출장중">출장중</option>
                                                     <option value="휴가중">휴가중</option>
-                                                    <option value="잠시 비움">자리비움</option>
+                                                    <option value="자리비움">자리비움</option>
                                                 </select>
                                             </form>
                                         </button>
@@ -257,7 +277,7 @@ const Layout = () => {
                                         <div className="flex justify-end w-full">
                                             <button
                                                 className="bg-mainColor text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
-                                                onClick={saveMessage}
+                                                onClick={()=>saveMessage(inputValue)}
                                                 disabled={inputValue.trim() === '' || selectedOption !== "출장중"}
                                             >
                                                 저장
