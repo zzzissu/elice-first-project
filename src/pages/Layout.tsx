@@ -10,15 +10,47 @@ const Layout = () => {
     const [name, setName] = useState("");
     const [department, setDepartment] = useState('');
     const [position, setPosition] = useState('');
-  
+    const [profile_image, setProfile_image] = useState('');
+
 
     useEffect(() => {
         userData();
+        getPicture()
     }, [])
 
     // 알림 상태설정
 
     //정보 가져오기
+    const getPicture = () => {
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:4000/api/profile', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log(response.status);
+                    throw new Error("사진정보를 가져오지 못했습니다.");
+                }
+            })
+            .then((data) => {
+                if (data.profile_image && data.profile_image.trim() !== "") {
+                    const updatedImageUrl = `${data.profile_image}`;
+                    setProfile_image(updatedImageUrl);
+                } else {
+                    setProfile_image('/assets/Group 18.png');
+                }
+            })
+            
+            
+
+    }
+
     const userData = () => {
         const token = localStorage.getItem('token');
         fetch('http://localhost:4000/api/users', {
@@ -91,7 +123,7 @@ const Layout = () => {
     };
 
     //상태저장
-    const saveState = (state : string) => {
+    const saveState = (state: string) => {
         const token = localStorage.getItem('token');
         fetch("http://localhost:4000/api/state", {
             method: "PUT",
@@ -117,7 +149,7 @@ const Layout = () => {
     }
 
     //상태메세지 저장
-    const saveMessage = (statusMessage:string)=>{
+    const saveMessage = (statusMessage: string) => {
         const token = localStorage.getItem('token');
         fetch("http://localhost:4000/api/state/message", {
             method: "POST",
@@ -126,22 +158,22 @@ const Layout = () => {
                 statusMessage: statusMessage
             }),
         })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("상태메세지 전송 오류");
-            } return response.json();
-        })
-        .then((data) => {
-            console.log("상태 전송 성공", data);
-            alert("출장지가 저장되었습니다.")
-        })
-        .catch((error) => {
-            console.error('상태전송 중 오류 발생:', error);
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("상태메세지 전송 오류");
+                } return response.json();
+            })
+            .then((data) => {
+                console.log("상태 전송 성공", data);
+                alert("출장지가 저장되었습니다.")
+            })
+            .catch((error) => {
+                console.error('상태전송 중 오류 발생:', error);
+            });
     }
 
 
-    
+
     useEffect(() => {
         if (selectedOption) {
             saveState(selectedOption);
@@ -277,7 +309,7 @@ const Layout = () => {
                                         <div className="flex justify-end w-full">
                                             <button
                                                 className="bg-mainColor text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
-                                                onClick={()=>saveMessage(inputValue)}
+                                                onClick={() => saveMessage(inputValue)}
                                                 disabled={inputValue.trim() === '' || selectedOption !== "출장중"}
                                             >
                                                 저장

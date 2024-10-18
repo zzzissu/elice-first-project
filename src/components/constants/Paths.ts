@@ -17,4 +17,6 @@ export const Paths = {
     mailWrite: '/mail/mail-write',
     mailRead: '/mail/mail-read',
     sendedMail: '/mail/sended-mail',
+    personerSchedule: '/my-page/schedule/personerSchedule',
+    workSchedule: '/my-page/schedule/workSchedule',
 } as const;
