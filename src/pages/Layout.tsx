@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/nav/Nav';
 import { Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Layout = () => {
     const [profileImg, setProfileImg] = useState<string>('/assets/Group 18.png');
@@ -10,7 +11,14 @@ const Layout = () => {
     const [name, setName] = useState("");
     const [department, setDepartment] = useState('');
     const [position, setPosition] = useState('');
+
+    const navigate = useNavigate();
   
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // 토큰 제거
+        console.log("토큰이 삭제되었습니다.");
+        navigate("/");
+    };
 
     useEffect(() => {
         userData();
@@ -162,22 +170,19 @@ const Layout = () => {
                                 <div className="flex flex-row">
                                     <div
                                         style={{
-                                            backgroundImage: `url('/assets/ring.png')`,
-                                            backgroundPosition: 'center',
-                                            backgroundSize: 'cover',
-                                        }}
-                                        className='z-10 h-12 w-12 mr-3 rounded-full'>
-
-                                    </div>
-                                    <div
-                                        style={{
                                             backgroundImage: `url("${profileImg}")`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
                                         className="z-10 h-12 w-12 mr-3 rounded-full"
                                     />
-                                    <div className="text-xl text-white pt-3 font-sans mr-12">{name}</div>
+                                    <div className="text-xl text-white pt-3 font-sans pr-3">{name}</div>
+                                    <div className="p-2 mr-1">
+                                        <img src="/assets/alarmOff.png" alt="alarmOff" className="h-9 w-9 " />
+                                    </div>
+                                    <button onClick={handleLogout} className="p-2 mr-3 border-l border-slate-400">
+                                        <img src="/assets/logout.png" alt="Logout" className="h-8 w-8 " />
+                                    </button>
                                 </div>
                             </div>
                         </header>
