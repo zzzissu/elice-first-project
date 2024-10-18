@@ -12,11 +12,6 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    localStorage.removeItem('token');
-    console.log("토큰이 삭제되었습니다.");
-  }, []);
-
   const handleLogin = () => {
     if (!email) {
       setError('! 이메일을 입력해주세요.');
