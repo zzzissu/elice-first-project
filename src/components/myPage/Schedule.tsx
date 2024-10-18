@@ -159,7 +159,25 @@ const Schedule = () => {
 
     // 체크박스 변경 함수
     const handleCheckboxChange = (index: number) => {
-        setSelectedIndex(index === selectedIndex ? null : index);
+        const scheduleId = savedPersonerTitles[index].id;
+        const makePublic = true; 
+
+        const token = localStorage.getItem('token');
+
+        fetch(`http://localhost:4000/api/schedule/topublic/${scheduleId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ makePublic }), // 공개 여부를 담아 요청
+        }).then(res => {
+            if (!res.ok) {
+                throw new Error("일정 공개 상태 업데이트에 실패하였습니다.");
+            }
+        }).catch((error) => {
+            console.error("Error: ", error);
+        });
     };
 
     // 개인 일정 페이지네이션 계산

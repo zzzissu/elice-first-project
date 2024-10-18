@@ -108,7 +108,7 @@ const Layout = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                 body: JSON.stringify({
-                    statusMessage: ""
+                    statusMessage: inputValue
                 }),
             });
             if (!res.ok) {
