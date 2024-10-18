@@ -149,6 +149,7 @@ const MailWrite = () => {
                             className="bg-blue-500 text-white p-2 rounded-lg mr-2"
                             onClick={() => {
                                 WriteMail().then(() => {
+                                    alert("메일이 성공적으로 전송되었습니다.")
                                     handleModalClose();
                                 });
                             }}
