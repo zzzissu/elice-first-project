@@ -9,11 +9,12 @@ const WorkingOutsideApplicationForm: React.FC = () => {
     const [endDate, setEndDate] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const profile = useUserApi();
+    const profile = useUserApi(); //유저 정보
 
     const openModal = () => {
         if (!isFormValid) return;
         setIsSubmitting(true);
+
         const token = localStorage.getItem('token');
         fetch('http://localhost:4000/api/approval/outside', {
             method: 'POST',
@@ -47,9 +48,29 @@ const WorkingOutsideApplicationForm: React.FC = () => {
 
     const closeModal = () => {
         setIsModalOpen(false); // 모달 닫기
+        const token = localStorage.getItem('token');
+
+        fetch('http://localhost:4000/api/approval/count', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log(response.status);
+                    throw new Error('정보를 가져오지 못했습니다.');
+                }
+            })
+            .catch((error) => {
+                console.error('정보조회 중 오류 발생:', error);
+            });
     };
 
-    const isFormValid = reasonForWorking !== '';
+    const isFormValid = reasonForWorking !== '' && startDate !== '' && endDate !== '';
     return (
         <div className="flex flex-row max-w-[1280px]">
             <div className="flex-1 w-full p-8 bg-white">
@@ -107,6 +128,15 @@ const WorkingOutsideApplicationForm: React.FC = () => {
 
                 <FormModal isOpen={isModalOpen} onClose={closeModal}>
                     <p className="font-sans text-xl font-bold ml-2">결재신청 완료</p>
+                    <button
+                        onClick={() => {
+                            closeModal(); // 모달 닫기
+                            window.location.reload(); // 페이지 새로고침
+                        }}
+                        className="ml-10 mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg"
+                    >
+                        확인
+                    </button>
                 </FormModal>
             </div>
         </div>
