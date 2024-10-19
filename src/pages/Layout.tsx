@@ -250,8 +250,6 @@ const Layout = () => {
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
-                                        aria-label="문제가 있을 때 표시될 대체 텍스트"
-                                        
                                         className="h-12 w-12 mr-3 rounded-full"
                                     />
                                     <div className="text-xl text-white pt-3 font-sans pr-3">{name}</div>
