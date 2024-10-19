@@ -18,7 +18,6 @@ const Layout = () => {
         rejected: 0, // 반려
         annual: 0, // 연차
     });
-    const [profile_image, setProfile_image] = useState('');
 
     const navigate = useNavigate();
 
@@ -29,8 +28,10 @@ const Layout = () => {
     };
 
     useEffect(() => {
+        setProfileImg("/assets/Group 18.png");
         userData();
-        getApprovalCounts(); // 결재 상태 데이터 가져오기
+        getApprovalCounts();
+        getPicture(); // 결재 상태 데이터 가져오기
     }, []);
 
     // 알림 상태설정
@@ -38,6 +39,7 @@ const Layout = () => {
     //정보 가져오기
     const getPicture = () => {
         const token = localStorage.getItem('token');
+        // 서버에서 프로필 이미지를 가져오는 fetch 요청
         fetch('http://34.22.95.156:3004/api/profile', {
             method: 'GET',
             headers: {
@@ -46,23 +48,34 @@ const Layout = () => {
             },
         })
             .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    console.log(response.status);
-                    throw new Error('사진정보를 가져오지 못했습니다.');
+                if (!response.ok) {
+                    console.error(`서버 응답 오류: ${response.status}`);
+                    throw new Error('서버에서 사진 정보를 가져오는 중 오류 발생');
                 }
+                return response.json();
             })
             .then((data) => {
-                if (data.profile_image && data.profile_image.trim() !== '') {
-                    const updatedImageUrl = `${data.profile_image}`;
-                    setProfile_image(updatedImageUrl);
+                console.log("서버에서 받은 프로필 이미지 URL:", data.profile_image);
+    
+                // 프로필 이미지 유효성 검사
+                if (data.profile_image && data.profile_image.trim() !== '' && data.profile_image !== 'null' && data.profile_image !== null && data.profile_image !== undefined) {
+                    setProfileImg(`${data.profile_image}?t=${new Date().getTime()}`);
                 } else {
-                    setProfile_image('/assets/Group 18.png');
+                    // 이미지가 유효하지 않으면 기본 이미지 설정
+                    console.warn('유효하지 않은 프로필 이미지입니다. 기본 이미지를 사용합니다.');
+                    setProfileImg('/assets/Group 18.png');
                 }
+            })
+            .catch((error) => {
+                console.error('사진을 가져오는 중 오류 발생:', error);
+                // 오류 발생 시 기본 이미지 설정
+                setProfileImg('/assets/Group 18.png');
             });
     };
-
+    
+    
+    
+    
     const userData = () => {
         const token = localStorage.getItem('token');
         fetch('http://34.22.95.156:3004/api/users', {
@@ -130,20 +143,21 @@ const Layout = () => {
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('사진조회 오류');
+                    throw new Error('사진 조회 오류');
                 }
                 return response.json();
             })
             .then((data) => {
-                console.log('사진자료 전송 성공', data);
+                console.log('사진 자료 전송 성공', data);
                 if (data.profileImageUrl) {
                     setProfileImg(data.profileImageUrl);
                 }
             })
             .catch((error) => {
-                console.error('사진자료 전송 중 오류 발생:', error);
+                console.error('사진 자료 전송 중 오류 발생:', error);
             });
     };
+
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOption(e.target.value);
     };
@@ -154,6 +168,8 @@ const Layout = () => {
             setSelectedFile(selectedFile);
             const imageUrl = URL.createObjectURL(selectedFile);
             setProfileImg(imageUrl);
+    
+            // 파일이 선택되면 자동으로 저장
             savePicture(selectedFile);
         }
     };
@@ -229,12 +245,14 @@ const Layout = () => {
                                 <div className="text-3xl text-white font-medium font-sans pl-8">Project</div>
                                 <div className="flex flex-row">
                                     <div
-                                        style={{
-                                            backgroundImage: `url("${profileImg}")`,
+                                         style={{
+                                            backgroundImage: `url("${profileImg ? profileImg : '/assets/Group 18.png'}")`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
-                                        className="z-10 h-12 w-12 mr-3 rounded-full"
+                                        aria-label="문제가 있을 때 표시될 대체 텍스트"
+                                        
+                                        className="h-12 w-12 mr-3 rounded-full"
                                     />
                                     <div className="text-xl text-white pt-3 font-sans pr-3">{name}</div>
                                     <div className="p-2 mr-1">
@@ -263,7 +281,7 @@ const Layout = () => {
                                     <div className="flex flex-col items-center h-44 w-56 ml-20 bg-white rounded-lg shadow-2xl">
                                         <div
                                             style={{
-                                                backgroundImage: `url("${profileImg}")`,
+                                                backgroundImage: `url("${profileImg ? profileImg : '/assets/Group 18.png'}")`,
                                                 backgroundSize: 'cover',
                                                 backgroundPosition: 'center',
                                             }}
