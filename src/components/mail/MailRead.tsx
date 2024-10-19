@@ -33,7 +33,6 @@ const MailRead: React.FC = () => {
                 console.error('메일 삭제 중 오류 발생:', error);
             });
     };
-
     const handlegetReadEmail = () => {
         const token = localStorage.getItem('token');
         fetch('http://34.22.95.156:3004/api/email/received', {
@@ -45,18 +44,24 @@ const MailRead: React.FC = () => {
         })
             .then((response) => (response.ok ? response.json() : Promise.reject(response)))
             .then((data: Mail[]) => {
+                // 중복 메일 제거 후 날짜 순으로 오름차순 정렬 (가장 오래된 메일이 위로 오도록)
                 const uniqueData = data.reduce<Mail[]>((acc, item) => {
                     if (!acc.some((mail) => mail.id === item.id)) {
                         acc.push(item);
                     }
                     return acc;
                 }, []);
+    
+                // created_at 기준으로 오름차순 정렬
+                uniqueData.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    
                 setSavedReadMail(uniqueData);
             })
             .catch((error) => {
                 console.error('메일 조회 중 오류 발생:', error);
             });
     };
+    
 
     useEffect(() => {
         handlegetReadEmail();

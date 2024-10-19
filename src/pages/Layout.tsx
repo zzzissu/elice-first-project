@@ -39,6 +39,7 @@ const Layout = () => {
     };
 
     useEffect(() => {
+        setProfileImg("/assets/Group 18.png");
         userData();
         getApprovalCounts();
         getPicture();
@@ -53,6 +54,7 @@ const Layout = () => {
 
     const getPicture = () => {
         const token = localStorage.getItem('token');
+        // 서버에서 프로필 이미지를 가져오는 fetch 요청
         fetch('http://34.22.95.156:3004/api/profile', {
             method: 'GET',
             headers: {
@@ -60,13 +62,35 @@ const Layout = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => response.json())
-            .then((data) => {
-                setProfileImg(data.profile_image || '/assets/Group 18.png');
+            .then((response) => {
+                if (!response.ok) {
+                    console.error(`서버 응답 오류: ${response.status}`);
+                    throw new Error('서버에서 사진 정보를 가져오는 중 오류 발생');
+                }
+                return response.json();
             })
-            .catch((error) => console.error('사진을 가져오는 중 오류 발생:', error));
+            .then((data) => {
+                console.log("서버에서 받은 프로필 이미지 URL:", data.profile_image);
+    
+                // 프로필 이미지 유효성 검사
+                if (data.profile_image && data.profile_image.trim() !== '' && data.profile_image !== 'null' && data.profile_image !== null && data.profile_image !== undefined) {
+                    setProfileImg(`${data.profile_image}?t=${new Date().getTime()}`);
+                } else {
+                    // 이미지가 유효하지 않으면 기본 이미지 설정
+                    console.warn('유효하지 않은 프로필 이미지입니다. 기본 이미지를 사용합니다.');
+                    setProfileImg('/assets/Group 18.png');
+                }
+            })
+            .catch((error) => {
+                console.error('사진을 가져오는 중 오류 발생:', error);
+                // 오류 발생 시 기본 이미지 설정
+                setProfileImg('/assets/Group 18.png');
+            });
     };
-
+    
+    
+    
+    
     const userData = () => {
         const token = localStorage.getItem('token');
         fetch('http://34.22.95.156:3004/api/users', {
@@ -106,13 +130,57 @@ const Layout = () => {
             .catch((error) => console.error('결재 정보 조회 중 오류:', error));
     };
 
-    // `handleSelectChange` 함수 정의
+    //사진 저장후 나타나기
+    const savePicture = (file: File) => {
+        if (!file) {
+            console.error('업로드할 파일이 없습니다.');
+            return;
+        }
+        const token = localStorage.getItem('token');
+        const formData = new FormData();
+        formData.append('profileImage', file);
+        fetch('http://34.22.95.156:3004/api/profile/image', {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('사진 조회 오류');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('사진 자료 전송 성공', data);
+                if (data.profileImageUrl) {
+                    setProfileImg(data.profileImageUrl);
+                }
+            })
+            .catch((error) => {
+                console.error('사진 자료 전송 중 오류 발생:', error);
+            });
+    };
+
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOption(e.target.value);
     };
 
-    // `saveMessage` 함수 정의
-    const saveMessage = (statusMessage: string) => {
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const selectedFile = e.target.files[0];
+            setSelectedFile(selectedFile);
+            const imageUrl = URL.createObjectURL(selectedFile);
+            setProfileImg(imageUrl);
+    
+            // 파일이 선택되면 자동으로 저장
+            savePicture(selectedFile);
+        }
+    };
+
+    //상태저장
+    const saveState = (state: string) => {
         const token = localStorage.getItem('token');
         fetch('http://34.22.95.156:3004/api/state/message', {
             method: 'POST',
