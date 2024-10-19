@@ -3,7 +3,9 @@ import PageModal from '../modal/PageModal';
 
 const PersonerSchedule = () => {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [savedPersonerTitles, setSavedPersonerTitles] = useState<{ title: string; content: string; user_name: string; created_at: string; id: number }[]>([]);
+    const [savedPersonerTitles, setSavedPersonerTitles] = useState<
+        { title: string; content: string; user_name: string; created_at: string; id: number }[]
+    >([]);
     const [currentPersonalPage, setCurrentPersonalPage] = useState(1);
     const itemsPerPage = 5; // 한 페이지에 보여줄 아이템 수
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null); // 단일 선택된 항목의 ID를 관리하는 상태
@@ -13,7 +15,7 @@ const PersonerSchedule = () => {
 
     // 개인일정 조회 함수
     const fetchPersonerData = () => {
-        const apiUrl = 'http://localhost:4000/api/schedule/user';
+        const apiUrl = 'http://34.22.95.156:3004/api/schedule/user';
 
         fetch(apiUrl, {
             method: 'GET',
@@ -45,7 +47,7 @@ const PersonerSchedule = () => {
 
     // 개인일정 삭제
     const handleDeletePersoner = (id: number) => {
-        fetch(`http://localhost:4000/api/schedule/user/${id}`, {
+        fetch(`http://34.22.95.156:3004/api/schedule/user/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })
@@ -67,7 +69,7 @@ const PersonerSchedule = () => {
 
     // 개인일정 작성
     const handleSavePersoner = (title: string, content: string) => {
-        fetch('http://localhost:4000/api/schedule', {
+        fetch('http://34.22.95.156:3004/api/schedule', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -118,10 +120,10 @@ const PersonerSchedule = () => {
     // 선택된 항목을 서버에 전송하는 함수
     const sendCheckedItemToServer = () => {
         if (selectedIndex !== null) {
-            fetch(`http://localhost:4000/api/schedule/topublic/${selectedIndex}`, {
+            fetch(`http://34.22.95.156:3004/api/schedule/topublic/${selectedIndex}`, {
                 method: 'PATCH',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             })
@@ -201,7 +203,9 @@ const PersonerSchedule = () => {
                         {Array.from({ length: totalPersonalPages }, (_, i) => (
                             <button
                                 key={i}
-                                className={`mx-1 px-4 py-2 rounded ${currentPersonalPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                className={`mx-1 px-4 py-2 rounded ${
+                                    currentPersonalPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                                }`}
                                 onClick={() => setCurrentPersonalPage(i + 1)}
                             >
                                 {i + 1}
@@ -212,9 +216,10 @@ const PersonerSchedule = () => {
                 <button
                     onClick={() => {
                         sendCheckedItemToServer();
-                        alert("일정이 공유되었습니다.")
+                        alert('일정이 공유되었습니다.');
                     }}
-                    className="bg-blue-500 text-white rounded-lg p-2 ml-5 mt-2">
+                    className="bg-blue-500 text-white rounded-lg p-2 ml-5 mt-2"
+                >
                     선택된 일정 공유하기
                 </button>
             </div>

@@ -20,7 +20,7 @@ const SendedMail: React.FC = () => {
 
     const handleDeleteSendedMail = (id: number) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:4000/api/email/${id}`, {
+        fetch(`http://34.22.95.156:3004/api/email/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })
@@ -37,24 +37,29 @@ const SendedMail: React.FC = () => {
 
     const handlegetSendedEmail = () => {
         const token = localStorage.getItem('token');
-        const apiUrl = 'http://localhost:4000/api/email/sent';
+        const apiUrl = 'http://34.22.95.156:3004/api/email/sent';
 
         fetch(apiUrl, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then((response) => response.ok ? response.json() : Promise.reject(response))
-        .then((data: Mail[]) => {
-            const sortedData = data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-            setSavedSendedMail(sortedData);
-        })
-        .catch((error) => {
-            console.error('메일 조회 중 오류 발생:', error);
-        });
-};
+            .then((response) => (response.ok ? response.json() : Promise.reject(response)))
+            .then((data: Mail[]) => {
+                const uniqueData = data.reduce<Mail[]>((acc, item) => {
+                    if (!acc.some((mail) => mail.id === item.id)) {
+                        acc.push(item);
+                    }
+                    return acc;
+                }, []);
+                setSavedSendedMail(uniqueData);
+            })
+            .catch((error) => {
+                console.error('메일 조회 중 오류 발생:', error);
+            });
+    };
 
     useEffect(() => {
         handlegetSendedEmail();
@@ -62,10 +67,10 @@ const SendedMail: React.FC = () => {
 
     const handleCheckMail = (id: number) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:4000/api/email/check/${id}`, {
+        fetch(`http://34.22.95.156:3004/api/email/check/${id}`, {
             method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         })
@@ -74,8 +79,8 @@ const SendedMail: React.FC = () => {
                     throw new Error('메일 확인 상태 변경 오류');
                 }
                 // 변경된 메일의 상태를 업데이트
-                setSavedSendedMail((prev) => 
-                    prev.map((mail) => mail.id === id ? { ...mail, is_checked: true } : mail)
+                setSavedSendedMail((prev) =>
+                    prev.map((mail) => (mail.id === id ? { ...mail, is_checked: true } : mail))
                 );
             })
             .catch((error) => {
@@ -115,7 +120,7 @@ const SendedMail: React.FC = () => {
                     {currentPersonalItems.map((mail) => (
                         <tr className="h-14" key={mail.id}>
                             <td className="border-b-2 border-gray-300 p-2 text-center">{mail.target_email}</td>
-                            <td 
+                            <td
                                 className={`border-b-2 border-gray-300 p-2 text-center cursor-pointer ${
                                     mail.is_checked ? 'text-blue-300' : 'text-mainColor'
                                 }`}
@@ -138,7 +143,7 @@ const SendedMail: React.FC = () => {
                     ))}
                 </tbody>
             </table>
-            
+
             {/* 페이지네이션 버튼 */}
             {totalPersonalPages > 1 && (
                 <div className="flex justify-center mt-4">
@@ -146,9 +151,7 @@ const SendedMail: React.FC = () => {
                         <button
                             key={i}
                             className={`mx-1 px-4 py-2 rounded ${
-                                currentSendedMailPage === i + 1
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-300 text-black'
+                                currentSendedMailPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
                             }`}
                             onClick={() => setCurrentSendedMailPage(i + 1)}
                         >
