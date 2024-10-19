@@ -16,7 +16,7 @@ const SendedMail: React.FC = () => {
     const [selectedMail, setSelectedMail] = useState<Mail | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [currentSendedMailPage, setCurrentSendedMailPage] = useState(1);
-    const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
+    const itemsPerPage = 6;
 
     const handleDeleteSendedMail = (id: number) => {
         const token = localStorage.getItem('token');
@@ -78,7 +78,6 @@ const SendedMail: React.FC = () => {
                 if (!response.ok) {
                     throw new Error('메일 확인 상태 변경 오류');
                 }
-                // 변경된 메일의 상태를 업데이트
                 setSavedSendedMail((prev) =>
                     prev.map((mail) => (mail.id === id ? { ...mail, is_checked: true } : mail))
                 );
@@ -89,7 +88,6 @@ const SendedMail: React.FC = () => {
     };
 
     const openModal = (mail: Mail) => {
-        // 모달을 열면서 해당 메일을 읽은 상태로 변경
         handleCheckMail(mail.id);
         setSelectedMail(mail);
         setIsModalOpen(true);
@@ -98,6 +96,12 @@ const SendedMail: React.FC = () => {
     const closeModal = () => {
         setSelectedMail(null);
         setIsModalOpen(false);
+    };
+
+    const handleConfirm = () => {
+        // 확인 버튼을 눌렀을 때의 동작을 정의합니다.
+        console.log('메일이 확인되었습니다.');
+        closeModal();
     };
 
     const indexOfLastPersonalItem = currentSendedMailPage * itemsPerPage;
@@ -144,14 +148,15 @@ const SendedMail: React.FC = () => {
                 </tbody>
             </table>
 
-            {/* 페이지네이션 버튼 */}
             {totalPersonalPages > 1 && (
                 <div className="flex justify-center mt-4">
                     {Array.from({ length: totalPersonalPages }, (_, i) => (
                         <button
                             key={i}
                             className={`mx-1 px-4 py-2 rounded ${
-                                currentSendedMailPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
+                                currentSendedMailPage === i + 1
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-gray-300 text-black'
                             }`}
                             onClick={() => setCurrentSendedMailPage(i + 1)}
                         >
@@ -161,7 +166,7 @@ const SendedMail: React.FC = () => {
                 </div>
             )}
 
-            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} mail={selectedMail} />
+            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleConfirm} mail={selectedMail} />
         </div>
     );
 };
