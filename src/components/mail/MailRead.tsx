@@ -176,7 +176,7 @@ const MailRead: React.FC = () => {
                 </div>
             )}
 
-            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} mail={selectedMail} />
+            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleConfirm} mail={selectedMail} />
         </div>
     );
 };
