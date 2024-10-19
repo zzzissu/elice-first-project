@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import PageModal from '../modal/PageModal';
 
+interface PersonerItem {
+    title: string;
+    content: string;
+    user_name: string;
+    created_at: string;
+    id: number;
+    confirmed?: boolean;
+}
+
 const PersonerSchedule = () => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [savedPersonerTitles, setSavedPersonerTitles] = useState<
         { title: string; content: string; user_name: string; created_at: string; id: number }[]
     >([]);
+    const [confirmedIndex, setConfirmedIndex] = useState<number | null>(null);
     const [currentPersonalPage, setCurrentPersonalPage] = useState(1);
     const itemsPerPage = 5; // 한 페이지에 보여줄 아이템 수
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null); // 단일 선택된 항목의 ID를 관리하는 상태
@@ -16,7 +26,7 @@ const PersonerSchedule = () => {
     // 개인일정 조회 함수
     const fetchPersonerData = () => {
         const apiUrl = 'http://34.22.95.156:3004/api/schedule/user';
-
+    
         fetch(apiUrl, {
             method: 'GET',
             headers: {
@@ -30,16 +40,24 @@ const PersonerSchedule = () => {
                 }
                 return response.json();
             })
-            .then((data) => {
-                const formattedDataPersoner = data.map((item: any) => ({
+            .then((data: PersonerItem[]) => {
+                const formattedDataPersoner = data.map((item: PersonerItem) => ({
                     title: item.title,
                     content: item.content,
                     user_name: item.user_name,
                     created_at: item.created_at,
                     id: item.id,
+                    confirmed: item.confirmed || false,
                 }));
                 setSavedPersonerTitles(formattedDataPersoner);
+            
+                // 초기 confirmedIndex 설정
+                const confirmedItem = formattedDataPersoner.find((item) => item.confirmed);
+                if (confirmedItem) {
+                    setConfirmedIndex(confirmedItem.id);
+                }
             })
+            
             .catch((error) => {
                 console.error('개인일정조회 중 오류 발생:', error);
             });
@@ -49,7 +67,7 @@ const PersonerSchedule = () => {
     const handleDeletePersoner = (id: number) => {
         fetch(`http://34.22.95.156:3004/api/schedule/user/${id}`, {
             method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: ` Bearer ${token}` },
         })
             .then((response) => {
                 if (!response.ok) {
@@ -92,8 +110,8 @@ const PersonerSchedule = () => {
                 return response.json();
             })
             .then(() => {
-                setModalOpen(false);
-                fetchPersonerData(); // 일정 저장 후 데이터를 다시 조회하여 갱신
+                setModalOpen(false); // 모달을 닫고
+                fetchPersonerData(); // 데이터를 다시 불러와 새로고침
             })
             .catch((error) => {
                 console.error('개인일정 작성 중 오류 발생:', error);
@@ -114,30 +132,48 @@ const PersonerSchedule = () => {
 
     // 체크박스 변경 함수 (단 하나의 항목만 선택 가능)
     const handleCheckboxChange = (id: number) => {
-        setSelectedIndex((prevIndex) => (prevIndex === id ? null : id)); // 같은 항목을 클릭하면 선택 해제, 아니면 선택
-    };
-
-    // 선택된 항목을 서버에 전송하는 함수
-    const sendCheckedItemToServer = () => {
-        if (selectedIndex !== null) {
-            fetch(`http://34.22.95.156:3004/api/schedule/topublic/${selectedIndex}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('공유 상태 변경 오류');
-                    }
-                    console.log(`일정 ID ${selectedIndex}가 공유되었습니다.`);
+        if (selectedIndex !== id) {
+            setSelectedIndex(id);
+            sendCheckedItemToServer(id)
+                .then(() => {
+                    fetchPersonerData(); // 새로운 일정 선택 후 데이터를 다시 조회하여 최신 상태 반영
                 })
                 .catch((error) => {
-                    console.error('공유 상태 변경 중 오류 발생:', error);
+                    console.error('일정 선택 중 오류 발생:', error);
                 });
+        } else {
+            setSelectedIndex(null); // 동일한 일정 클릭 시 선택 해제
         }
     };
+    
+
+    const handleConfirmSelection = () => {
+        if (selectedIndex !== null) {
+            setConfirmedIndex(selectedIndex); // 현재 선택된 항목을 최종 확정
+            alert('일정이 공유되었습니다.');
+        }
+    };
+    // 선택된 항목을 서버에 전송하는 함수
+    const sendCheckedItemToServer = (id: number) => {
+        return fetch(`http://34.22.95.156:3004/api/schedule/topublic/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ schedule_id: id, confirmed: true }),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('일정 선택 오류');
+            }
+            return response.json(); // 서버 응답을 JSON으로 변환
+        })
+        .catch((error) => {
+            console.error('일정 선택 중 오류 발생:', error);
+        });
+    };
+    
 
     // 개인 일정 페이지네이션 계산
     const indexOfLastPersonalItem = currentPersonalPage * itemsPerPage;
@@ -159,7 +195,7 @@ const PersonerSchedule = () => {
                         onClick={handleWriteClickPersonal}
                         className="w-10 h-8 mr-6 -mt-2 rounded-md"
                         style={{
-                            backgroundImage: `url('/assets/plus.png')`,
+                            backgroundImage: `url('/assets/plus.png')`, // 수정된 부분
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                         }}
@@ -170,13 +206,15 @@ const PersonerSchedule = () => {
                         currentPersonalItems.map(({ id, title, content }) => (
                             <li
                                 key={id}
-                                className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
+                                className={`cursor-default text-lg w-[90%] m-5 border-b flex items-center group ${confirmedIndex === id ? 'bg-yellow-200 font-bold' : ''
+                                    }`} // 확정된 항목에 스타일 추가 (배경색과 글자 두껍게)
                             >
                                 <input
                                     type="checkbox"
                                     checked={selectedIndex === id}
                                     onChange={() => handleCheckboxChange(id)}
                                     className="mr-4"
+                                    disabled={confirmedIndex !== null && confirmedIndex !== id} // 이미 확정된 항목이 있으면 다른 항목 선택 불가
                                 />
                                 <div
                                     onClick={() => handleTitleClick(title, content)}
@@ -203,9 +241,10 @@ const PersonerSchedule = () => {
                         {Array.from({ length: totalPersonalPages }, (_, i) => (
                             <button
                                 key={i}
-                                className={`mx-1 px-4 py-2 rounded ${
-                                    currentPersonalPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
-                                }`}
+                                className={`mx-1 px-4 py-2 rounded ${currentPersonalPage === i + 1
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-gray-300'
+                                    }`}
                                 onClick={() => setCurrentPersonalPage(i + 1)}
                             >
                                 {i + 1}
@@ -214,14 +253,12 @@ const PersonerSchedule = () => {
                     </div>
                 )}
                 <button
-                    onClick={() => {
-                        sendCheckedItemToServer();
-                        alert('일정이 공유되었습니다.');
-                    }}
+                    onClick={handleConfirmSelection}
+                    disabled={selectedIndex === null || confirmedIndex !== null} // 항목이 선택되지 않았거나 이미 확정된 경우 비활성화
                     className="bg-blue-500 text-white rounded-lg p-2 ml-5 mt-2"
                 >
-                    선택된 일정 공유하기
-                </button>
+                    선택된 일정 확정하기
+                </button>;
             </div>
             <PageModal
                 isOpen={isModalOpen}
@@ -232,6 +269,7 @@ const PersonerSchedule = () => {
             />
         </div>
     );
+
 };
 
 export default PersonerSchedule;

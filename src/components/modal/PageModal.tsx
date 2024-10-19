@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface ModalProps {
     isOpen: boolean; // 모달 열림 상태
@@ -10,12 +10,19 @@ interface ModalProps {
 }
 
 const PageModal = (props: ModalProps) => {
-    // props 비구조화 할당
     const { isOpen, onClose, onSave, title = '', content = '' } = props;
 
     // 모달 내부의 새로운 제목과 내용 상태 관리
     const [newTitle, setNewTitle] = useState(title);
     const [newContent, setNewContent] = useState(content);
+
+    // 모달이 열릴 때마다 title과 content를 newTitle과 newContent로 업데이트
+    useEffect(() => {
+        if (isOpen) {
+            setNewTitle(title);
+            setNewContent(content);
+        }
+    }, [isOpen, title, content]);
 
     if (!isOpen) return null;
 
@@ -23,7 +30,7 @@ const PageModal = (props: ModalProps) => {
         if (onSave) {
             onSave(newTitle, newContent);
         }
-        setNewTitle(''); // 부모 컴포넌트 업데이트 후 상태 초기화
+        setNewTitle(''); // 상태 초기화
         setNewContent('');
         onClose(); // 모달 닫기
     };
@@ -31,7 +38,7 @@ const PageModal = (props: ModalProps) => {
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-            onClick={onClose} // 모달 외부 클릭 시 닫기
+            onClick={onClose}
         >
             <div
                 className="bg-white p-6 rounded-lg w-[90%] max-w-lg shadow-lg relative"
