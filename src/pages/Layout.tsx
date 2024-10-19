@@ -11,13 +11,14 @@ const Layout = () => {
     const [name, setName] = useState('');
     const [department, setDepartment] = useState('');
     const [position, setPosition] = useState('');
-
+    const [emailData, setEmailData] = useState<{ newEmailCount: number; message: string } | null>(null);
     const [approvalCounts, setApprovalCounts] = useState({
         pending: 0, // 결재중
         approved: 0, // 결재완료
         rejected: 0, // 반려
         annual: 0, // 연차
     });
+    const [profile_image, setProfile_image] = useState('');
 
     const navigate = useNavigate();
 
@@ -28,10 +29,10 @@ const Layout = () => {
     };
 
     useEffect(() => {
-        setProfileImg("/assets/Group 18.png");
         userData();
         getApprovalCounts();
         getPicture(); // 결재 상태 데이터 가져오기
+        fetchEmailData();
     }, []);
 
     // 알림 상태설정
@@ -39,7 +40,13 @@ const Layout = () => {
     //정보 가져오기
     const getPicture = () => {
         const token = localStorage.getItem('token');
-        // 서버에서 프로필 이미지를 가져오는 fetch 요청
+    
+        if (!token) {
+            console.error('토큰이 없습니다.');
+            setProfileImg('/assets/Group 18.png');
+            return;
+        }
+    
         fetch('http://34.22.95.156:3004/api/profile', {
             method: 'GET',
             headers: {
@@ -57,24 +64,22 @@ const Layout = () => {
             .then((data) => {
                 console.log("서버에서 받은 프로필 이미지 URL:", data.profile_image);
     
-                // 프로필 이미지 유효성 검사
-                if (data.profile_image && data.profile_image.trim() !== '' && data.profile_image !== 'null' && data.profile_image !== null && data.profile_image !== undefined) {
-                    setProfileImg(`${data.profile_image}?t=${new Date().getTime()}`);
+                // URL 유효성 검증 추가
+                if (data.profile_image && data.profile_image !== 'null' && data.profile_image.trim() !== '') {
+                    const updatedImageUrl = `${data.profile_image}?t=${new Date().getTime()}`; // 타임스탬프 추가
+                    setProfileImg(updatedImageUrl);
                 } else {
-                    // 이미지가 유효하지 않으면 기본 이미지 설정
-                    console.warn('유효하지 않은 프로필 이미지입니다. 기본 이미지를 사용합니다.');
-                    setProfileImg('/assets/Group 18.png');
+                    console.warn('프로필 이미지가 유효하지 않습니다. 기본 이미지로 설정합니다.');
+                    setProfileImg('/assets/Group 18.png'); // 기본 이미지 설정
                 }
             })
             .catch((error) => {
                 console.error('사진을 가져오는 중 오류 발생:', error);
-                // 오류 발생 시 기본 이미지 설정
-                setProfileImg('/assets/Group 18.png');
+                setProfileImg('/assets/Group 18.png'); // 오류 발생 시 기본 이미지 설정
             });
     };
     
-    
-    
+
     
     const userData = () => {
         const token = localStorage.getItem('token');
@@ -234,6 +239,30 @@ const Layout = () => {
             setInputValue('');
         }
     }, [selectedOption]);
+
+    const fetchEmailData = () => {
+        const token = localStorage.getItem("token");
+        fetch("http://34.22.95.156:3004/api/email/check", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("이메일 알림 조회 오류");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            setEmailData(data);
+        })
+        .catch((error) => {
+            console.error("이메일 조회 중 오류 발생:", error);
+        });
+    };
+    
     return (
         <div className="flex">
             <Nav />
@@ -245,8 +274,8 @@ const Layout = () => {
                                 <div className="text-3xl text-white font-medium font-sans pl-8">Project</div>
                                 <div className="flex flex-row">
                                     <div
-                                         style={{
-                                            backgroundImage: `url("${profileImg ? profileImg : '/assets/Group 18.png'}")`,
+                                        style={{
+                                            backgroundImage: `url("${profileImg}")`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
@@ -254,8 +283,13 @@ const Layout = () => {
                                     />
                                     <div className="text-xl text-white pt-3 font-sans pr-3">{name}</div>
                                     <div className="p-2 mr-1">
-                                        <img src="/assets/alarmOff.png" alt="alarmOff" className="h-9 w-9 " />
-                                    </div>
+    <img
+        src={emailData && emailData.newEmailCount > 0 ? "/assets/alarmOn.png" : "/assets/alarmOff.png"}
+        alt={emailData && emailData.newEmailCount > 0 ? "alarmOn" : "alarmOff"}
+        className="h-9 w-9"
+    />
+</div>
+
                                     <button onClick={handleLogout} className="p-2 mr-3 border-l border-slate-400">
                                         <img src="/assets/logout.png" alt="Logout" className="h-8 w-8 " />
                                     </button>
@@ -279,7 +313,7 @@ const Layout = () => {
                                     <div className="flex flex-col items-center h-44 w-56 ml-20 bg-white rounded-lg shadow-2xl">
                                         <div
                                             style={{
-                                                backgroundImage: `url("${profileImg ? profileImg : '/assets/Group 18.png'}")`,
+                                                backgroundImage: `url("${profileImg}")`,
                                                 backgroundSize: 'cover',
                                                 backgroundPosition: 'center',
                                             }}

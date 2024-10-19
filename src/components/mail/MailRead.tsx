@@ -53,8 +53,7 @@ const MailRead: React.FC = () => {
                 }, []);
     
                 // created_at 기준으로 오름차순 정렬
-                uniqueData.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-    
+                uniqueData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
                 setSavedReadMail(uniqueData);
             })
             .catch((error) => {
@@ -176,7 +175,7 @@ const MailRead: React.FC = () => {
                 </div>
             )}
 
-            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} mail={selectedMail} />
+            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleConfirm} mail={selectedMail} />
         </div>
     );
 };
