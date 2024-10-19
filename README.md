@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+## 팀 소개
+**팀명** : 4팀 사알려조
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**팀원** : 하정우(팀장), 김지언, 최준영, 한지수, 이수엽, 이희재
+<hr />
+<hr />
 
-## Available Scripts
+## 기획내용
+#### 제목
 
-In the project directory, you can run:
+#### 추진배경
 
-### `npm start`
+#### 현황 및 문제점
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### 추진 목표/전략
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### 추진 방안 & 세부 추진 계획
 
-### `npm test`
+#### 역할 분담
+| 하정우(front) |한지수(front)|최준영(front)|김지언(front)|이수엽(back)|이희재(back)|
+|:-------------:|:-------------:|:--------------:|:-------------:|:---------:|:----------:|
+| MyPage | LoginPage/SignUpPage | Nav | MainPage | usersAPI | stateAPI |
+| MailPage | Password | AuthorizationPage | Design총괄 | announcementAPI | profileAPI  |
+| Layout | TeamPage |  |  | approbalAPI | scheduleAPI |
+|  | ErrorPage |  |  |  |  |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 기대 효과
 
-### `npm run build`
+#### 참고
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 접속링크
+http://34.22.95.156:3004
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 팀 활동
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 트러블 슈팅
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 경험 공유
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## 시연영상
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
