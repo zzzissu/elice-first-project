@@ -24,7 +24,7 @@ const BusinessReport: React.FC = () => {
         if (!isFormValid) return;
         setIsSubmitting(true);
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/approval/businessreport', {
+        fetch('http://34.22.95.156:3004/api/approval/businessreport', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const BusinessReport: React.FC = () => {
         setIsModalOpen(false); // 모달 닫기
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:4000/api/approval/count', {
+        fetch('http://34.22.95.156:3004/api/approval/count', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

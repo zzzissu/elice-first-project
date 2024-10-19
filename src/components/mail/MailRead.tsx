@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MailDetailModal from '../modal/MailDetailModal'
+import MailDetailModal from '../modal/MailDetailModal';
 
 interface Mail {
     id: number;
@@ -19,7 +19,7 @@ const MailRead: React.FC = () => {
 
     const handleDeleteReadMail = (id: number) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:4000/api/email/${id}`, {
+        fetch(`http://34.22.95.156:3004/api/email/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })
@@ -36,17 +36,17 @@ const MailRead: React.FC = () => {
 
     const handlegetReadEmail = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/email/received', {
-            method: "GET",
+        fetch('http://34.22.95.156:3004/api/email/received', {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => response.ok ? response.json() : Promise.reject(response))
+            .then((response) => (response.ok ? response.json() : Promise.reject(response)))
             .then((data: Mail[]) => {
                 const uniqueData = data.reduce<Mail[]>((acc, item) => {
-                    if (!acc.some(mail => mail.id === item.id)) {
+                    if (!acc.some((mail) => mail.id === item.id)) {
                         acc.push(item);
                     }
                     return acc;
@@ -123,9 +123,7 @@ const MailRead: React.FC = () => {
                         <button
                             key={i}
                             className={`mx-1 px-4 py-2 rounded ${
-                                currentReadMailPage === i + 1
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-300 text-black'
+                                currentReadMailPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
                             }`}
                             onClick={() => setCurrentReadMailPage(i + 1)}
                         >

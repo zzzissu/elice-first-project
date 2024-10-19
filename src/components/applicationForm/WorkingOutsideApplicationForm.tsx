@@ -16,7 +16,7 @@ const WorkingOutsideApplicationForm: React.FC = () => {
         setIsSubmitting(true);
 
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/approval/outside', {
+        fetch('http://34.22.95.156:3004/api/approval/outside', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const WorkingOutsideApplicationForm: React.FC = () => {
         setIsModalOpen(false); // 모달 닫기
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:4000/api/approval/count', {
+        fetch('http://34.22.95.156:3004/api/approval/count', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

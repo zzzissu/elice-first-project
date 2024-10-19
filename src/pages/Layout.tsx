@@ -21,11 +21,11 @@ const Layout = () => {
     const [profile_image, setProfile_image] = useState('');
 
     const navigate = useNavigate();
-  
+
     const handleLogout = () => {
         localStorage.removeItem('token'); // 토큰 제거
-        console.log("토큰이 삭제되었습니다.");
-        navigate("/");
+        console.log('토큰이 삭제되었습니다.');
+        navigate('/');
     };
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const Layout = () => {
     //정보 가져오기
     const getPicture = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/profile', {
+        fetch('http://34.22.95.156:3004/api/profile', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ const Layout = () => {
 
     const userData = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/users', {
+        fetch('http://34.22.95.156:3004/api/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const Layout = () => {
     // 결재중 카운팅
     const getApprovalCounts = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/approval/count', {
+        fetch('http://34.22.95.156:3004/api/approval/count', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const Layout = () => {
         const token = localStorage.getItem('token');
         const formData = new FormData();
         formData.append('profileImage', file);
-        fetch('http://localhost:4000/api/profile/image', {
+        fetch('http://34.22.95.156:3004/api/profile/image', {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -161,7 +161,7 @@ const Layout = () => {
     //상태저장
     const saveState = (state: string) => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/state', {
+        fetch('http://34.22.95.156:3004/api/state', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ const Layout = () => {
     //상태메세지 저장
     const saveMessage = (statusMessage: string) => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/state/message', {
+        fetch('http://34.22.95.156:3004/api/state/message', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
             body: JSON.stringify({

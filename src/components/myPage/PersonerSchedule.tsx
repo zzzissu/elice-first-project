@@ -3,7 +3,9 @@ import PageModal from '../modal/PageModal';
 
 const PersonerSchedule = () => {
     const [isModalOpen, setModalOpen] = useState(false);
-    const [savedPersonerTitles, setSavedPersonerTitles] = useState<{ title: string; content: string; user_name: string; created_at: string; id: number }[]>([]);
+    const [savedPersonerTitles, setSavedPersonerTitles] = useState<
+        { title: string; content: string; user_name: string; created_at: string; id: number }[]
+    >([]);
     const [currentPersonalPage, setCurrentPersonalPage] = useState(1);
     const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -14,7 +16,7 @@ const PersonerSchedule = () => {
 
     // 개인일정 조회 함수
     const fetchPersonerData = () => {
-        const apiUrl = 'http://localhost:4000/api/schedule/user';
+        const apiUrl = 'http://34.22.95.156:3004/api/schedule/user';
 
         fetch(apiUrl, {
             method: 'GET',
@@ -46,7 +48,7 @@ const PersonerSchedule = () => {
 
     // 개인일정 삭제
     const handleDeletePersoner = (id: number) => {
-        fetch(`http://localhost:4000/api/schedule/user/${id}`, {
+        fetch(`http://34.22.95.156:3004/api/schedule/user/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })
@@ -64,7 +66,7 @@ const PersonerSchedule = () => {
 
     // 개인일정 작성
     const handleSavePersoner = (title: string, content: string) => {
-        fetch('http://localhost:4000/api/schedule', {
+        fetch('http://34.22.95.156:3004/api/schedule', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -176,7 +178,9 @@ const PersonerSchedule = () => {
                         {Array.from({ length: totalPersonalPages }, (_, i) => (
                             <button
                                 key={i}
-                                className={`mx-1 px-4 py-2 rounded ${currentPersonalPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                                className={`mx-1 px-4 py-2 rounded ${
+                                    currentPersonalPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                                }`}
                                 onClick={() => setCurrentPersonalPage(i + 1)}
                             >
                                 {i + 1}
