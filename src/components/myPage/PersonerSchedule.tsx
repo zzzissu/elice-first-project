@@ -92,8 +92,8 @@ const PersonerSchedule = () => {
                 return response.json();
             })
             .then(() => {
-                setModalOpen(false);
-                fetchPersonerData(); // 일정 저장 후 데이터를 다시 조회하여 갱신
+                setModalOpen(false); // 모달을 닫고
+                fetchPersonerData(); // 데이터를 다시 불러와 새로고침
             })
             .catch((error) => {
                 console.error('개인일정 작성 중 오류 발생:', error);
@@ -132,12 +132,17 @@ const PersonerSchedule = () => {
                         throw new Error('공유 상태 변경 오류');
                     }
                     console.log(`일정 ID ${selectedIndex}가 공유되었습니다.`);
+                    // 알림창을 여기서 한 번만 호출
+                    alert('일정이 공유되었습니다.');
+                    // alert 확인 후 페이지를 새로고침
+                    window.location.reload(); 
                 })
                 .catch((error) => {
                     console.error('공유 상태 변경 중 오류 발생:', error);
                 });
         }
     };
+    
 
     // 개인 일정 페이지네이션 계산
     const indexOfLastPersonalItem = currentPersonalPage * itemsPerPage;
@@ -213,15 +218,14 @@ const PersonerSchedule = () => {
                         ))}
                     </div>
                 )}
-                <button
-                    onClick={() => {
-                        sendCheckedItemToServer();
-                        alert('일정이 공유되었습니다.');
-                    }}
-                    className="bg-blue-500 text-white rounded-lg p-2 ml-5 mt-2"
-                >
-                    선택된 일정 공유하기
-                </button>
+          <button
+    onClick={() => {
+        sendCheckedItemToServer();
+    }}
+    className="bg-blue-500 text-white rounded-lg p-2 ml-5 mt-2"
+>
+    선택된 일정 공유하기
+</button>
             </div>
             <PageModal
                 isOpen={isModalOpen}
