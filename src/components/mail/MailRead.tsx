@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MailDetailModal from '../modal/MailDetailModal'
+import MailDetailModal from '../modal/MailDetailModal';
 
 interface Mail {
     id: number;
@@ -19,7 +19,7 @@ const MailRead: React.FC = () => {
 
     const handleDeleteReadMail = (id: number) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:4000/api/email/${id}`, {
+        fetch(`http://34.22.95.156:3004/api/email/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })
@@ -36,18 +36,22 @@ const MailRead: React.FC = () => {
 
     const handlegetReadEmail = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/email/received', {
-            method: "GET",
+        fetch('http://34.22.95.156:3004/api/email/received', {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         })
-
-            .then((response) => response.ok ? response.json() : Promise.reject(response))
+            .then((response) => (response.ok ? response.json() : Promise.reject(response)))
             .then((data: Mail[]) => {
-                const sortedData = data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-                setSavedReadMail(sortedData);
+                const uniqueData = data.reduce<Mail[]>((acc, item) => {
+                    if (!acc.some((mail) => mail.id === item.id)) {
+                        acc.push(item);
+                    }
+                    return acc;
+                }, []);
+                setSavedReadMail(uniqueData);
             })
             .catch((error) => {
                 console.error('메일 조회 중 오류 발생:', error);
@@ -61,10 +65,10 @@ const MailRead: React.FC = () => {
     // 이메일 체크 확인
     const handleCheckMail = (id: number) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:4000/api/email/check/${id}`, {
+        fetch(`http://34.22.95.156:3004/api/email/check/${id}`, {
             method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         })
@@ -73,15 +77,13 @@ const MailRead: React.FC = () => {
                     throw new Error('메일 확인 상태 변경 오류');
                 }
                 // 변경된 메일의 상태를 업데이트
-                setSavedReadMail((prev) => 
-                    prev.map((mail) => mail.id === id ? { ...mail, is_checked: true } : mail)
-                );
+                setSavedReadMail((prev) => prev.map((mail) => (mail.id === id ? { ...mail, is_checked: true } : mail)));
             })
             .catch((error) => {
                 console.error('메일 읽음 상태 변경 중 오류 발생:', error);
             });
     };
-    
+
     const openModal = (mail: Mail) => {
         // 모달을 열면서 해당 메일을 읽은 상태로 변경
         handleCheckMail(mail.id);
@@ -116,8 +118,9 @@ const MailRead: React.FC = () => {
                         <tr className="h-14" key={mail.id}>
                             <td className="border-b-2 border-gray-300 p-2 text-center">{mail.user_email}</td>
                             <td
-                                className={`border-b-2 border-gray-300 p-2 text-center cursor-pointer ${mail.is_checked ? 'text-blue-300' : 'text-mainColor'
-                                    }`}
+                                className={`border-b-2 border-gray-300 p-2 text-center cursor-pointer ${
+                                    mail.is_checked ? 'text-blue-300' : 'text-mainColor'
+                                }`}
                                 onClick={() => openModal(mail)}
                             >
                                 {mail.title}
@@ -143,10 +146,9 @@ const MailRead: React.FC = () => {
                     {Array.from({ length: totalPersonalPages }, (_, i) => (
                         <button
                             key={i}
-                            className={`mx-1 px-4 py-2 rounded ${currentReadMailPage === i + 1
-                                ? 'bg-blue-500 text-white'
-                                : 'bg-gray-300 text-black'
-                                }`}
+                            className={`mx-1 px-4 py-2 rounded ${
+                                currentReadMailPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
+                            }`}
                             onClick={() => setCurrentReadMailPage(i + 1)}
                         >
                             {i + 1}

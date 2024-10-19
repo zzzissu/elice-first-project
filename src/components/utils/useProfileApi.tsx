@@ -12,7 +12,7 @@ export const useUserApi = () => {
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/profile', {
+        fetch('http://34.22.95.156:3004/api/profile', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

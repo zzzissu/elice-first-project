@@ -7,42 +7,44 @@ const MailWrite = () => {
     const [mailContent, setMailContent] = useState('');
     const [email, setEmail] = useState('');
     const [targetEmail, setTargetEmail] = useState(''); // 받은 사람 이메일 상태 추가
-    const [savedMails, setSavedMails] = useState<{ id: number; title: string; content: string; target_email: string }[]>([]); // 상태 추가
+    const [savedMails, setSavedMails] = useState<
+        { id: number; title: string; content: string; target_email: string }[]
+    >([]); // 상태 추가
 
     const WriteMail = () => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
 
-        return fetch("http://localhost:4000/api/email/post", {
-            method: "POST",
+        return fetch('http://34.22.95.156:3004/api/email/post', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ title: mailTitle, content: mailContent, target_email: targetEmail }),
         })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("메일 발송 오류");
-            }
-            return response.json();
-        })
-        .then((newMail) => {
-            // 중복되지 않게 새로운 메일을 추가하는 로직
-            setSavedMails((prevMails) => {
-                if (!prevMails.some(mail => mail.id === newMail.id)) {
-                    return [...prevMails, newMail];
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('메일 발송 오류');
                 }
-                return prevMails;
+                return response.json();
+            })
+            .then((newMail) => {
+                // 중복되지 않게 새로운 메일을 추가하는 로직
+                setSavedMails((prevMails) => {
+                    if (!prevMails.some((mail) => mail.id === newMail.id)) {
+                        return [...prevMails, newMail];
+                    }
+                    return prevMails;
+                });
+
+                // 상태 초기화
+                setMailTitle('');
+                setMailContent('');
+                setTargetEmail('');
+            })
+            .catch((error) => {
+                console.error('메일 발송 중 오류 발생:', error);
             });
-            
-            // 상태 초기화
-            setMailTitle('');
-            setMailContent('');
-            setTargetEmail('');
-        })
-        .catch((error) => {
-            console.error('메일 발송 중 오류 발생:', error);
-        });
     };
 
     useEffect(() => {
@@ -51,27 +53,27 @@ const MailWrite = () => {
 
     const userData = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:4000/api/users', {
-            method: "GET",
+        fetch('http://34.22.95.156:3004/api/users', {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                console.log(response.status);
-                throw new Error("정보를 가져오지 못했습니다.");
-            }
-        })
-        .then((data) => {
-            setEmail(data.email);
-        })
-        .catch((error) => {
-            console.error('정보 조회 중 오류 발생:', error);
-        });
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log(response.status);
+                    throw new Error('정보를 가져오지 못했습니다.');
+                }
+            })
+            .then((data) => {
+                setEmail(data.email);
+            })
+            .catch((error) => {
+                console.error('정보 조회 중 오류 발생:', error);
+            });
     };
 
     const handleModalOpen = () => {
@@ -88,26 +90,28 @@ const MailWrite = () => {
         <div className="h-auto w-full flex flex-col justify-center text-center align-middle">
             <div className="flex w-full space-x-4 justify-center text-center align-middle mt-12">
                 <div className="flex w-1/2 justify-center text-center align-middle">
-                    <label className="block pt-3 text-xl font-sans font-bold text-gray-700 pl-6 pr-6">보내는 사람 </label>
-                    <div className='flex justify-center text-gray-700 text-xl w-[55%] font-sans font-bold h-10 bg-gray-300 rounded-lg shadow-lg items-center'>
+                    <label className="block pt-3 text-xl font-sans font-bold text-gray-700 pl-6 pr-6">
+                        보내는 사람{' '}
+                    </label>
+                    <div className="flex justify-center text-gray-700 text-xl w-[55%] font-sans font-bold h-10 bg-gray-300 rounded-lg shadow-lg items-center">
                         {email}
                     </div>
                 </div>
                 <div className="flex w-1/2">
                     <label className="block pt-3 text-xl font-sans font-bold text-gray-700 pl-6 pr-6">받는 사람 </label>
                     <input
-                        placeholder='0000@0000.000'
+                        placeholder="0000@0000.000"
                         value={targetEmail}
                         onChange={(e) => setTargetEmail(e.target.value)} // 상태 업데이트
-                        className='flex justify-center pl-3 items-center text-xl w-[55%] border-2'
+                        className="flex justify-center pl-3 items-center text-xl w-[55%] border-2"
                     />
                 </div>
             </div>
 
-            <div className='flex flex-row justify-start'>
+            <div className="flex flex-row justify-start">
                 <div className="w-full">
                     <label className="flex text-xl font-sans align-middle font-bold text-gray-700 pl-20 mt-8">
-                        <div className='pt-1'>메일 제목 :</div>
+                        <div className="pt-1">메일 제목 :</div>
                         <input
                             onChange={(e) => setMailTitle(e.target.value)}
                             value={mailTitle}
@@ -117,10 +121,10 @@ const MailWrite = () => {
                 </div>
             </div>
 
-            <div className='flex flex-col justify-start'>
+            <div className="flex flex-col justify-start">
                 <div className="w-full">
                     <label className="flex text-xl font-sans align-middle font-bold text-gray-700 pl-20 mt-8">
-                        <div className='mt-1.5'>메일 내용 :</div>
+                        <div className="mt-1.5">메일 내용 :</div>
                         <textarea
                             onChange={(e) => setMailContent(e.target.value)}
                             value={mailContent}
@@ -149,23 +153,19 @@ const MailWrite = () => {
                             className="bg-blue-500 text-white p-2 rounded-lg mr-2"
                             onClick={() => {
                                 WriteMail().then(() => {
-                                    alert("메일이 성공적으로 전송되었습니다.")
+                                    alert('메일이 성공적으로 전송되었습니다.');
                                     handleModalClose();
                                 });
                             }}
                         >
                             확인
                         </button>
-                        <button
-                            className="bg-gray-400 text-white p-2 rounded-lg"
-                            onClick={handleModalClose}
-                        >
+                        <button className="bg-gray-400 text-white p-2 rounded-lg" onClick={handleModalClose}>
                             취소
                         </button>
                     </div>
                 </div>
             </FormModal>
-
         </div>
     );
 };

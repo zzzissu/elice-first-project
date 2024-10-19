@@ -16,7 +16,7 @@ const SignUpPage = () => {
     });
     const [consent, setConsent] = useState(false);
     const [error, setError] = useState('');
-    
+
     const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,28 +59,32 @@ const SignUpPage = () => {
 
         setError('');
 
-        fetch("http://localhost:4000/api/users/signup", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
+        fetch('http://34.22.95.156:3004/api/users/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 name: username,
                 email: fullEmail,
                 password: password,
                 phone: phone,
-                birth: birth}),
-          }).then((res) => {
-            if(!res.ok) {
-              throw new Error("회원가입 실패");
-            }
-            return res.json();
-          }).then((data) => {
-            alert("회원가입 성공!")
-            const token = data.token;
-            localStorage.setItem("token", token);
-            navigate('/');
-          }).catch((error) => {
-            console.error("Error: ", error);
-          });
+                birth: birth,
+            }),
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('회원가입 실패');
+                }
+                return res.json();
+            })
+            .then((data) => {
+                alert('회원가입 성공!');
+                const token = data.token;
+                localStorage.setItem('token', token);
+                navigate('/');
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            });
     };
 
     return (
