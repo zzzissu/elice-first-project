@@ -124,19 +124,20 @@ const Layout = () => {
                 statusMessage: statusMessage,
             }),
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('상태메시지 전송 오류');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('상태 전송 성공', data);
-                alert('상태 메시지가 저장되었습니다.');
-            })
-            .catch((error) => console.error('상태전송 중 오류 발생:', error));
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('상태메시지 전송 오류');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log('상태 전송 성공', data);
+            alert('상태 메시지가 저장되었습니다.');
+            // 확인 버튼 누르고 새로고침
+            window.location.reload();  // 페이지 새로고침
+        })
+        .catch((error) => console.error('상태전송 중 오류 발생:', error));
     };
-
     const markEmailsAsRead = () => {
         const token = localStorage.getItem("token");
         fetch("http://34.22.95.156:3004/api/email/markAsRead", {
