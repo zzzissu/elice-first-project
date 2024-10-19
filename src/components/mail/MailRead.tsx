@@ -15,7 +15,7 @@ const MailRead: React.FC = () => {
     const [selectedMail, setSelectedMail] = useState<Mail | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [currentReadMailPage, setCurrentReadMailPage] = useState(1);
-    const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
+    const itemsPerPage = 6;
 
     const handleDeleteReadMail = (id: number) => {
         const token = localStorage.getItem('token');
@@ -77,7 +77,9 @@ const MailRead: React.FC = () => {
                     throw new Error('메일 확인 상태 변경 오류');
                 }
                 // 변경된 메일의 상태를 업데이트
-                setSavedReadMail((prev) => prev.map((mail) => (mail.id === id ? { ...mail, is_checked: true } : mail)));
+                setSavedReadMail((prev) =>
+                    prev.map((mail) => (mail.id === id ? { ...mail, is_checked: true } : mail))
+                );
             })
             .catch((error) => {
                 console.error('메일 읽음 상태 변경 중 오류 발생:', error);
@@ -94,6 +96,19 @@ const MailRead: React.FC = () => {
     const closeModal = () => {
         setSelectedMail(null);
         setIsModalOpen(false);
+    };
+
+    const handleConfirm = () => {
+        // 확인 버튼을 눌렀을 때의 동작을 정의합니다.
+        console.log('메일이 확인되었습니다.');
+        closeModal();
+
+        // 모든 메일이 읽혔는지 확인
+        const allMailsRead = savedReadMail.every((mail) => mail.is_checked);
+        if (allMailsRead) {
+            // 모든 메일이 읽혔고 확인 버튼이 눌렸다면 페이지 새로고침
+            window.location.reload();
+        }
     };
 
     const indexOfLastPersonalItem = currentReadMailPage * itemsPerPage;
@@ -113,7 +128,6 @@ const MailRead: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* 전체 메일 목록 대신 페이지에 해당하는 항목만 표시 */}
                     {currentPersonalItems.map((mail) => (
                         <tr className="h-14" key={mail.id}>
                             <td className="border-b-2 border-gray-300 p-2 text-center">{mail.user_email}</td>
@@ -157,7 +171,7 @@ const MailRead: React.FC = () => {
                 </div>
             )}
 
-            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} mail={selectedMail} />
+            <MailDetailModal isOpen={isModalOpen} onClose={closeModal} onConfirm={handleConfirm} mail={selectedMail} />
         </div>
     );
 };

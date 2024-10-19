@@ -19,7 +19,6 @@ import SignUpPage from './pages/SignUpPage';
 import SendedMail from './components/mail/SendedMail';
 import NotFoundPage from './pages/NotFoundPage';
 import TotalVacation from './components/myPage/TotalVacation';
-import UsedVacation from './components/myPage/UsedVacation';
 import PrivateRoutes from './routes/PrivateRoutes';
 import Schedule from './components/myPage/Schedule';
 import PersonerSchedule from './components/myPage/PersonerSchedule';
@@ -45,7 +44,6 @@ const App = () => (
                     <Route path={Paths.workSchedule} element={<WorkSchedule />} />
                     <Route path={Paths.vacation} element={<Vacation />}>
                         <Route path={Paths.totalVacation} element={<TotalVacation />} />
-                        <Route path={Paths.usedVacation} element={<UsedVacation />} />
                     </Route>
                 </Route>
 
