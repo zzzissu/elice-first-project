@@ -7,11 +7,10 @@ const PersonerSchedule = () => {
         { title: string; content: string; user_name: string; created_at: string; id: number }[]
     >([]);
     const [currentPersonalPage, setCurrentPersonalPage] = useState(1);
-    const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
-    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
-    const [selectedContent, setSelectedContent] = useState<string | null>(null);
-
+    const itemsPerPage = 5; // 한 페이지에 보여줄 아이템 수
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null); // 단일 선택된 항목의 ID를 관리하는 상태
+    const [selectedTitle, setSelectedTitle] = useState<string | null>(null); // 선택된 제목 상태
+    const [selectedContent, setSelectedContent] = useState<string | null>(null); // 선택된 내용 상태
     const token = localStorage.getItem('token');
 
     // 개인일정 조회 함수
@@ -58,6 +57,10 @@ const PersonerSchedule = () => {
                 }
                 // 삭제 후 상태에서 해당 개인일정 제거
                 setSavedPersonerTitles((prev) => prev.filter((item) => item.id !== id));
+                // 선택된 항목이 삭제된 경우, 선택 상태 초기화
+                if (selectedIndex === id) {
+                    setSelectedIndex(null);
+                }
             })
             .catch((error) => {
                 console.error('개인일정 삭제 중 오류 발생:', error);
@@ -109,9 +112,31 @@ const PersonerSchedule = () => {
         setModalOpen(true);
     };
 
-    // 체크박스 변경 함수 (id 기반으로 변경)
+    // 체크박스 변경 함수 (단 하나의 항목만 선택 가능)
     const handleCheckboxChange = (id: number) => {
-        setSelectedIndex((prevIndex) => (prevIndex === id ? null : id));
+        setSelectedIndex((prevIndex) => (prevIndex === id ? null : id)); // 같은 항목을 클릭하면 선택 해제, 아니면 선택
+    };
+
+    // 선택된 항목을 서버에 전송하는 함수
+    const sendCheckedItemToServer = () => {
+        if (selectedIndex !== null) {
+            fetch(`http://34.22.95.156:3004/api/schedule/topublic/${selectedIndex}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('공유 상태 변경 오류');
+                    }
+                    console.log(`일정 ID ${selectedIndex}가 공유되었습니다.`);
+                })
+                .catch((error) => {
+                    console.error('공유 상태 변경 중 오류 발생:', error);
+                });
+        }
     };
 
     // 개인 일정 페이지네이션 계산
@@ -149,7 +174,7 @@ const PersonerSchedule = () => {
                             >
                                 <input
                                     type="checkbox"
-                                    checked={id === selectedIndex}
+                                    checked={selectedIndex === id}
                                     onChange={() => handleCheckboxChange(id)}
                                     className="mr-4"
                                 />
@@ -188,6 +213,15 @@ const PersonerSchedule = () => {
                         ))}
                     </div>
                 )}
+                <button
+                    onClick={() => {
+                        sendCheckedItemToServer();
+                        alert('일정이 공유되었습니다.');
+                    }}
+                    className="bg-blue-500 text-white rounded-lg p-2 ml-5 mt-2"
+                >
+                    선택된 일정 공유하기
+                </button>
             </div>
             <PageModal
                 isOpen={isModalOpen}

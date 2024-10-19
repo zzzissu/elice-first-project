@@ -62,7 +62,31 @@ const MailRead: React.FC = () => {
         handlegetReadEmail();
     }, []);
 
+    // 이메일 체크 확인
+    const handleCheckMail = (id: number) => {
+        const token = localStorage.getItem('token');
+        fetch(`http://34.22.95.156:3004/api/email/check/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('메일 확인 상태 변경 오류');
+                }
+                // 변경된 메일의 상태를 업데이트
+                setSavedReadMail((prev) => prev.map((mail) => (mail.id === id ? { ...mail, is_checked: true } : mail)));
+            })
+            .catch((error) => {
+                console.error('메일 읽음 상태 변경 중 오류 발생:', error);
+            });
+    };
+
     const openModal = (mail: Mail) => {
+        // 모달을 열면서 해당 메일을 읽은 상태로 변경
+        handleCheckMail(mail.id);
         setSelectedMail(mail);
         setIsModalOpen(true);
     };
