@@ -17,6 +17,10 @@ const WorkSchedule = () => {
     const [userName, setUserName] = useState<string>(''); // 사용자 이름 상태 추가
     const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
     const token = localStorage.getItem('token');
+    const [modalData, setModalData] = useState<{ title: string; content: string }>({
+        title: '',
+        content: '',
+    });
 
     // 사용자 정보 조회 함수
     const fetchUserData = () => {
@@ -164,12 +168,22 @@ const WorkSchedule = () => {
                                 isFromPersonal ? 'bg-yellow-200 font-bold' : ''
                             }`}
                         >
-                            <div
-                                onClick={() => setModalOpen(true)}
-                                className="flex-grow text-center cursor-pointer"
-                            >
-                                {title}
-                            </div>
+                               <div
+                                    className="flex-grow text-center cursor-pointer"
+                                    onClick={() => {
+                                        const selectedItem = savedWorkTitles.find((item) => item.id === id);
+                                        if (selectedItem) {
+                                            setModalOpen(true);
+                                         
+                                            setModalData({
+                                                title: selectedItem.title,
+                                                content: selectedItem.content,
+                                            });
+                                        }
+                                    }}
+                                >
+                                    {title}
+                                </div>
                             <button
                                 onClick={() => handleDeleteWork(id)}
                                 className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-4"
@@ -201,13 +215,13 @@ const WorkSchedule = () => {
                 </div>
             )}
 
-            <PageModal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                onSave={handleSaveWorker}
-                title=""
-                content=""
-            />
+<PageModal
+    isOpen={isModalOpen}
+    onClose={() => setModalOpen(false)}
+    onSave={(title, content) => handleSaveWorker(title, content)}
+    title={modalData.title}  // 모달에 선택한 title 전달
+    content={modalData.content}  // 모달에 선택한 content 전달
+/>
         </div>
     );
 };
