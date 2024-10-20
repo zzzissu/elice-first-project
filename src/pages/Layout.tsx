@@ -183,9 +183,7 @@ const Layout = () => {
    //상태저장 후 전체 상태 배열 다시 가져오기
    const saveState = async (state: string) => {
     const token = localStorage.getItem('token');
-
     try {
-        
         const saveResponse = await fetch('http://34.22.95.156:3004/api/state', {
             method: 'PUT',
             headers: {
@@ -207,13 +205,6 @@ const Layout = () => {
 
 const saveMessage = async (statusMessage: string) => {
     const token = localStorage.getItem('token');
-    const userName = localStorage.getItem('user_name');
-
-    if (!userName) {
-        console.error('사용자 이름이 없습니다.');
-        return;
-    }
-
     try {
         // 상태 메시지 저장
         const saveResponse = await fetch('http://34.22.95.156:3004/api/state/message', {
@@ -236,8 +227,6 @@ const saveMessage = async (statusMessage: string) => {
         console.error('상태 메시지 저장 중 오류 발생:', error);
     }
 };
-
-
     useEffect(() => {
         if (selectedOption) {
             saveState(selectedOption);
