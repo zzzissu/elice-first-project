@@ -31,22 +31,21 @@ const Layout = () => {
     useEffect(() => {
         userData();
         getApprovalCounts();
-        getPicture(); // 결재 상태 데이터 가져오기
+        getPicture();
         fetchEmailData();
     }, []);
 
-    // 알림 상태설정
 
     //정보 가져오기
     const getPicture = () => {
         const token = localStorage.getItem('token');
-    
+
         if (!token) {
             console.error('토큰이 없습니다.');
             setProfileImg('/assets/Group 18.png');
             return;
         }
-    
+
         fetch('http://34.22.95.156:3004/api/profile', {
             method: 'GET',
             headers: {
@@ -63,7 +62,7 @@ const Layout = () => {
             })
             .then((data) => {
                 console.log("서버에서 받은 프로필 이미지 URL:", data.profile_image);
-    
+
                 // URL 유효성 검증 추가
                 if (data.profile_image && data.profile_image !== 'null' && data.profile_image.trim() !== '') {
                     const updatedImageUrl = `${data.profile_image}?t=${new Date().getTime()}`; // 타임스탬프 추가
@@ -78,9 +77,9 @@ const Layout = () => {
                 setProfileImg('/assets/Group 18.png'); // 오류 발생 시 기본 이미지 설정
             });
     };
-    
 
-    
+
+
     const userData = () => {
         const token = localStorage.getItem('token');
         fetch('http://34.22.95.156:3004/api/users', {
@@ -90,22 +89,23 @@ const Layout = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    console.log(response.status);
-                    throw new Error('정보를 가져오지 못했습니다.');
-                }
-            })
-            .then((data) => {
-                setName(data.name);
-                setDepartment(data.department);
-                setPosition(data.position);
-            })
-            .catch((error) => {
-                console.error('정보조회 중 오류 발생:', error);
-            });
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.log(response.status);
+                throw new Error('정보를 가져오지 못했습니다.');
+            }
+        })
+        .then((data) => {
+            localStorage.setItem('user_name', data.name); // 사용자 이름을 localStorage에 저장
+            setName(data.name);
+            setDepartment(data.department);
+            setPosition(data.position);
+        })
+        .catch((error) => {
+            console.error('정보조회 중 오류 발생:', error);
+        });
     };
 
     // 결재중 카운팅
@@ -173,7 +173,7 @@ const Layout = () => {
             setSelectedFile(selectedFile);
             const imageUrl = URL.createObjectURL(selectedFile);
             setProfileImg(imageUrl);
-    
+
             // 파일이 선택되면 자동으로 저장
             savePicture(selectedFile);
         }
@@ -206,28 +206,40 @@ const Layout = () => {
             });
     };
 
-    //상태메세지 저장
+    // 상태메시지 저장
     const saveMessage = (statusMessage: string) => {
         const token = localStorage.getItem('token');
+        const userName = localStorage.getItem('user_name'); // 현재 로그인한 사용자의 이름을 가져옴
+
+        if (!userName) {
+            console.error('사용자 이름이 없습니다.');
+            return;
+        }
+
         fetch('http://34.22.95.156:3004/api/state/message', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
             body: JSON.stringify({
                 statusMessage: statusMessage,
+                user_name: userName, // 현재 로그인한 사용자의 이름을 전송
             }),
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('상태메세지 전송 오류');
+                    throw new Error('상태 메시지 전송 오류');
                 }
                 return response.json();
             })
             .then((data) => {
-                console.log('상태 전송 성공', data);
-                alert('출장지가 저장되었습니다.');
+                console.log('상태 메시지가 성공적으로 저장되었습니다.', data);
+                alert('출장내역이 저장되었습니다.');
+                window.location.reload();
             })
             .catch((error) => {
-                console.error('상태전송 중 오류 발생:', error);
+                console.error('상태 메시지 전송 중 오류 발생:', error);
             });
     };
 
@@ -249,20 +261,20 @@ const Layout = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("이메일 알림 조회 오류");
-            }
-            return response.json();
-        })
-        .then((data) => {
-            setEmailData(data);
-        })
-        .catch((error) => {
-            console.error("이메일 조회 중 오류 발생:", error);
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("이메일 알림 조회 오류");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setEmailData(data);
+            })
+            .catch((error) => {
+                console.error("이메일 조회 중 오류 발생:", error);
+            });
     };
-    
+
     return (
         <div className="flex">
             <Nav />
@@ -283,12 +295,12 @@ const Layout = () => {
                                     />
                                     <div className="text-xl text-white pt-3 font-sans pr-3">{name}</div>
                                     <div className="p-2 mr-1">
-    <img
-        src={emailData && emailData.newEmailCount > 0 ? "/assets/alarmOn.png" : "/assets/alarmOff.png"}
-        alt={emailData && emailData.newEmailCount > 0 ? "alarmOn" : "alarmOff"}
-        className="h-9 w-9"
-    />
-</div>
+                                        <img
+                                            src={emailData && emailData.newEmailCount > 0 ? "/assets/alarmOn.png" : "/assets/alarmOff.png"}
+                                            alt={emailData && emailData.newEmailCount > 0 ? "alarmOn" : "alarmOff"}
+                                            className="h-9 w-9"
+                                        />
+                                    </div>
 
                                     <button onClick={handleLogout} className="p-2 mr-3 border-l border-slate-400">
                                         <img src="/assets/logout.png" alt="Logout" className="h-8 w-8 " />
@@ -395,10 +407,11 @@ const Layout = () => {
                                             <button
                                                 className="bg-mainColor text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
                                                 onClick={() => saveMessage(inputValue)}
-                                                disabled={inputValue.trim() === '' || selectedOption !== '출장중'}
+                                                disabled={inputValue.trim() === '' || selectedOption !== '출장중'} // 조건 확인
                                             >
                                                 저장
                                             </button>
+
                                         </div>
                                     </div>
                                 </div>

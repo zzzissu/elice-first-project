@@ -201,7 +201,7 @@ const Project: React.FC = () => {
     // 공지사항 작성
     const handleSave = (title: string, content: string) => {
         const token = localStorage.getItem("token");
-
+    
         fetch("http://34.22.95.156:3004/api/announcement/post", {
             method: "POST",
             headers: {
@@ -211,6 +211,9 @@ const Project: React.FC = () => {
             body: JSON.stringify({ title, content }),
         })
             .then((response) => {
+                if (response.status === 400) {
+                    throw new Error("권한이 없습니다."); // 400번 에러일 경우 예외 발생
+                }
                 if (!response.ok) {
                     throw new Error("공지사항 저장 오류");
                 }
@@ -218,17 +221,23 @@ const Project: React.FC = () => {
             })
             .then(() => {
                 fetchAnnouncements();
-                setModalOpen(false);
+                setModalOpen(false); // 모달 닫기
             })
             .catch((error) => {
-                console.error('공지사항 저장 중 오류 발생:', error);
+                if (error.message === "권한이 없습니다.") {
+                    alert('권한이 없습니다.'); // 400 에러 시 alert 창 띄우기
+                } else {
+                    console.error('공지사항 저장 중 오류 발생:', error);
+                }
             });
     };
+    
+    
 
     // 공지사항 삭제
     const handleDelete = (id: number) => {
         const token = localStorage.getItem("token");
-
+    
         fetch(`http://34.22.95.156:3004/api/announcement/${id}`, {
             method: "DELETE",
             headers: {
@@ -236,15 +245,23 @@ const Project: React.FC = () => {
             },
         })
             .then((response) => {
+                if (response.status === 400) {
+                    throw new Error("권한이 없습니다."); // 400번 에러일 경우 예외 발생
+                }
                 if (!response.ok) {
                     throw new Error("공지사항 삭제 오류");
                 }
                 setSavedTitles((prev) => prev.filter(item => item.id !== id));
             })
             .catch((error) => {
-                console.error('공지사항 삭제 중 오류 발생:', error);
+                if (error.message === "권한이 없습니다.") {
+                    alert('권한이 없습니다.'); // 400 에러 시 alert 창 띄우기
+                } else {
+                    console.error('공지사항 삭제 중 오류 발생:', error);
+                }
             });
     };
+    
 
     // 공지사항 항목 클릭 시 내용 보기
     const handleTitleClick = (title: string, content: string) => {
