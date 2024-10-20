@@ -18,7 +18,8 @@ const Layout = () => {
         rejected: 0, // 반려
         annual: 0, // 연차
     });
-    const [profile_image, setProfile_image] = useState('');
+    const [state, setState] = useState<string[]>([]);  // 상태 배열 추가
+    const [statusMessage, setStatusMessage] = useState<string[]>([]);  // 상태 메시지 배열 추가
 
     const navigate = useNavigate();
 
@@ -34,7 +35,6 @@ const Layout = () => {
         getPicture();
         fetchEmailData();
     }, []);
-
 
     //정보 가져오기
     const getPicture = () => {
@@ -77,8 +77,6 @@ const Layout = () => {
                 setProfileImg('/assets/Group 18.png'); // 오류 발생 시 기본 이미지 설정
             });
     };
-
-
 
     const userData = () => {
         const token = localStorage.getItem('token');
@@ -167,6 +165,10 @@ const Layout = () => {
         setSelectedOption(e.target.value);
     };
 
+    const handleInputChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
+        setInputValue(e.target.value);
+    }
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
@@ -174,74 +176,67 @@ const Layout = () => {
             const imageUrl = URL.createObjectURL(selectedFile);
             setProfileImg(imageUrl);
 
-            // 파일이 선택되면 자동으로 저장
             savePicture(selectedFile);
         }
     };
 
-    //상태저장
-    const saveState = (state: string) => {
-        const token = localStorage.getItem('token');
-        fetch('http://34.22.95.156:3004/api/state', {
+   //상태저장 후 전체 상태 배열 다시 가져오기
+   const saveState = async (state: string) => {
+    const token = localStorage.getItem('token');
+
+    try {
+        
+        const saveResponse = await fetch('http://34.22.95.156:3004/api/state', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-                state: state,
-            }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('상태조회 오류');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('상태 전송 성공', data);
-            })
-            .catch((error) => {
-                console.error('상태전송 중 오류 발생:', error);
-            });
-    };
+            body: JSON.stringify({ state: state }),
+        });
 
-    // 상태메시지 저장
-    const saveMessage = (statusMessage: string) => {
-        const token = localStorage.getItem('token');
-        const userName = localStorage.getItem('user_name'); // 현재 로그인한 사용자의 이름을 가져옴
-
-        if (!userName) {
-            console.error('사용자 이름이 없습니다.');
-            return;
+        if (!saveResponse.ok) {
+            throw new Error('상태 저장 오류');
         }
 
-        fetch('http://34.22.95.156:3004/api/state/message', {
+        console.log('상태 저장 성공');
+    } catch (error) {
+        console.error('상태 저장 중 오류 발생:', error);
+    }
+};
+
+const saveMessage = async (statusMessage: string) => {
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('user_name');
+
+    if (!userName) {
+        console.error('사용자 이름이 없습니다.');
+        return;
+    }
+
+    try {
+        // 상태 메시지 저장
+        const saveResponse = await fetch('http://34.22.95.156:3004/api/state/message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-                statusMessage: statusMessage,
-                user_name: userName, // 현재 로그인한 사용자의 이름을 전송
-            }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('상태 메시지 전송 오류');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('상태 메시지가 성공적으로 저장되었습니다.', data);
-                alert('출장내역이 저장되었습니다.');
-                window.location.reload();
-            })
-            .catch((error) => {
-                console.error('상태 메시지 전송 중 오류 발생:', error);
-            });
-    };
+            body: JSON.stringify({ statusMessage: statusMessage }), 
+        });
+
+        if (!saveResponse.ok) {
+            throw new Error('상태 메시지 저장 오류');
+        }
+
+        console.log('상태 메시지 저장 성공');
+
+        setStatusMessage((prevMessages) => [...prevMessages, statusMessage]);
+    } catch (error) {
+        console.error('상태 메시지 저장 중 오류 발생:', error);
+    }
+};
+
 
     useEffect(() => {
         if (selectedOption) {
@@ -273,6 +268,15 @@ const Layout = () => {
             .catch((error) => {
                 console.error("이메일 조회 중 오류 발생:", error);
             });
+    };
+
+    const handleSaveStateAndMessage = () => {
+        if (selectedOption) {
+            saveState(selectedOption);
+        }
+        if (inputValue.trim()) {
+            saveMessage(inputValue);
+        }
     };
 
     return (
@@ -399,19 +403,18 @@ const Layout = () => {
                                             className="border-2 mt-2 w-44 text-center text-sm"
                                             placeholder="출장중일때만 활성화"
                                             value={inputValue}
-                                            onChange={(e) => setInputValue(e.target.value)}
+                                            onChange={handleInputChange}
                                             disabled={selectedOption !== '출장중'}
                                         />
 
                                         <div className="flex justify-end w-full">
                                             <button
                                                 className="bg-mainColor text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
-                                                onClick={() => saveMessage(inputValue)}
-                                                disabled={inputValue.trim() === '' || selectedOption !== '출장중'} // 조건 확인
+                                                onClick={handleSaveStateAndMessage}
+                                                disabled={inputValue.trim() === '' || selectedOption !== '출장중'}
                                             >
                                                 저장
                                             </button>
-
                                         </div>
                                     </div>
                                 </div>

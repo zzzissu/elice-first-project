@@ -19,6 +19,10 @@ const PersonerSchedule = () => {
     const itemsPerPage = 6;
     const token = localStorage.getItem('token');
     const [userName, setUserName] = useState<string>('');
+    const [modalData, setModalData] = useState<{ title: string; content: string }>({
+        title: '',
+        content: '',
+    });
 
     useEffect(() => {
         fetchUserData();
@@ -128,13 +132,10 @@ const PersonerSchedule = () => {
                     </ul>
                 ) : (
                     <ul>
-                        {currentItems.map(({ id, title, makePublic, user_name }) => (
+                        {currentItems.map(({ id, title, makePublic }) => (
                             <li
                                 key={id}
-                                className={`cursor-default text-lg w-[90%] m-5 border-b flex items-center group ${
-                                    makePublic ? 'bg-yellow-200 font-bold' : ''
-                                }`}
-                            >
+                                className={`cursor-default text-lg w-[90%] m-5 border-b flex items-center group`}>
                                 <input
                                     type="checkbox"
                                     checked={selectedIndex === id}
@@ -144,7 +145,17 @@ const PersonerSchedule = () => {
                                 />
                                 <div
                                     className="flex-grow text-center cursor-pointer"
-                                    onClick={() => setModalOpen(true)}
+                                    onClick={() => {
+                                        const selectedItem = savedPersonerTitles.find((item) => item.id === id);
+                                        if (selectedItem) {
+                                            setModalOpen(true);
+                                         
+                                            setModalData({
+                                                title: selectedItem.title,
+                                                content: selectedItem.content,
+                                            });
+                                        }
+                                    }}
                                 >
                                     {title}
                                 </div>
@@ -163,9 +174,8 @@ const PersonerSchedule = () => {
                         {Array.from({ length: totalPages }, (_, i) => (
                             <button
                                 key={i}
-                                className={`mx-1 px-4 py-2 rounded ${
-                                    currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
-                                }`}
+                                className={`mx-1 px-4 py-2 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                                    }`}
                                 onClick={() => setCurrentPage(i + 1)}
                             >
                                 {i + 1}
@@ -177,8 +187,8 @@ const PersonerSchedule = () => {
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
                     onSave={(title, content) => handleSavePersoner(title, content)}
-                    title=""
-                    content=""
+                    title={modalData.title}  // 모달에 선택한 title 전달
+                    content={modalData.content}  // 모달에 선택한 content 전달
                 />
             </div>
         </div>
