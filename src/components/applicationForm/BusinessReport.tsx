@@ -157,7 +157,7 @@ const BusinessReport: React.FC = () => {
                             value={request}
                             onChange={(e) => setRequest(e.target.value)}
                             className="border rounded p-2 w-full resize-none"
-                            placeholder="요청사항을 입력하세요"
+                            placeholder="요청사항을 입력하세요(선택)"
                             rows={3}
                         />
                     </div>
@@ -167,7 +167,7 @@ const BusinessReport: React.FC = () => {
                             value={significant}
                             onChange={(e) => setSignificant(e.target.value)}
                             className="border rounded p-2 w-full resize-none"
-                            placeholder="특이사항을 입력하세요"
+                            placeholder="특이사항을 입력하세요(선택)"
                             rows={3}
                         />
                     </div>
