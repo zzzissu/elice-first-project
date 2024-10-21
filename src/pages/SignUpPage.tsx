@@ -191,7 +191,7 @@ const SignUpPage = () => {
                 <InputField
                     type="text"
                     name="birth"
-                    placeholder="생년월일을 입력해주세요 예)19900101"
+                    placeholder="생년월일을 입력해주세요 예)1990-01-01"
                     value={userInfo.birth}
                     onChange={handleInputChange}
                 />
@@ -201,7 +201,7 @@ const SignUpPage = () => {
                 <InputField
                     type="text"
                     name="phone"
-                    placeholder="연락처를 입력해주세요 예)01012345678"
+                    placeholder="연락처를 입력해주세요 예)010-1234-5678"
                     value={userInfo.phone}
                     onChange={handleInputChange}
                 />

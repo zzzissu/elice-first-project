@@ -57,6 +57,12 @@ const LoginPage = () => {
         closePasswordResetModal();
     };
 
+    const handleLoginKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
+    };
+
     return (
         <div className="flex h-screen min-w-[1280px]">
             <div className="w-1/2 bg-gray-100 flex items-center justify-center">
@@ -74,12 +80,14 @@ const LoginPage = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <InputField
+                    <input
+                        className="text-sm border p-3 rounded-[10px] m-2.5 w-full border-gray-300"
                         type="password"
                         placeholder="Password"
                         name="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={handleLoginKeyDown}
                     />
 
                     {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
