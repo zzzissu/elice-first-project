@@ -23,6 +23,8 @@ const PersonerSchedule = () => {
         title: '',
         content: '',
     });
+    const [isReadOnly, setIsReadOnly] = useState(false); // 읽기 전용 상태 추가
+
 
     useEffect(() => {
         fetchUserData();
@@ -72,7 +74,13 @@ const PersonerSchedule = () => {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ title, content, makePublic: false, createdAt: new Date().toISOString(), finishedAt: new Date().toISOString() }),
+            body: JSON.stringify({
+                title,
+                content,
+                makePublic: false,
+                createdAt: new Date().toISOString(),
+                finishedAt: new Date().toISOString(),
+            }),
         })
             .then((response) => {
                 if (!response.ok) throw new Error(`개인 일정 추가 오류: ${response.statusText}`);
@@ -115,7 +123,14 @@ const PersonerSchedule = () => {
                 <div className="flex flex-row justify-between pt-10">
                     <p className="ml-10 text-xl">개인 일정을 작성해 주세요</p>
                     <button
-                        onClick={() => setModalOpen(true)}
+                        onClick={() => {
+                            setIsReadOnly(false); // 저장 모드로 설정
+                            setModalOpen(true);
+                            setModalData({
+                                title: '',
+                                content: '',
+                            });
+                        }}
                         className="w-10 h-8 mr-6 -mt-2 rounded-md"
                         style={{
                             backgroundImage: `url('/assets/plus.png')`,
@@ -123,6 +138,7 @@ const PersonerSchedule = () => {
                             backgroundPosition: 'center',
                         }}
                     />
+
                 </div>
                 {savedPersonerTitles.length === 0 ? (
                     <ul>
@@ -132,18 +148,18 @@ const PersonerSchedule = () => {
                     </ul>
                 ) : (
                     <ul>
-                        {currentItems.map(({ id, title, makePublic }) => (
+                        {currentItems.map(({ id, title }) => (
                             <li
                                 key={id}
-                                className={`cursor-default text-lg w-[90%] m-5 border-b flex items-center group`}>
-                                
+                                className="cursor-default text-lg w-[90%] m-5 border-b flex items-center group"
+                            >
                                 <div
                                     className="flex-grow text-center cursor-pointer"
                                     onClick={() => {
                                         const selectedItem = savedPersonerTitles.find((item) => item.id === id);
                                         if (selectedItem) {
                                             setModalOpen(true);
-                                         
+                                            setIsReadOnly(true); // 읽기 모드로 설정
                                             setModalData({
                                                 title: selectedItem.title,
                                                 content: selectedItem.content,
@@ -153,6 +169,7 @@ const PersonerSchedule = () => {
                                 >
                                     {title}
                                 </div>
+
                                 <button
                                     onClick={() => handleDeletePersoner(id)}
                                     className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-4"
@@ -180,9 +197,11 @@ const PersonerSchedule = () => {
                 <PageModal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
-                    title={modalData.title}  // 모달에 선택한 title 전달
-                    content={modalData.content}  // 모달에 선택한 content 전달
+                    onSave={!isReadOnly ? (title, content) => handleSavePersoner(title, content) : undefined} // 읽기 전용일 경우 저장 비활성화
+                    title={modalData.title}
+                    content={modalData.content}
                 />
+
             </div>
         </div>
     );
