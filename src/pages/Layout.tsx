@@ -221,6 +221,7 @@ const saveMessage = async (statusMessage: string) => {
         }
 
         console.log('상태 메시지 저장 성공');
+        console.log('상태 메시지 : ', statusMessage);
 
         setStatusMessage((prevMessages) => [...prevMessages, statusMessage]);
     } catch (error) {
