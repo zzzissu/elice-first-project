@@ -136,13 +136,7 @@ const PersonerSchedule = () => {
                             <li
                                 key={id}
                                 className={`cursor-default text-lg w-[90%] m-5 border-b flex items-center group`}>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedIndex === id}
-                                    onChange={() => setSelectedIndex(id)}
-                                    className="mr-4"
-                                    disabled={makePublic || savedPersonerTitles.some((item) => item.makePublic && item.user_name === userName)}
-                                />
+                                
                                 <div
                                     className="flex-grow text-center cursor-pointer"
                                     onClick={() => {
@@ -186,7 +180,6 @@ const PersonerSchedule = () => {
                 <PageModal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
-                    onSave={(title, content) => handleSavePersoner(title, content)}
                     title={modalData.title}  // 모달에 선택한 title 전달
                     content={modalData.content}  // 모달에 선택한 content 전달
                 />
