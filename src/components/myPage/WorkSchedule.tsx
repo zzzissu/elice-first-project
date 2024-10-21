@@ -21,6 +21,7 @@ const WorkSchedule = () => {
         title: '',
         content: '',
     });
+    const [isReadOnly, setIsReadOnly] = useState(false); // 읽기 전용 상태 추가
 
     // 사용자 정보 조회 함수
     const fetchUserData = () => {
@@ -149,7 +150,14 @@ const WorkSchedule = () => {
             <div className="flex flex-row justify-between pt-10">
                 <div className="ml-10 text-xl">업무 일정을 작성해 주세요</div>
                 <button
-                    onClick={() => setModalOpen(true)}
+                    onClick={() => {
+                        setIsReadOnly(false); // 저장 모드로 설정
+                        setModalOpen(true);
+                        setModalData({
+                            title: '',
+                            content: '',
+                        });
+                    }}
                     className="w-10 h-8 mr-6 -mt-2 rounded-md"
                     style={{
                         backgroundImage: `url('/assets/plus.png')`,
@@ -164,26 +172,25 @@ const WorkSchedule = () => {
                     currentWorkItems.map(({ id, title, content, isFromPersonal }) => (
                         <li
                             key={id}
-                            className={`cursor-default text-lg w-[90%] m-5 border-b flex items-center group ${
-                                isFromPersonal ? 'bg-yellow-200 font-bold' : ''
-                            }`}
+                            className={`cursor-default text-lg w-[90%] m-5 border-b flex items-center group ${isFromPersonal ? 'bg-yellow-200 font-bold' : ''
+                                }`}
                         >
-                               <div
-                                    className="flex-grow text-center cursor-pointer"
-                                    onClick={() => {
-                                        const selectedItem = savedWorkTitles.find((item) => item.id === id);
-                                        if (selectedItem) {
-                                            setModalOpen(true);
-                                         
-                                            setModalData({
-                                                title: selectedItem.title,
-                                                content: selectedItem.content,
-                                            });
-                                        }
-                                    }}
-                                >
-                                    {title}
-                                </div>
+                            <div
+                                className="flex-grow text-center cursor-pointer"
+                                onClick={() => {
+                                    const selectedItem = savedWorkTitles.find((item) => item.id === id);
+                                    if (selectedItem) {
+                                        setModalOpen(true);
+                                        setIsReadOnly(true); // 읽기 모드로 설정
+                                        setModalData({
+                                            title: selectedItem.title,
+                                            content: selectedItem.content,
+                                        });
+                                    }
+                                }}
+                            >
+                                {title}
+                            </div>
                             <button
                                 onClick={() => handleDeleteWork(id)}
                                 className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-4"
@@ -204,9 +211,8 @@ const WorkSchedule = () => {
                     {Array.from({ length: totalWorkPages }, (_, i) => (
                         <button
                             key={i}
-                            className={`mx-1 px-4 py-2 rounded ${
-                                currentWorkPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
-                            }`}
+                            className={`mx-1 px-4 py-2 rounded ${currentWorkPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'
+                                }`}
                             onClick={() => setCurrentWorkPage(i + 1)}
                         >
                             {i + 1}
@@ -215,12 +221,13 @@ const WorkSchedule = () => {
                 </div>
             )}
 
-<PageModal
-    isOpen={isModalOpen}
-    onClose={() => setModalOpen(false)}
-    title={modalData.title}  // 모달에 선택한 title 전달
-    content={modalData.content}  // 모달에 선택한 content 전달
-/>
+            <PageModal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                onSave={!isReadOnly ? (title, content) => handleSaveWorker(title, content) : undefined} // 읽기 전용일 경우 저장 비활성화
+                title={modalData.title}
+                content={modalData.content}
+            />
         </div>
     );
 };
