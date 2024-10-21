@@ -1,9 +1,35 @@
-import React from 'react';
-import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
+import React ,{useState, useEffect}from 'react';
+import { Routes, Link, Route } from 'react-router-dom';
 import TotalVacation from './TotalVacation';
-import UsedVacation from './UsedVacation';
+
+
 
 const Vacation = () => {
+    useEffect(() => {
+        getApprovalCounts(); // 결재 상태 데이터 가져오기
+    }, []);
+    
+    const [approvalCounts, setApprovalCounts] = useState({
+        annual: 0, // 연차
+    });
+    
+    const getApprovalCounts = () => {
+        const token = localStorage.getItem('token');
+        fetch('http://34.22.95.156:3003/api/approval/count', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => (response.ok ? response.json() : Promise.reject('결재 정보 조회 실패')))
+            .then((data) => {
+                setApprovalCounts({
+                    annual: data.annual_leave || 0, // 연차
+                });
+            })
+            .catch((error) => console.error('결재 정보 조회 중 오류:', error));
+    };
     return (
         <div className="sectionDevide ">
             {/*휴가 버튼 구역 */}
@@ -15,12 +41,6 @@ const Vacation = () => {
                             <div className="mt-2">16</div>
                         </Link>
                     </button>
-                    <button className="text-lg font-bold border-2 h-32 w-56 rounded-lg shadow-lg">
-                        <Link to="used-vacation">
-                            사용 연차
-                            <div className="mt-2 text-red-700">6</div>
-                        </Link>
-                    </button>
                 </div>
             </div>
 
@@ -28,7 +48,6 @@ const Vacation = () => {
             <div className="downSideSite">
                 <Routes>
                     <Route path="total-vacation" element={<TotalVacation />} />
-                    <Route path="used-vacation" element={<UsedVacation />} />
                 </Routes>
             </div>
         </div>

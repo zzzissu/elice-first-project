@@ -1,34 +1,278 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../components/nav/Nav';
 import { Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Layout = () => {
     const [profileImg, setProfileImg] = useState<string>('/assets/Group 18.png');
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [inputValue, setInputValue] = useState<string>('');
+    const [name, setName] = useState('');
+    const [department, setDepartment] = useState('');
+    const [position, setPosition] = useState('');
+    const [emailData, setEmailData] = useState<{ newEmailCount: number; message: string } | null>(null);
+    const [approvalCounts, setApprovalCounts] = useState({
+        pending: 0, // 결재중
+        approved: 0, // 결재완료
+        rejected: 0, // 반려
+        annual: 0, // 연차
+    });
+    const [state, setState] = useState<string[]>([]);  // 상태 배열 추가
+    const [statusMessage, setStatusMessage] = useState<string[]>([]);  // 상태 메시지 배열 추가
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // 토큰 제거
+        console.log('토큰이 삭제되었습니다.');
+        navigate('/');
+    };
+
+    useEffect(() => {
+        userData();
+        getApprovalCounts();
+        getPicture();
+        fetchEmailData();
+    }, []);
+
+    //정보 가져오기
+    const getPicture = () => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            console.error('토큰이 없습니다.');
+            setProfileImg('/assets/Group 18.png');
+            return;
+        }
+
+        fetch('http://34.22.95.156:3003/api/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    console.error(`서버 응답 오류: ${response.status}`);
+                    throw new Error('서버에서 사진 정보를 가져오는 중 오류 발생');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log("서버에서 받은 프로필 이미지 URL:", data.profile_image);
+
+                // URL 유효성 검증 추가
+                if (data.profile_image && data.profile_image !== 'null' && data.profile_image.trim() !== '') {
+                    const updatedImageUrl = `${data.profile_image}?t=${new Date().getTime()}`; // 타임스탬프 추가
+                    setProfileImg(updatedImageUrl);
+                } else {
+                    console.warn('프로필 이미지가 유효하지 않습니다. 기본 이미지로 설정합니다.');
+                    setProfileImg('/assets/Group 18.png'); // 기본 이미지 설정
+                }
+            })
+            .catch((error) => {
+                console.error('사진을 가져오는 중 오류 발생:', error);
+                setProfileImg('/assets/Group 18.png'); // 오류 발생 시 기본 이미지 설정
+            });
+    };
+
+    const userData = () => {
+        const token = localStorage.getItem('token');
+        fetch('http://34.22.95.156:3003/api/users', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.log(response.status);
+                throw new Error('정보를 가져오지 못했습니다.');
+            }
+        })
+        .then((data) => {
+            localStorage.setItem('user_name', data.name); // 사용자 이름을 localStorage에 저장
+            setName(data.name);
+            setDepartment(data.department);
+            setPosition(data.position);
+        })
+        .catch((error) => {
+            console.error('정보조회 중 오류 발생:', error);
+        });
+    };
+
+    // 결재중 카운팅
+    const getApprovalCounts = () => {
+        const token = localStorage.getItem('token');
+        fetch('http://34.22.95.156:3003/api/approval/count', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => (response.ok ? response.json() : Promise.reject('결재 정보 조회 실패')))
+            .then((data) => {
+                setApprovalCounts({
+                    pending: data.pending_count || 0, // 결재중
+                    approved: data.approved_count || 0, // 결재완료
+                    rejected: data.rejected_count || 0, // 반려
+                    annual: data.annual_leave || 0, // 연차
+                });
+            })
+            .catch((error) => console.error('결재 정보 조회 중 오류:', error));
+    };
+
+    //사진 저장후 나타나기
+    const savePicture = (file: File) => {
+        if (!file) {
+            console.error('업로드할 파일이 없습니다.');
+            return;
+        }
+        const token = localStorage.getItem('token');
+        const formData = new FormData();
+        formData.append('profileImage', file);
+        fetch('http://34.22.95.156:3003/api/profile/image', {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('사진 조회 오류');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('사진 자료 전송 성공', data);
+                if (data.profileImageUrl) {
+                    setProfileImg(data.profileImageUrl);
+                }
+            })
+            .catch((error) => {
+                console.error('사진 자료 전송 중 오류 발생:', error);
+            });
+    };
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOption(e.target.value);
     };
 
+    const handleInputChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
+        setInputValue(e.target.value);
+    }
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
+            setSelectedFile(selectedFile);
             const imageUrl = URL.createObjectURL(selectedFile);
             setProfileImg(imageUrl);
+
+            savePicture(selectedFile);
         }
     };
 
+   //상태저장 후 전체 상태 배열 다시 가져오기
+   const saveState = async (state: string) => {
+    const token = localStorage.getItem('token');
+    try {
+        const saveResponse = await fetch('http://34.22.95.156:3003/api/state', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ state: state }),
+        });
+
+        if (!saveResponse.ok) {
+            throw new Error('상태 저장 오류');
+        }
+
+        console.log('상태 저장 성공');
+    } catch (error) {
+        console.error('상태 저장 중 오류 발생:', error);
+    }
+};
+
+const saveMessage = async (statusMessage: string) => {
+    const token = localStorage.getItem('token');
+    try {
+        // 상태 메시지 저장
+        const saveResponse = await fetch('http://34.22.95.156:3003/api/state/message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ statusMessage: statusMessage }), 
+        });
+
+        if (!saveResponse.ok) {
+            throw new Error('상태 메시지 저장 오류');
+        }
+
+        console.log('상태 메시지 저장 성공');
+        console.log('상태 메시지 : ', statusMessage);
+
+        setStatusMessage((prevMessages) => [...prevMessages, statusMessage]);
+    } catch (error) {
+        console.error('상태 메시지 저장 중 오류 발생:', error);
+    }
+};
     useEffect(() => {
+        if (selectedOption) {
+            saveState(selectedOption);
+        }
         if (selectedOption !== '출장중') {
             setInputValue('');
         }
     }, [selectedOption]);
 
+    const fetchEmailData = () => {
+        const token = localStorage.getItem("token");
+        fetch("http://34.22.95.156:3003/api/email/check", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("이메일 알림 조회 오류");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setEmailData(data);
+            })
+            .catch((error) => {
+                console.error("이메일 조회 중 오류 발생:", error);
+            });
+    };
+
+    const handleSaveStateAndMessage = () => {
+        if (selectedOption) {
+            saveState(selectedOption);
+        }
+        if (inputValue.trim()) {
+            saveMessage(inputValue);
+        }
+    };
+
     return (
         <div className="flex">
             <Nav />
-            <div className="w-[100%]">
+            <div className="w-[100%] min-w-[1280px]">
                 <div className="flex flex-col w-auto h-auto">
                     <div className="flex flex-col w-auto h-auto">
                         <header>
@@ -36,23 +280,25 @@ const Layout = () => {
                                 <div className="text-3xl text-white font-medium font-sans pl-8">Project</div>
                                 <div className="flex flex-row">
                                     <div
-                                    style={{
-                                      backgroundImage : `url('/assets/ring.png')`,
-                                      backgroundPosition : 'center',
-                                      backgroundSize :'cover',
-                                    }}
-                                    className='z-10 h-12 w-12 mr-3 rounded-full'>
-
-                                    </div>
-                                    <div
                                         style={{
                                             backgroundImage: `url("${profileImg}")`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
-                                        className="z-10 h-12 w-12 mr-3 rounded-full"
+                                        className="h-12 w-12 mr-3 rounded-full"
                                     />
-                                    <div className="text-xl text-white pt-3 font-sans mr-12">최준영</div>
+                                    <div className="text-xl text-white pt-3 font-sans pr-3">{name}</div>
+                                    <div className="p-2 mr-1">
+                                        <img
+                                            src={emailData && emailData.newEmailCount > 0 ? "/assets/alarmOn.png" : "/assets/alarmOff.png"}
+                                            alt={emailData && emailData.newEmailCount > 0 ? "alarmOn" : "alarmOff"}
+                                            className="h-9 w-9"
+                                        />
+                                    </div>
+
+                                    <button onClick={handleLogout} className="p-2 mr-3 border-l border-slate-400">
+                                        <img src="/assets/logout.png" alt="Logout" className="h-8 w-8 " />
+                                    </button>
                                 </div>
                             </div>
                         </header>
@@ -98,33 +344,35 @@ const Layout = () => {
                                             />
                                         </div>
 
-                                        <div className="text-xl pt-2">하정우</div>
-                                        <div className=" pt-1 text-xs">프론트엔드 개발팀</div>
+                                        <div className="text-xl pt-2">{name}</div>
+                                        <div className=" pt-1 text-xs">
+                                            {department} {position}
+                                        </div>
                                     </div>
 
                                     {/* 결재칸 */}
                                     <div className="rounded-lg shadow-lg border w-56 h-8 ml-20 bg-white mt-3 flex items-center justify-between font-medium">
                                         <div className="rounded-full bg-blue-700 h-3 w-3 ml-4" />
                                         <div className="flex-grow ml-4 text-sm">결재중</div>
-                                        <div className="text-base text-blue-700 mr-4">5</div>
+                                        <div className="text-base text-blue-700 mr-4">{approvalCounts.pending}</div>
                                     </div>
 
                                     <div className="rounded-lg shadow-lg border w-56 ml-20 h-8 bg-white mt-2 flex items-center justify-between font-medium">
                                         <div className="rounded-full bg-green-700 h-3 w-3 ml-4" />
                                         <div className="flex-grow ml-4 text-sm">결재완료</div>
-                                        <div className="text-base text-green-700 mr-4">10</div>
+                                        <div className="text-base text-green-700 mr-4">{approvalCounts.approved}</div>
                                     </div>
 
                                     <div className="rounded-lg shadow-lg border w-56 ml-20 h-8 bg-white mt-2 flex items-center justify-between font-medium">
                                         <div className="rounded-full bg-red-700 h-3 w-3 ml-4" />
                                         <div className="flex-grow ml-4 text-sm">반려</div>
-                                        <div className="text-base text-red-700 mr-4">3</div>
+                                        <div className="text-base text-red-700 mr-4">{approvalCounts.rejected}</div>
                                     </div>
 
                                     <div className="rounded-lg shadow-lg border w-56 ml-20 h-8 bg-white mt-2 flex items-center justify-between font-medium">
                                         <div className="rounded-full bg-purple-700 h-3 w-3 ml-4" />
                                         <div className="flex-grow ml-4 text-sm">연차</div>
-                                        <div className="text-base text-purple-700 mr-4">10</div>
+                                        <div className="text-base text-purple-700 mr-4">{approvalCounts.annual}</div>
                                     </div>
 
                                     <div className="rounded-lg shadow-lg border h-64 w-56 ml-20 mt-2 flex bg-white flex-col justify-center items-center font-bold">
@@ -135,7 +383,7 @@ const Layout = () => {
                                                     <option value="현재자리중">현재자리중</option>
                                                     <option value="출장중">출장중</option>
                                                     <option value="휴가중">휴가중</option>
-                                                    <option value="잠시 비움">자리비움</option>
+                                                    <option value="자리비움">자리비움</option>
                                                 </select>
                                             </form>
                                         </button>
@@ -145,15 +393,15 @@ const Layout = () => {
                                             className="border-2 mt-2 w-44 text-center text-sm"
                                             placeholder="출장중일때만 활성화"
                                             value={inputValue}
-                                            onChange={(e) => setInputValue(e.target.value)}
+                                            onChange={handleInputChange}
                                             disabled={selectedOption !== '출장중'}
                                         />
 
                                         <div className="flex justify-end w-full">
                                             <button
                                                 className="bg-mainColor text-white rounded-lg shadow-lg h-8 w-12 mr-6 mt-3"
-                                                onClick={() => alert('저장되었습니다.')}
-                                                disabled={inputValue.trim() === ''} // inputValue가 비어있으면 버튼 비활성화
+                                                onClick={handleSaveStateAndMessage}
+                                                disabled={inputValue.trim() === '' || selectedOption !== '출장중'}
                                             >
                                                 저장
                                             </button>
