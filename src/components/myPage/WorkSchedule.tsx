@@ -79,12 +79,12 @@ const WorkSchedule = () => {
     };
 
     useEffect(() => {
-        fetchUserData(); // 컴포넌트 마운트 시 사용자 정보 조회
+        fetchUserData();
     }, []);
 
     useEffect(() => {
         if (userName) {
-            fetchWorkData(); // 사용자 이름이 설정된 후 업무일정 조회
+            fetchWorkData();
         }
     }, [userName]);
 
@@ -102,7 +102,7 @@ const WorkSchedule = () => {
                 makePublic: true,
                 createdAt: new Date().toISOString(),
                 finishedAt: new Date().toISOString(),
-                isFromPersonal: false, // 새로 작성된 일정은 개인일정에서 넘어온 것이 아님을 명시
+                isFromPersonal: false,
             }),
         })
             .then((response) => {
@@ -113,7 +113,7 @@ const WorkSchedule = () => {
             })
             .then(() => {
                 setModalOpen(false);
-                fetchWorkData(); // 저장 후 업무일정 다시 조회하여 갱신
+                fetchWorkData();
             })
             .catch((error) => {
                 console.error('업무일정 작성 중 오류 발생:', error);
@@ -218,7 +218,6 @@ const WorkSchedule = () => {
 <PageModal
     isOpen={isModalOpen}
     onClose={() => setModalOpen(false)}
-    onSave={(title, content) => handleSaveWorker(title, content)}
     title={modalData.title}  // 모달에 선택한 title 전달
     content={modalData.content}  // 모달에 선택한 content 전달
 />

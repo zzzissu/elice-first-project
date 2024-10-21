@@ -1,46 +1,90 @@
-# Getting Started with Create React App
+## 1. 팀 소개
+**팀명** : 4팀 사알려조
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**팀원** : 하정우(팀장), 김지언, 최준영, 한지수, 이수엽, 이희재
+<hr />
+<hr />
 
-## Available Scripts
+## 2. 기획내용
+**프로젝트 주제** : 업무 지원 플랫폼
 
-In the project directory, you can run:
+**프로젝트 기간** : 2024년 10월 5일 ~ 2024년 10월 21일
 
-### `npm start`
+**프로젝트 인원** : 6명
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**프로젝트 소개** : 
+<hr />
+<hr />
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 3. 역할 분담
+| 하정우(front) |한지수(front)|최준영(front)|김지언(front)|이수엽(back)|이희재(back)|
+|:-------------:|:-------------:|:--------------:|:-------------:|:---------:|:----------:|
+| MyPage | LoginPage/SignUpPage | Nav | MainPage | usersAPI | stateAPI |
+| MailPage | Password | AuthorizationPage | Design총괄 | announcementAPI | profileAPI  |
+| Layout | TeamPage |  |  | approbalAPI | scheduleAPI |
+|  | ErrorPage |  |  |  |  |
+<hr />
+<hr />
 
-### `npm test`
+## 4. ERD
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<hr />
+<hr />
 
-### `npm run build`
+## 5. 구현기능
+##### 로그인 및 회원가입
+- 로그인 : 사용자의 입력 값을 유효성 검사(front/back) 후 토큰 저장
+- 로그아웃 : 토큰을 삭제하여 로그인 없이 url로 접근하는 사용자를 제한
+- 회원가입 : 필수 입력사항 유효성 검사(front) 후 데이터를 DB에 전송
+- 비밀번호 : 이메일 유효성 검사(front) 및 인증(back) 후 3분 내에 인증코드 입력, 인증코드가 일치 한다면 새 비밀번호 생성 후 DB에 저장
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+##### 사이드바 및 상단바, 본인 프로필 고정배너
+- 사이드바 : 각 페이지로 이동
+- 상단바 : 개인 프로필 사진이 바뀌면 동기화, 알림이 오면 알림(종 버튼) 활성화
+- 본인 프로필 고정배너 : 현재 근무상황(출장, 자리비움 등) 수정, 결재 및 연차관리, 프로필 사진 관리
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+##### 메인페이지
+- 공지사항 : 공지사항 작성, 삭제, 모달 확인
+- 알림 : 도착한 메일 알림
+- 개인페이지, 팀페이지 : 새로 작성된 부분 데이터 업데이트
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+##### 개인페이지
+- 인적사항 수정 : 전화번호 업데이트
+- 일정 관리 및 연차관리 : 개인페이지와 업무페이지를 나눠서 업무페이지는 공개, 개인페이지는 비공개로 진행
 
-### `npm run eject`
+##### 레이아웃
+-  알람 : 다른 유저에게 메일이 도착했을때 확인가능 및 메일확인 후 초기화
+-  현재상황 : 현재 유저의 상태에 따라 상태를 파악
+-  이미지 추가 : 본인 이미지 추가
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+##### 팀페이지
+- 팀원의 상태 : 팀원의 근무상황을 확인
+- 팀원의 일정 : 팀원의 일정을 파악
+- 팀원의 업무 : 팀원의 업무 계획을 파악
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+##### 결재페이지
+- 결재 서류 : 결재서류 양식 작성후 데이터에 DB전송 전송 완료후 카운팅 작업진행
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<hr />
+<hr />
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 6. 보완할 점 & 추후 개발하고자 하는부분
+- 관리자페이지 : 결재와 회원 등을 관리
+- 자유게시판 : 직원들끼리 자유롭게 소통할 수 있는 페이지를 구현
+- 달력페이지 : 회사의 행사 및 기념일을 관리
+- 팀페이지 : 팀원 개인일정만 보는것이 아닌, 팀원 모두 공통으로 관리할 수 있는 기능
+- 전체적인 코드의 재사용성이나 통일성 부족
 
-## Learn More
+<hr />
+<hr />
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 접속링크
+kdt-react-node-1-team04.elicecoding.com:3000
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<hr />
+<hr />
+
+
+## 시연영상
+
+
