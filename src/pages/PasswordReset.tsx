@@ -55,7 +55,7 @@ const PasswordResetModal = ({ onClose, onEmailConfirm }: PasswordResetModalProps
         } else {
             setError('');
 
-            fetch('http://34.22.95.156:3004/api/users/password/request', {
+            fetch('http://34.22.95.156:3003/api/users/password/request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
@@ -92,7 +92,7 @@ const PasswordResetModal = ({ onClose, onEmailConfirm }: PasswordResetModalProps
             setError('! 인증번호를 입력해주세요.');
         } else {
             setError('');
-            fetch('http://34.22.95.156:3004/api/users/code/request', {
+            fetch('http://34.22.95.156:3003/api/users/code/request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ resetCode: codeInput }),

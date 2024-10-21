@@ -36,7 +36,7 @@ const PersonerSchedule = () => {
     }, []);
 
     const fetchUserData = () => {
-        fetch('http://34.22.95.156:3004/api/users', {
+        fetch('http://34.22.95.156:3003/api/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const PersonerSchedule = () => {
     };
 
     const fetchPersonerData = () => {
-        fetch('http://34.22.95.156:3004/api/schedule/user', {
+        fetch('http://34.22.95.156:3003/api/schedule/user', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const PersonerSchedule = () => {
     };
 
     const handleSavePersoner = (title: string, content: string) => {
-        fetch('http://34.22.95.156:3004/api/schedule', {
+        fetch('http://34.22.95.156:3003/api/schedule', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const PersonerSchedule = () => {
     };
 
     const handleDeletePersoner = (id: number) => {
-        fetch(`http://34.22.95.156:3004/api/schedule/user/${id}`, {
+        fetch(`http://34.22.95.156:3003/api/schedule/user/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })

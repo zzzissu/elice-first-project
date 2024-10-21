@@ -20,7 +20,7 @@ const SendedMail: React.FC = () => {
 
     const handleDeleteSendedMail = (id: number) => {
         const token = localStorage.getItem('token');
-        fetch(`http://34.22.95.156:3004/api/email/${id}`, {
+        fetch(`http://34.22.95.156:3003/api/email/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })
@@ -37,7 +37,7 @@ const SendedMail: React.FC = () => {
 
     const handlegetSendedEmail = () => {
         const token = localStorage.getItem('token');
-        fetch('http://34.22.95.156:3004/api/email/received', {
+        fetch('http://34.22.95.156:3003/api/email/received', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const SendedMail: React.FC = () => {
 
     const handleCheckMail = (id: number) => {
         const token = localStorage.getItem('token');
-        fetch(`http://34.22.95.156:3004/api/email/check/${id}`, {
+        fetch(`http://34.22.95.156:3003/api/email/check/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
