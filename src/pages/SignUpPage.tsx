@@ -16,7 +16,7 @@ const SignUpPage = () => {
     });
     const [consent, setConsent] = useState(false);
     const [error, setError] = useState('');
-    
+
     const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ const SignUpPage = () => {
     };
 
     const handleSignUp = () => {
-        const { username, email, password, confirmPassword, birth } = userInfo;
+        const { username, email, domain, customDomain, password, confirmPassword, phone, birth } = userInfo;
 
         if (!username) {
             setError('! 이름을 입력해주세요.');
@@ -55,8 +55,36 @@ const SignUpPage = () => {
             return;
         }
 
+        const fullEmail = domain === 'custom' ? `${email}@${customDomain}` : `${email}@${domain}`;
+
         setError('');
-        navigate('/');
+
+        fetch('http://34.22.95.156:3004/api/users/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: username,
+                email: fullEmail,
+                password: password,
+                phone: phone,
+                birth: birth,
+            }),
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('회원가입 실패');
+                }
+                return res.json();
+            })
+            .then((data) => {
+                alert('회원가입 성공!');
+                const token = data.token;
+                localStorage.setItem('token', token);
+                navigate('/');
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            });
     };
 
     return (
@@ -163,7 +191,7 @@ const SignUpPage = () => {
                 <InputField
                     type="text"
                     name="birth"
-                    placeholder="생년월일을 입력해주세요 예)19900101"
+                    placeholder="생년월일을 입력해주세요 예)1990-01-01"
                     value={userInfo.birth}
                     onChange={handleInputChange}
                 />
@@ -173,7 +201,7 @@ const SignUpPage = () => {
                 <InputField
                     type="text"
                     name="phone"
-                    placeholder="연락처를 입력해주세요 예)01012345678"
+                    placeholder="연락처를 입력해주세요 예)010-1234-5678"
                     value={userInfo.phone}
                     onChange={handleInputChange}
                 />
