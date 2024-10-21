@@ -76,5 +76,3 @@
 ## 접속링크
 http://kdt-react-node-1-team04.elicecoding.com:3000/
 
-<hr />
-<hr />
