@@ -90,7 +90,7 @@ const Project: React.FC = () => {
     // 이메일 조회
     const fetchEmailData = () => {
         const token = localStorage.getItem("token");
-        fetch("http://34.22.95.156:3004/api/email/check", {
+        fetch("http://34.22.95.156:3003/api/email/check", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const Project: React.FC = () => {
     // 팀별 스케줄 조회
     const fetchTeamSchedules = () => {
         const token = localStorage.getItem("token");
-        fetch("http://34.22.95.156:3004/api/schedule/team", {
+        fetch("http://34.22.95.156:3003/api/schedule/team", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const Project: React.FC = () => {
     // 개인 스케줄 조회
     const fetchUserSchedules = () => {
         const token = localStorage.getItem("token");
-        fetch("http://34.22.95.156:3004/api/schedule/user", {
+        fetch("http://34.22.95.156:3003/api/schedule/user", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -163,7 +163,7 @@ const Project: React.FC = () => {
     // 공지사항 조회
     const fetchAnnouncements = () => {
         const token = localStorage.getItem("token");
-        fetch("http://34.22.95.156:3004/api/announcement", {
+        fetch("http://34.22.95.156:3003/api/announcement", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -202,7 +202,7 @@ const Project: React.FC = () => {
     const handleSave = (title: string, content: string) => {
         const token = localStorage.getItem("token");
     
-        fetch("http://34.22.95.156:3004/api/announcement/post", {
+        fetch("http://34.22.95.156:3003/api/announcement/post", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -238,7 +238,7 @@ const Project: React.FC = () => {
     const handleDelete = (id: number) => {
         const token = localStorage.getItem("token");
     
-        fetch(`http://34.22.95.156:3004/api/announcement/${id}`, {
+        fetch(`http://34.22.95.156:3003/api/announcement/${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,

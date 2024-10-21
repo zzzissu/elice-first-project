@@ -20,7 +20,7 @@ const NewPasswordModal = ({ onClose, email }: NewPasswordModalProps) => {
         } else {
             setError('');
 
-            fetch('http://34.22.95.156:3004/api/users/password/reset', {
+            fetch('http://34.22.95.156:3003/api/users/password/reset', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

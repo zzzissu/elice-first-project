@@ -25,7 +25,7 @@ const WorkSchedule = () => {
 
     // 사용자 정보 조회 함수
     const fetchUserData = () => {
-        fetch('http://34.22.95.156:3004/api/users', {
+        fetch('http://34.22.95.156:3003/api/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const WorkSchedule = () => {
 
     // 업무일정 조회 함수
     const fetchWorkData = () => {
-        const apiUrl = 'http://34.22.95.156:3004/api/schedule/team';
+        const apiUrl = 'http://34.22.95.156:3003/api/schedule/team';
 
         fetch(apiUrl, {
             method: 'GET',
@@ -91,7 +91,7 @@ const WorkSchedule = () => {
 
     // 업무일정 저장 함수
     const handleSaveWorker = (title: string, content: string) => {
-        fetch('http://34.22.95.156:3004/api/schedule', {
+        fetch('http://34.22.95.156:3003/api/schedule', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ const WorkSchedule = () => {
 
     // 업무일정 삭제 함수
     const handleDeleteWork = (id: number) => {
-        fetch(`http://34.22.95.156:3004/api/schedule/team/${id}`, {
+        fetch(`http://34.22.95.156:3003/api/schedule/team/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         })
