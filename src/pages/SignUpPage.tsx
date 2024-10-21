@@ -59,7 +59,7 @@ const SignUpPage = () => {
 
         setError('');
 
-        fetch('http://34.22.95.156:3004/api/users/signup', {
+        fetch('http://34.22.95.156:3003/api/users/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

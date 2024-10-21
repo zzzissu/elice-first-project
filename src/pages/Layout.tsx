@@ -46,7 +46,7 @@ const Layout = () => {
             return;
         }
 
-        fetch('http://34.22.95.156:3004/api/profile', {
+        fetch('http://34.22.95.156:3003/api/profile', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const Layout = () => {
 
     const userData = () => {
         const token = localStorage.getItem('token');
-        fetch('http://34.22.95.156:3004/api/users', {
+        fetch('http://34.22.95.156:3003/api/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const Layout = () => {
     // 결재중 카운팅
     const getApprovalCounts = () => {
         const token = localStorage.getItem('token');
-        fetch('http://34.22.95.156:3004/api/approval/count', {
+        fetch('http://34.22.95.156:3003/api/approval/count', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const Layout = () => {
         const token = localStorage.getItem('token');
         const formData = new FormData();
         formData.append('profileImage', file);
-        fetch('http://34.22.95.156:3004/api/profile/image', {
+        fetch('http://34.22.95.156:3003/api/profile/image', {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -184,7 +184,7 @@ const Layout = () => {
    const saveState = async (state: string) => {
     const token = localStorage.getItem('token');
     try {
-        const saveResponse = await fetch('http://34.22.95.156:3004/api/state', {
+        const saveResponse = await fetch('http://34.22.95.156:3003/api/state', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ const saveMessage = async (statusMessage: string) => {
     const token = localStorage.getItem('token');
     try {
         // 상태 메시지 저장
-        const saveResponse = await fetch('http://34.22.95.156:3004/api/state/message', {
+        const saveResponse = await fetch('http://34.22.95.156:3003/api/state/message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ const saveMessage = async (statusMessage: string) => {
 
     const fetchEmailData = () => {
         const token = localStorage.getItem("token");
-        fetch("http://34.22.95.156:3004/api/email/check", {
+        fetch("http://34.22.95.156:3003/api/email/check", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

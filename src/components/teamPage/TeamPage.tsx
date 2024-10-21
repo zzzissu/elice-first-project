@@ -45,7 +45,7 @@ const TeamPage = () => {
 
     const userState = () => {
         const token = localStorage.getItem('token');
-        fetch("http://34.22.95.156:3004/api/state/all", {
+        fetch("http://34.22.95.156:3003/api/state/all", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const TeamPage = () => {
 
    const userMessage = () => {
     const token = localStorage.getItem('token');
-    fetch("http://34.22.95.156:3004/api/state/all/messages", {
+    fetch("http://34.22.95.156:3003/api/state/all/messages", {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const TeamPage = () => {
     // 팀 일정을 가져오는 함수
     const fetchTeamSchedules = useCallback(async () => {
         try {
-            const response = await fetch('http://34.22.95.156:3004/api/schedule/team', getFetchOptions('GET'));
+            const response = await fetch('http://34.22.95.156:3003/api/schedule/team', getFetchOptions('GET'));
             if (!response.ok) {
                 throw new Error('팀 일정을 불러오는데 실패했습니다.');
             }

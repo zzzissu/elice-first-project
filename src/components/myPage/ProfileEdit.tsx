@@ -23,7 +23,7 @@ const ProfileEdit = () => {
                 console.error('인증 토큰이 없습니다. 로그인 상태를 확인하세요.');
                 return;
             }
-            const res = await fetch('http://34.22.95.156:3004/api/users/delete', {
+            const res = await fetch('http://34.22.95.156:3003/api/users/delete', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const ProfileEdit = () => {
                 console.error('인증 토큰이 없습니다. 로그인 상태를 확인하세요.');
                 return;
             }
-            const res = await fetch('http://34.22.95.156:3004/api/users', {
+            const res = await fetch('http://34.22.95.156:3003/api/users', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const ProfileEdit = () => {
     const handleUpdatePhoneNumber = async () => {
         const token = localStorage.getItem('token');
         try {
-            const res = await fetch('http://34.22.95.156:3004/api/profile/phone', {
+            const res = await fetch('http://34.22.95.156:3003/api/profile/phone', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

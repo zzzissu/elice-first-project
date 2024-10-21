@@ -16,7 +16,7 @@ const AnnualApplicationForm: React.FC = () => {
         setIsSubmitting(true);
 
         const token = localStorage.getItem('token');
-        fetch('http://34.22.95.156:3004/api/approval/annual', {
+        fetch('http://34.22.95.156:3003/api/approval/annual', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const AnnualApplicationForm: React.FC = () => {
 
         const token = localStorage.getItem('token');
 
-        fetch('http://http://34.22.95.156:3004/api/approval/count', {
+        fetch('http://http://34.22.95.156:3003/api/approval/count', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
