@@ -43,7 +43,6 @@ const TeamPage = () => {
         };
     };
 
-    // 상태 조회 함수
     const userState = () => {
         const token = localStorage.getItem('token');
         fetch("http://34.22.95.156:3004/api/state/all", {
@@ -53,49 +52,46 @@ const TeamPage = () => {
                 Authorization: `Bearer ${token}`,
             },
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("정보를 가져오는데 실패하였습니다.");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('상태 데이터', data);  // 실제 데이터를 확인하기 위해 로그 출력
-                if (data.states && data.states.length > 0) {
-                    setState(data.states);  // 전체 상태 배열을 설정
-                }
-            })
-            .catch((error) => {
-                console.error('상태조회중 오류발생', error);
-            })
-    };
-
-    const userMessage = () => {
-        const token = localStorage.getItem('token');
-        fetch("http://34.22.95.156:3004/api/state/all/messages", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
+        .then((response) => {
+            console.log('상태 조회 응답:', response);  // 응답을 확인
+            if (!response.ok) {
+                throw new Error("정보를 가져오는데 실패하였습니다.");
+            }
+            return response.json();
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("정보를 가져오는데 실패하였습니다.");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('상태 메시지 데이터', data);  // 실제 데이터를 확인하기 위해 로그 출력
-                if (data.statusMessages && data.statusMessages.length > 0) {
-                    setstatusMessage(data.statusMessages);  // 전체 메시지 배열을 설정
-                }
-            })
-            .catch((error) => {
-                console.error('상태조회중 오류발생', error);
-            })
+        .then((data) => {
+            console.log('상태 데이터:', data);  // 데이터 확인
+            setState(data);  // 데이터를 setState에 저장
+        })
+        .catch((error) => {
+            console.error('상태 조회 중 오류 발생:', error);
+        });
     };
 
+   const userMessage = () => {
+    const token = localStorage.getItem('token');
+    fetch("http://34.22.95.156:3004/api/state/all/messages", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    .then((response) => {
+        console.log('상태 메시지 응답:', response);  // 응답을 확인
+        if (!response.ok) {
+            throw new Error("정보를 가져오는데 실패하였습니다.");
+        }
+        return response.json();
+    })
+    .then((data) => {
+        console.log('상태 메시지 데이터:', data);  // 데이터 확인
+        setstatusMessage(data);  // 데이터를 setstatusMessage에 저장
+    })
+    .catch((error) => {
+        console.error('상태 메시지 조회 중 오류 발생:', error);
+    });
+};
     // 팀 일정을 가져오는 함수
     const fetchTeamSchedules = useCallback(async () => {
         try {
@@ -164,17 +160,18 @@ const TeamPage = () => {
                 <p className="bg-mainColor text-white w-full text-center mb-2 p-2 rounded-t-lg">
                     {group.user_name} 님의 업무 계획입니다.
                 </p>
-                {/* 상태 배열에서 가장 최근 항목만 렌더링 */}
                 <div>
-                    {state.length > 0 && (
-                        <p>상태: {state[0].state}</p> 
+                    {state.length > 0 ? (
+                        <p>상태: {state[0].state}</p>
+                    ) : (
+                        <p>상태 정보가 없습니다.</p>
                     )}
                 </div>
-
-                {/* 상태 메시지 배열에서 가장 최근 항목만 렌더링 */}
                 <div>
-                    {statusMessage.length > 0 && (
-                        <p>상태 메시지: {statusMessage[0].status_message}</p> 
+                    {statusMessage.length > 0 ? (
+                        <p>상태 메시지: {statusMessage[0].status_message}</p>
+                    ) : (
+                        <p>상태 메시지가 없습니다.</p>
                     )}
                 </div>
 
